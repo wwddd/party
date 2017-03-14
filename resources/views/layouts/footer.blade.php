@@ -1,4 +1,6 @@
-<footer class="full-wrapper">
+</div>
+<!-- /CONTENT -->
+<footer class="full-wrapper main-background">
 	<div class="wrapper">
 		<div class="container">
 			<div class="col-4"></div>
