@@ -1,4 +1,4 @@
-<header class="full-wrapper">
+<header class="full-wrapper main-background">
 	<div class="wrapper">
 		<div class="header">
 			<nav>

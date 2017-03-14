@@ -7,7 +7,21 @@
 
 <div class="full-wrapper">
 	<div class="wrapper">
-		<h1>CONTENT</h1>
+		<div class="container">
+			<div class="col-2"></div>
+			<div class="col-8">
+				<div class="container">
+					<div class="col-6 center-child">
+						<button>ВПИСАТЬСЯ</button>
+					</div>
+					<div class="col-6 center-child">
+						<button>СОЗДАТЬ</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-2"></div>
+		</div>
+		<div class="clear"></div>
 	</div>
 </div>
 

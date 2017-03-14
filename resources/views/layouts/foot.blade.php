@@ -1,4 +1,2 @@
-	</div>
-<!-- /CONTENT -->
 </body>
 </html>
