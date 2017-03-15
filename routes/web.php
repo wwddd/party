@@ -20,9 +20,28 @@ Route::group(['prefix' => 'account'], function () {
 		'uses' => 'UserController@index',
 		'as' => 'account'
 	]);
-	Route::get('opened_events', [
-		'uses' => 'UserController@opened_events',
-		'as' => 'opened_events'
+	Route::get('ajax-opened', [
+		'uses' => 'UserController@ajax_opened',
+		'as' => 'ajax-opened'
 	]);
-	
+	Route::get('ajax-closed', [
+		'uses' => 'UserController@ajax_closed',
+		'as' => 'ajax-closed'
+	]);
+	Route::get('ajax-favourite', [
+		'uses' => 'UserController@ajax_favourite',
+		'as' => 'ajax-favourite'
+	]);
+	Route::get('ajax-create', [
+		'uses' => 'UserController@ajax_create',
+		'as' => 'ajax-create'
+	]);
+	Route::get('ajax-achievements', [
+		'uses' => 'UserController@ajax_achievements',
+		'as' => 'ajax-achievements'
+	]);
+	Route::get('ajax-personal', [
+		'uses' => 'UserController@ajax_personal',
+		'as' => 'ajax-personal'
+	]);
 });
