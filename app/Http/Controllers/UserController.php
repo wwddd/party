@@ -14,7 +14,30 @@ class UserController extends Controller {
 		return view('account/account');
 	}
 
-	public function opened_events() {
-		return view('account/ajax/opened_events');
+
+// AJAX
+	public function ajax_opened() {
+		return view('account/ajax/opened');
 	}
+
+	public function ajax_closed() {
+		return view('account/ajax/closed');
+	}
+
+	public function ajax_favourite() {
+		return view('account/ajax/favourite');
+	}
+
+	public function ajax_create() {
+		return view('account/ajax/create');
+	}
+
+	public function ajax_achievements() {
+		return view('account/ajax/achievements');
+	}
+
+	public function ajax_personal() {
+		return view('account/ajax/personal');
+	}
+// /AJAX
 }

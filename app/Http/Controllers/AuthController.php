@@ -24,24 +24,32 @@ class AuthController extends Controller
 
     // }
 
-    public function user_register() {
-    	return view('auth.user.register');
+    public function register() {
+        return view('auth.register');
+    }
+
+    public function ajax_user_form() {
+    	return view('auth.ajax.user_form');
+    }
+
+    public function ajax_company_form() {
+        return view('auth.ajax.company_form');
     }
 
     public function user_store() {
     	return 'user_store';
     }
 
-    public function user_login() {
-    	return view('auth.user.login');
-    }
+    // public function user_login() {
+    // 	return view('auth.user.login');
+    // }
 
-    public function company_register() {
-    	return 'company register';
-    }
+    // public function company_register() {
+    // 	return 'company register';
+    // }
 
-    public function company_login() {
-    	return 'company login';
-    }
+    // public function company_login() {
+    // 	return 'company login';
+    // }
 
 }
