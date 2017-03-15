@@ -58,27 +58,27 @@ Route::group(['prefix' => 'account'], function () {
 		'uses' => 'UserController@index',
 		'as' => 'account'
 	]);
-	Route::get('ajax-opened', [
+	Route::post('ajax-opened', [
 		'uses' => 'UserController@ajax_opened',
 		'as' => 'ajax-opened'
 	]);
-	Route::get('ajax-closed', [
+	Route::post('ajax-closed', [
 		'uses' => 'UserController@ajax_closed',
 		'as' => 'ajax-closed'
 	]);
-	Route::get('ajax-favourite', [
+	Route::post('ajax-favourite', [
 		'uses' => 'UserController@ajax_favourite',
 		'as' => 'ajax-favourite'
 	]);
-	Route::get('ajax-create', [
+	Route::post('ajax-create', [
 		'uses' => 'UserController@ajax_create',
 		'as' => 'ajax-create'
 	]);
-	Route::get('ajax-achievements', [
+	Route::post('ajax-achievements', [
 		'uses' => 'UserController@ajax_achievements',
 		'as' => 'ajax-achievements'
 	]);
-	Route::get('ajax-personal', [
+	Route::post('ajax-personal', [
 		'uses' => 'UserController@ajax_personal',
 		'as' => 'ajax-personal'
 	]);
