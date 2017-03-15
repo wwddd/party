@@ -68,9 +68,12 @@ $(function() {
 		if(attemps < 3) {
 			var toSend = selector.data();
 			$.ajax({
+				headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				},
 				url: toSend.url,
 				data: toSend,
-				type: 'GET',
+				type: 'POST',
 				beforeSend: function() {
 					afterloadOverlay(selector);
 				},
