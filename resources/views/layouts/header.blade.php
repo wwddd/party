@@ -5,8 +5,8 @@
 				<div id="logo">PARTY-SCOPE.COM</div>
 				<div id="menu">
 					<ul class="register">
-						<li><a href="#">Вход</a></li>
-						<li><a href="#">Регистрация</a></li>
+						<li><a href="{{ route('user_login') }}">Вход</a></li>
+						<li><a href="{{ route('user_register') }}">Регистрация</a></li>
 					</ul>
 					<ul class="social">
 						<li><a href="#">VK</a></li>
