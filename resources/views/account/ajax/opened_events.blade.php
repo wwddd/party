@@ -1,0 +1,1 @@
+<h1>OPENED EVENTS TAB</h1>

@@ -12,5 +12,17 @@
 */
 
 Route::get('/', function () {
-    return view('index');
+	return view('index');
+});
+
+Route::group(['prefix' => 'account'], function () {
+	Route::get('/', [
+		'uses' => 'UserController@index',
+		'as' => 'account'
+	]);
+	Route::get('opened_events', [
+		'uses' => 'UserController@opened_events',
+		'as' => 'opened_events'
+	]);
+	
 });
