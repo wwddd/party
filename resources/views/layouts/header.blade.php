@@ -19,6 +19,6 @@
 		</div>
 	</div>
 </header>
-
+<div class="clear"></div>
 <!-- CONTENT -->
 <div id="content">

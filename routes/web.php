@@ -12,15 +12,15 @@
 */
 
 Route::get('/', function () {
-    return view('index');
+	return view('index');
 });
 
 // User Auth
-Route::get('user/register', [
+Route::get('register/user', [
 	'as' => 'user_register',
 	'uses' => 'AuthController@user_register'
 ]);
-Route::post('user/store', [
+Route::post('store/user', [
 	'as' => 'user_store',
 	'uses' => 'AuthController@user_store'
 ]);
@@ -31,7 +31,7 @@ Route::get('user/login', [
 
 
 // Company Auth
-Route::get('company/register', [
+Route::get('register/company', [
 	'as' => 'company_register',
 	'uses' => 'AuthController@company_register'
 ]);
@@ -39,3 +39,15 @@ Route::get('company/login', [
 	'as' => 'company_login',
 	'uses' => 'AuthController@company_login'
 ]);
+
+Route::group(['prefix' => 'account'], function () {
+	Route::get('/', [
+		'uses' => 'UserController@index',
+		'as' => 'account'
+	]);
+	Route::get('opened_events', [
+		'uses' => 'UserController@opened_events',
+		'as' => 'opened_events'
+	]);
+	
+});

@@ -1,5 +1,6 @@
 </div>
 <!-- /CONTENT -->
+<div class="clear"></div>
 <footer class="full-wrapper main-background">
 	<div class="wrapper">
 		<div class="container">
