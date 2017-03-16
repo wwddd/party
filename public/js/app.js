@@ -41,8 +41,17 @@ $(function() {
 			$('.tab').removeClass('active');
 			tab.addClass('active');
 			$(document).find('.afterload-tabs').each(function() {
-				$(this).data('url', tab.data('url'));
-				getAfterload($(this));
+				if(tab[0].id == $(this).data('id')) {
+					if($(this).is(':empty')) {
+						$('.afterload-tabs').hide();
+						$(this).show();
+						$(this).data('url', tab.data('url'));
+						getAfterload($(this));
+					} else {
+						$('.afterload-tabs').hide();
+						$(this).show();
+					}
+				}
 			});
 		}
 	}
@@ -54,6 +63,8 @@ $(function() {
 	function afterload() {
 		$(document).find('.afterload').each(function() {
 			if($(this).is(':empty')) {
+				$('.afterload').hide();
+				$(this).show();
 				getAfterload($(this));
 			}
 		});
@@ -78,7 +89,9 @@ $(function() {
 					afterloadOverlay(selector);
 				},
 				success: function(data) {
+					// setTimeout(function() {
 					selector.html(data);
+					// }, 2000);
 				},
 				error: function() {
 					getAfterload(selector, ++attemps);
