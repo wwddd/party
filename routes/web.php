@@ -18,8 +18,8 @@ Route::get('/', function () {
 Route::group(['prefix' => 'register'], function() {
 	// User Auth
 	Route::get('/', [
-		'as' => 'register',
-		'uses' => 'AuthController@register'
+		'as' => 'index_register',
+		'uses' => 'AuthController@index_register'
 	]);
 	Route::post('user/form', [
 		'as' => 'user_form',
@@ -33,25 +33,18 @@ Route::group(['prefix' => 'register'], function() {
 		'as' => 'user_store',
 		'uses' => 'AuthController@user_store'
 	]);
-
-	// Route::get('user/login', [
-	// 	'as' => 'user_login',
-	// 	'uses' => 'AuthController@user_login'
-	// ]);
-
-	// Company Auth
-	// Route::get('register/company', [
-	// 	'as' => 'company_register',
-	// 	'uses' => 'AuthController@company_register'
-	// ]);
-	// Route::get('company/login', [
-	// 	'as' => 'company_login',
-	// 	'uses' => 'AuthController@company_login'
-	// ]);
 });
 
-
-
+Route::group(['prefix' => 'login'], function() {
+	Route::get('/', [
+		'as' => 'index_login',
+		'uses' => 'AuthController@index_login'
+	]);
+	Route::post('/', [
+		'as' => 'login',
+		'uses' => 'AuthController@login'
+	]);
+});
 
 Route::group(['prefix' => 'account'], function () {
 	Route::get('/', [
