@@ -16,7 +16,6 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix' => 'register'], function() {
-	// User Auth
 	Route::get('/', [
 		'as' => 'index_register',
 		'uses' => 'AuthController@index_register'

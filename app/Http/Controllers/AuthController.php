@@ -7,8 +7,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Input;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Response;
-
 
 use DB;
 use App\User;
@@ -43,6 +41,16 @@ class AuthController extends Controller
     }
 
     public function user_store(Request $request) {
+        $this->validate($request, [
+            'name' => 'required|min:2',
+            'gender' => 'required',
+            'age' => 'required|integer',
+            'country' => 'required',
+            'city' => 'required',
+            'contact' => 'required',
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
         $name = $request->input('name');
         $gender = $request->input('gender');
@@ -57,17 +65,6 @@ class AuthController extends Controller
         $blocked = 0;
         $type = 0;
         $ip = $request->ip();
-
-        $this->validate($request, [
-            'name' => 'required|min:2',
-            'gender' => 'required',
-            'age' => 'required|integer',
-            'country' => 'required',
-            'city' => 'required',
-            'contact' => 'required',
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
 
         $user = new User();
         $user->name = $name;
@@ -114,147 +111,8 @@ class AuthController extends Controller
         }
     }
 
-    public function logout()
-    {
+    public function logout() {
         Auth::logout();
         return redirect(route('index_login'));
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-// namespace App\Http\Controllers;
-
-// use App\User;
-// use DB;
-// use Illuminate\Http\Request;
-// use Illuminate\Http\Response;
-// use Illuminate\Support\Facades\Auth;
-// use Illuminate\Database\Eloquent\Model;
-
-
-// class UserController extends Controller
-// {
-
-//     public function signup(Request $request)
-//     {
-//         $validation = $this->validate($request, [
-//             'email' => 'required|email|unique:users',
-//             'first_name' => 'required|max:120',
-//             'touted' => 'required|max:120',
-//             'password' => 'required|min:4',
-//             'account_type' => 'required',
-//             'phone' => 'required|numeric',
-//             'announcement' => 'required',
-//             'sex' => 'required',
-//             'service' => 'required',
-//             'region' => 'required',
-//             'for' => 'required'
-//         ]);
-
-//         $email = $request['email'];
-//         $touted = $request['touted'];
-//         $name = $request['first_name'];
-//         $password = bcrypt($request['password']);
-//         $is_agency = $request['account_type'];
-//         $phone = $request['phone'];
-//         $membership = time() + 3600;
-
-//         $user = new User();
-//         $user->email = $email;
-//         $user->touted = $touted;
-//         $user->name = $name;
-//         $user->password = $password;
-//         $user->is_agency = $is_agency;
-//         $user->phone = $phone;
-//         $user->membership = $membership;
-
-//         $user->save();
-
-//         $regions_array = array();
-//         for($i = 0; $i < count($request['region']); $i++) {
-//             $regions_array[$request['region'][$i]] = '1';
-//         }
-//         $regions_array['user_id'] = $user->id;
-//         DB::table('regions')->insert($regions_array);
-
-//         $services_array = array();
-//         for($i = 0; $i < count($request['service']); $i++) {
-//             $services_array[$request['service'][$i]] = '1';
-//         }
-//         $services_array['user_id'] = $user->id;
-//         DB::table('services')->insert($services_array);
-
-//         $user_data_array = array();
-//         for($i = 0; $i < count($request['for']); $i++) {
-//             $user_data_array[$request['for'][$i]] = '1';
-//         }
-//         $user_data_array['user_id'] = $user->id;
-//         if(isset($request['age'])){
-//             $user_data_array['age'] = $request['age'];
-//         }
-//         if(isset($request['height'])){
-//             $user_data_array['height'] = $request['height'];
-//         }
-//         if(isset($request['eye'])){
-//             $user_data_array['eye'] = $request['eye'];
-//         }
-//         if(isset($request['hair'])){
-//             $user_data_array['hair'] = $request['hair'];
-//         }
-//         if(isset($request['bust'])){
-//             $user_data_array['bust'] = $request['bust'];
-//         }
-//         if(isset($request['body'])){
-//             $user_data_array['body'] = $request['body'];
-//         }
-//         if(isset($request['announcement'])){
-//             $user_data_array['text'] = $request['announcement'];
-//         }
-//         if(isset($request['sex'])){
-//             $user_data_array['sex'] = $request['sex'];
-//         }
-//         DB::table('users_data')->insert($user_data_array);
-
-
-//         Auth::login($user);
-
-//         $message = 'Congrats ' . Auth::user()->name . '! You did account!';
-
-//         // return redirect()->route('cabinet')->with('message', $message);
-
-//         return $message;
-//     }
-
-//     public function signin(Request $request)
-//     {
-//         $this->validate($request, [
-//             'email_in' => 'required',
-//             'password_in' => 'required'
-//         ]);
-
-//         if (Auth::attempt(['email' => $request['email_in'], 'password' => $request['password_in']])) {
-//             $message = 'Welcome, ' . Auth::user()->name . '!';
-//             return $message;
-//             // return redirect()->route('cabinet')->with('message', $message);
-//         }
-//         return 'error';
-//         // return redirect()->back();
-//     }
-
-//     public function logout()
-//     {
-//         Auth::logout();
-//         return redirect()->back();
-//     }
-// }
