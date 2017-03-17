@@ -1,4 +1,5 @@
 $(function() {
+// TABS, AJAX LOADING
 	var afterloadOverlayTpl = '<div class="afterload-overlay"><div class="afterload-loader"></div></div>';
 	var afterloadErrorTpl = '<div class="afterload-error"><p>Something goes wrong...</p></div>';
 	var currentTab = getUrlParameter('tab');
@@ -107,4 +108,40 @@ $(function() {
 	}
 
 	afterload();
+// /TABS, AJAX LOADING
+
+// SELECTS
+
+	$(document).on('click', '.select-multiple', function(e) {
+		if(e.target.className === 'select-multiple' || e.target.className === 'select-title') {
+			$(this).toggleClass('active');
+		}
+	});
+
+	$(document).on('click', '.select-multiple .select-inner span', function() {
+		$(this).siblings('input').click();
+	});
+
+	$(document).on('click', '.select-multiple .select-inner input', function() {
+		var choosenTags = '';
+		$(this).closest('.select-inner').find('input:checked').each(function() {
+			console.log($(this));
+			choosenTags += '<span data-val="' + $(this).val() + '" class="tag">' + $(this).val() + ' x</span>';
+		});
+		$('.choosen-select').html(choosenTags);
+	});
+
+	$(document).on('click', '.tag', function() {
+		var _self = $(this);
+		var value = $(this).data('val');
+		$('.select-inner').find('input:checked').each(function() {
+			if($(this).val() === value) {
+				$(this).prop('checked', false);
+				_self.remove();
+			}
+		});
+	});
+
+
+// /SELECTS
 });

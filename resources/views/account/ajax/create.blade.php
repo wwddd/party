@@ -10,14 +10,26 @@
 					<textarea placeholder="Описание" name="description"></textarea>
 				</div>
 				<div class="form-group">
-					<div class="choosen-tags choosen-conditions"></div>
-					<select id="conditions">
-						<option>-Условия вписки-</option>
-						<option value="деньги">Деньги</option>
-						<option value="женщины">Женщины</option>
-						<option value="мужчины">Мужчины</option>
-						<option value="дети">Дети для педофилов</option>
-					</select>
+					<div data-id="conditions" class="choosen-select"></div>
+					<div id="conditions" class="select-multiple">
+						<div class="select-title">Выберите условия для гостей</div>
+						<div class="select-inner">
+							<div><input type="checkbox" value="деньги"><span>Деньги</span></div>
+							<div><input type="checkbox" value="женщины"><span>Женщины</span></div>
+							<div><input type="checkbox" value="мужчины"><span>Мужчины</span></div>
+							<div><input type="checkbox" value="дети"><span>Дети для педофилов</span></div>
+							<div><input type="checkbox" value="дети"><span>Дети для педофилов</span></div>
+							<div><input type="checkbox" value="дети"><span>Дети для педофилов</span></div>
+							<div><input type="checkbox" value="дети"><span>Дети для педофилов</span></div>
+							<div><input type="checkbox" value="дети"><span>Дети для педофилов</span></div>
+							<div><input type="checkbox" value="дети"><span>Дети для педофилов</span></div>
+							<div><input type="checkbox" value="дети"><span>Дети для педофилов</span></div>
+							<div><input type="checkbox" value="дети"><span>Дети для педофилов</span></div>
+							<div><input type="checkbox" value="дети"><span>Дети для педофилов</span></div>
+							<div><input type="checkbox" value="дети"><span>Дети для педофилов</span></div>
+							<div><input type="checkbox" value="дети"><span>Дети для педофилов</span></div>
+						</div>
+					</div>
 				</div>
 				<div class="form-group">
 					<textarea placeholder="Доп. условия" name="more_conditions"></textarea>

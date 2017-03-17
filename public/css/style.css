@@ -180,7 +180,7 @@ html, body {
 	text-align: center;
 }
 
-.form input, select, textarea, .choosen-tags {
+.form input[type="text"], select, textarea, .choosen-select, .select-multiple {
 	display: inline-block;
 	width: 90%;
 	border: none;
@@ -188,15 +188,12 @@ html, body {
 	background: white;
 	color: black;
 	outline: none;
+	border: 1px solid #c7c7c7;
+	border-radius: 2px;
 }
 
 .form input, .form select {
 	height: 40px;
-}
-
-.choosen-tags {
-	height: 30px;
-	margin-bottom: -3px;
 }
 
 .form input {
@@ -229,6 +226,12 @@ html, body {
 	font-size: 30px;
 }
 
+.button-footer {
+	border: 3px solid white;
+	padding: 5px;
+	width: 160px;
+}
+
 .required {
 	position: relative;
 }
@@ -242,6 +245,90 @@ html, body {
 }
 
 
+
+
+
+
+/*select*/
+.select-multiple {
+	height: 40px;
+	padding: 5px;
+	position: relative;
+	border-top: none;
+}
+
+.select-multiple.active {
+	border-bottom: none;
+}
+
+.choosen-select {
+	min-height: 40px;
+	overflow: hidden;
+	margin-bottom: -3px;
+	border-bottom: none;
+	text-align: left;
+}
+
+.select-title {
+	text-align: left;
+	cursor: pointer;
+}
+
+.select-title:after {
+	content: '+';
+	float: right;
+}
+
+.select-inner {
+	position: absolute;
+	overflow: hidden;
+	top: 36px;
+	left: 0;
+	height: 0;
+	width: 100%;
+	padding: 2px;
+	text-align: left;
+	transition: all .3s ease;
+}
+
+.select-multiple.active .select-inner {
+	overflow-y: visible;
+	background: white;
+	height: 150px;
+	transition: all .3s ease;
+	box-shadow: 0px 2px 1px #616161;
+	border-top: none;
+}
+
+.select-inner div {
+	display: inline-block;
+	width: 100%;
+	border-top: 1px dotted #c7c7c7;
+}
+
+.select-inner div:hover {
+	background: #ececec;
+}
+
+.select-inner input {
+	vertical-align: middle;
+}
+
+.select-inner span {
+	cursor: pointer;
+}
+
+span.tag {
+	background: #00b4f0;
+	color: white;
+	margin: 0px 2px;
+	padding: 3px;
+	vertical-align: middle;
+	font-size: 13px;
+	border-radius: 6px;
+	cursor: pointer;
+}
+/*select*/
 
 
 
