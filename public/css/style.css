@@ -231,6 +231,11 @@ html, body {
 	font-size: 30px;
 }
 
+button:disabled {
+	background: gray !important;
+	cursor: not-allowed;
+}
+
 .button-footer {
 	border: 3px solid white;
 	padding: 5px;
@@ -249,6 +254,65 @@ html, body {
 	color: red;
 }
 
+
+
+#main-notice {
+	position: fixed;
+	width: 500px;
+	height: 50px;
+	top: -70px;
+	left: 50%;
+	opacity: 0;
+	margin-left: -250px;
+	background: white;
+	border-radius: 5px;
+	box-shadow: 0px 1px 8px black;
+	border: 3px solid #019cd0;
+	transition: all .3s ease-in;
+}
+
+#main-notice.active {
+	top: 40px;
+	opacity: 1;
+	transition: all .3s ease-in-out;
+}
+
+#main-notice.success {
+	border-color: #00b300;
+}
+
+#main-notice.fail {
+	border-color: red;
+}
+
+#main-notice .notice-char {
+	background: #019cd0;
+	height: 44px;
+	text-align: center;
+	font-size: 40px;
+}
+
+#main-notice.success .notice-char {
+	background: #00b300;
+}
+
+#main-notice.fail .notice-char {
+	background: red;
+}
+
+#main-notice .notice-message {
+	color: black;
+	padding: 13px;
+}
+
+#main-notice .notice-x {
+	background-image: url(../images/close.png);
+	background-position: 50px;
+	background-size: 22px;
+	height: 44px;
+	background-repeat: no-repeat;
+	cursor: pointer;
+}
 
 
 

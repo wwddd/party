@@ -18,7 +18,7 @@
 			</div>
 			<div class="clear"></div>
 			@if(Session::has('message'))
-				<p>{{ Session::get('message') }}</p>
+				<p class="temporary-message">{{ Session::get('message') }}</p>
 			@endif
 			<div class="afterload-tabs" data-id="create"></div>
 			<div class="afterload-tabs" data-id="opened"></div>

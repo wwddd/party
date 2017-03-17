@@ -22,5 +22,12 @@
 			</div>
 			<div class="col-4"></div>
 		</div>
+		<div id="main-notice">
+			<div class="container">
+				<div class="col-2 notice-char">!</div>
+				<div class="col-8 notice-message"></div>
+				<div class="col-2 notice-x"></div>
+			</div>
+		</div>
 	</div>
 </footer>
