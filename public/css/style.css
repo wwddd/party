@@ -180,7 +180,12 @@ html, body {
 	text-align: center;
 }
 
-.form input[type="text"], .form input[type="number"], .form select, .form textarea, .form .choosen-select, .form .select-multiple {
+.form input[type="text"],
+.form input[type="number"],
+.form select, .form textarea,
+.form .choosen-select,
+.form .select-multiple,
+.form .input-tags {
 	display: inline-block;
 	width: 90%;
 	border: none;
@@ -222,7 +227,7 @@ html, body {
 
 .create-button {
 	width: 90%;
-	height: 68px;
+	height: 50px;
 	font-size: 30px;
 }
 
@@ -254,18 +259,14 @@ html, body {
 	height: 40px;
 	padding: 5px;
 	position: relative;
-	border-top: none;
-}
-
-.select-multiple.active {
-	border-bottom: none;
+	border-top: none !important;
 }
 
 .choosen-select {
 	min-height: 40px;
 	overflow: hidden;
 	margin-bottom: -3px;
-	border-bottom: none;
+	border-bottom: none !important;
 	text-align: left;
 }
 
@@ -282,6 +283,7 @@ html, body {
 .select-inner {
 	position: absolute;
 	overflow: hidden;
+	opacity: 0;
 	top: 36px;
 	left: 0;
 	height: 0;
@@ -294,6 +296,7 @@ html, body {
 .select-multiple.active .select-inner {
 	overflow-y: visible;
 	background: white;
+	opacity: 1;
 	height: 150px;
 	transition: all .3s ease;
 	box-shadow: 0px 2px 1px #616161;
@@ -318,15 +321,26 @@ html, body {
 	cursor: pointer;
 }
 
-span.tag {
+span.tag, span.input-tag {
 	background: #00b4f0;
 	color: white;
-	margin: 0px 2px;
-	padding: 3px;
+	margin: 2px 2px;
+	padding: 5px;
 	vertical-align: middle;
 	font-size: 13px;
 	border-radius: 6px;
 	cursor: pointer;
+	display: inline-block;
+}
+
+.input-tags {
+	padding: 0 !important;
+	text-align: left;
+}
+
+.input-tags input {
+	border: none !important;
+	float: left;
 }
 /*select*/
 

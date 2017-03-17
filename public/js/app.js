@@ -111,7 +111,6 @@ $(function() {
 // /TABS, AJAX LOADING
 
 // SELECTS
-
 	$(document).on('click', '.select-multiple', function(e) {
 		if(e.target.className === 'select-multiple' || e.target.className === 'select-title') {
 			$(this).toggleClass('active');
@@ -125,7 +124,6 @@ $(function() {
 	$(document).on('click', '.select-multiple .select-inner input', function() {
 		var choosenTags = '';
 		$(this).closest('.select-inner').find('input:checked').each(function() {
-			console.log($(this));
 			choosenTags += '<span data-val="' + $(this).val() + '" class="tag">' + $(this).val() + ' x</span>';
 		});
 		$('.choosen-select').html(choosenTags);
@@ -141,7 +139,21 @@ $(function() {
 			}
 		});
 	});
-
-
 // /SELECTS
+
+// TAGS
+	$(document).on('keypress', '.input-tags input', function(e) {
+		if(e.keyCode == 13) {
+			var inputTag = '<span class="input-tag">' + $(this).val() + ' x</span>';
+			$(this).closest('.input-tags').prepend(inputTag);
+			$(this).val('');
+			return false;
+		}
+	});
+
+	$(document).on('click', '.input-tag', function() {
+		$(this).remove();
+	});
+
+// /TAGS
 });
