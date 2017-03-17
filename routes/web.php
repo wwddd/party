@@ -86,4 +86,4 @@ Route::group(['prefix' => 'account'], function () {
 	]);
 
 // /AJAX
-});
+// });

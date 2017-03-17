@@ -180,7 +180,7 @@ html, body {
 	text-align: center;
 }
 
-.form input[type="text"], select, textarea, .choosen-select, .select-multiple {
+.form input[type="text"], .form input[type="number"], .form select, .form textarea, .form .choosen-select, .form .select-multiple {
 	display: inline-block;
 	width: 90%;
 	border: none;
