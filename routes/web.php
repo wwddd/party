@@ -15,6 +15,37 @@ Route::get('/', function () {
 	return view('index');
 });
 
+Route::group(['prefix' => 'register'], function() {
+	// User Auth
+	Route::get('/', [
+		'as' => 'index_register',
+		'uses' => 'AuthController@index_register'
+	]);
+	Route::post('user/form', [
+		'as' => 'user_form',
+		'uses' => 'AuthController@ajax_user_form'
+	]);
+	Route::post('company/form', [
+		'as' => 'company_form',
+		'uses' => 'AuthController@ajax_company_form'
+	]);
+	Route::post('user/store', [
+		'as' => 'user_store',
+		'uses' => 'AuthController@user_store'
+	]);
+});
+
+Route::group(['prefix' => 'login'], function() {
+	Route::get('/', [
+		'as' => 'index_login',
+		'uses' => 'AuthController@index_login'
+	]);
+	Route::post('/', [
+		'as' => 'login',
+		'uses' => 'AuthController@login'
+	]);
+});
+
 Route::group(['prefix' => 'account'], function () {
 	Route::get('/', [
 		'uses' => 'UserController@index',
@@ -25,7 +56,7 @@ Route::group(['prefix' => 'account'], function () {
 		'uses' => 'UserController@event_store',
 		'as' => 'event-store'
 	]);
-
+});
 
 
 // AJAX
@@ -53,5 +84,6 @@ Route::group(['prefix' => 'account'], function () {
 		'uses' => 'UserController@ajax_personal',
 		'as' => 'ajax-personal'
 	]);
+
 // /AJAX
 });
