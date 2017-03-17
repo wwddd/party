@@ -32,4 +32,6 @@
 
 @include('layouts.footer')
 @include('layouts.scripts')
+<link rel="stylesheet" type="text/css" href="{{ asset('/css/jquery.datetimepicker.css') }}"/>
+<script src="{{ asset('/js/jquery.datetimepicker.full.min.js') }}"></script>
 @include('layouts.foot')

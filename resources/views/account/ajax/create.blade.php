@@ -18,21 +18,13 @@
 							<div><input type="checkbox" value="женщины"><span>Женщины</span></div>
 							<div><input type="checkbox" value="мужчины"><span>Мужчины</span></div>
 							<div><input type="checkbox" value="дети"><span>Дети для педофилов</span></div>
-							<div><input type="checkbox" value="дети"><span>Дети для педофилов</span></div>
-							<div><input type="checkbox" value="дети"><span>Дети для педофилов</span></div>
-							<div><input type="checkbox" value="дети"><span>Дети для педофилов</span></div>
-							<div><input type="checkbox" value="дети"><span>Дети для педофилов</span></div>
-							<div><input type="checkbox" value="дети"><span>Дети для педофилов</span></div>
-							<div><input type="checkbox" value="дети"><span>Дети для педофилов</span></div>
-							<div><input type="checkbox" value="дети"><span>Дети для педофилов</span></div>
-							<div><input type="checkbox" value="дети"><span>Дети для педофилов</span></div>
-							<div><input type="checkbox" value="дети"><span>Дети для педофилов</span></div>
-							<div><input type="checkbox" value="дети"><span>Дети для педофилов</span></div>
 						</div>
 					</div>
 				</div>
 				<div class="form-group">
-					<textarea placeholder="Доп. условия" name="more_conditions"></textarea>
+					<div class="input-tags">
+						<input placeholder="Доп. условия (вводите и нажимайте Enter)" type="text" name="more_conditions">
+					</div>
 				</div>
 				<div class="form-group">
 					<textarea placeholder="Ваши предложения" name="offer"></textarea>
@@ -51,7 +43,7 @@
 					</div>
 				</div>
 				<div class="form-group required">
-					<input placeholder="Время" type="text" name="time">
+					<input id="time" placeholder="Время" type="text" name="time">
 				</div>
 				<div class="form-group required">
 					<input placeholder="Контакты" type="text" name="contact">
@@ -67,3 +59,9 @@
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	</form>
 </div>
+
+<script type="text/javascript">
+	$(document).find('#time').datetimepicker({
+		locale: 'ru',
+	});
+</script>
