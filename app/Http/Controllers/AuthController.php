@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Input;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
 
-use DB, Hash;
+use DB;
+use App\User;
 
 class AuthController extends Controller
 {
@@ -46,7 +49,12 @@ class AuthController extends Controller
         $city = $request->input('city');
         $contact = $request->input('contact');
         $email = $request->input('email');
-        $password = $request->input('password');
+        $password = bcrypt($request->input('password'));
+        $noticed = 1;
+        $verified = 0;
+        $blocked = 0;
+        $type = 0;
+        $ip = $request->ip();
 
         $this->validate($request, [
             'name' => 'required|min:2',
@@ -59,18 +67,28 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        DB::table('users')->insert(array(
-            'name' => $name,
-            'gender' => $gender,
-            'age' => $age,
-            'country' => $country,
-            'city' => $city,
-            'contact' => $contact,
-            'email' => $email,
-            'password' => bcrypt($password)
-        ));
+        $user = new User();
+        $user->name = $name;
+        $user->gender = $gender;
+        $user->age = $age;
+        $user->password = $password;
+        $user->country = $country;
+        $user->city = $city;
+        $user->contact = $contact;
+        $user->email = $email;
+        $user->password = $password;
+        $user->noticed = $noticed;
+        $user->verified = $verified;
+        $user->blocked = $blocked;
+        $user->type = $type;
+        $user->ip = $ip;
+        $user->save();
 
-    	return redirect()->back();
+        Auth::login($user);
+
+        $message = 'Congrats ' . Auth::user()->name . '! You did account!';
+
+    	return redirect(route('account'))->with('message', $message);
     }
 
     public function index_login() {
@@ -78,33 +96,24 @@ class AuthController extends Controller
     }
 
     public function login(Request $request) {
-        $email = $request->input('email');
-        $password = $request->input('password');
-
         $this->validate($request, [
             'email' => 'required|email',
             'password' => 'required'
         ]);
 
-        $hashed_password = DB::table('users')->where('email', $email)->first();
+        $email = $request->input('email');
+        $password = $request->input('password');
 
-        // this big logic need because if hashed_password will be equal false, process crash
-        if (!$hashed_password) {
-            return redirect()
-                ->back()
-                ->with('message', 'email or password not valid')
-                ->withInput();
-        } else {
-            $check_passwords = Hash::check($password, $hashed_password->password);
-
-            if (!$check_passwords) {
-                return redirect()
-                    ->back()
-                    ->with('message', 'email or password not valid')
-                    ->withInput();
-            } else {
-                return redirect(route('account'))->with('message', 'Welcome your account падла');
-            }
+        if (Auth::attempt(['email' => $email, 'password' => $password])) {
+            return redirect(route('account'));
+        } else {        
+            $message = 'Email or Password not valid';
+            return redirect()->back()->withInput()->with('message', $message);
         }
+    }
+
+    public function logout() {
+        Auth::logout();
+        return redirect(route('index_login'));
     }
 }
