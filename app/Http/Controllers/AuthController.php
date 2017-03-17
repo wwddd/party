@@ -51,7 +51,7 @@ class AuthController extends Controller
         $city = $request->input('city');
         $contact = $request->input('contact');
         $email = $request->input('email');
-        $password = $request->input('password');
+        $password = bcrypt($request->input('password'));
         $noticed = 1;
         $verified = 0;
         $blocked = 0;
@@ -110,14 +110,14 @@ class AuthController extends Controller
             return redirect(route('account'));
         } else {        
             $message = 'Email or Password not valid';
-            return redirect()->back()->with('message', $message);
+            return redirect()->back()->withInput()->with('message', $message);
         }
     }
 
     public function logout()
     {
         Auth::logout();
-        return redirect()->back();
+        return redirect(route('index_login'));
     }
 }
 
