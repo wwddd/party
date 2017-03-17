@@ -46,6 +46,11 @@ Route::group(['prefix' => 'login'], function() {
 	]);
 });
 
+Route::get('logout', [
+	'as' => 'logout',
+	'uses' => 'AuthController@logout'
+]);
+
 Route::group(['prefix' => 'account'], function () {
 	Route::get('/', [
 		'uses' => 'UserController@index',

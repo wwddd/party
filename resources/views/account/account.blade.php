@@ -17,6 +17,9 @@
 				<div class="col-2 tab" id="personal" data-url="{{ route('ajax-personal') }}">Личные данные</div>
 			</div>
 			<div class="clear"></div>
+			@if(Session::has('message'))
+				<p>{{ Session::get('message') }}</p>
+			@endif
 			<div class="afterload-tabs" data-id="create"></div>
 			<div class="afterload-tabs" data-id="opened"></div>
 			<div class="afterload-tabs" data-id="closed"></div>
