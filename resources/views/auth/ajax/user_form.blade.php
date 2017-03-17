@@ -10,6 +10,6 @@
 	<input type="text" name="contact" placeholder="Skype, телефон, messeger">
 	<input type="text" name="email" placeholder="email">
 	<input type="password" name="password" placeholder="password">
-	<input type="checkbox" required> C <a href="">правилами</a> согласен
+	<input type="checkbox" name="condition"> C <a href="">правилами</a> согласен
 	<input type="submit" name="go">
 </form>

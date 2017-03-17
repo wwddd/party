@@ -7,26 +7,31 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Input;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Mail;
+
 
 use DB;
 use App\User;
 
 class AuthController extends Controller
 {
-    // public function __construct() {
-    //     // создание нового cURL ресурса
-    //     $ch = curl_init();
+    // Country, city future
+    /*
+        public function __construct() {
+            // создание нового cURL ресурса
+            $ch = curl_init();
 
-    //     // устрановка параметров
-    //     curl_setopt($ch, CURLOPT_URL, "https://api.vk.com/method/database.getCountries?need_all&access_token=83e2d3fb83e2d3fb83509f1f8183b8bc76883e283e2d3fbdb2b9eaaab67dfda22037aeb&v=5.62");
+            // устрановка параметров
+            curl_setopt($ch, CURLOPT_URL, "https://api.vk.com/method/database.getCountries?need_all&access_token=83e2d3fb83e2d3fb83509f1f8183b8bc76883e283e2d3fbdb2b9eaaab67dfda22037aeb&v=5.62");
 
-    //     // загрузка страницы и выдача её браузеру
-    //     $countries = curl_exec($ch);
+            // загрузка страницы и выдача её браузеру
+            $countries = curl_exec($ch);
 
-    //     // завершение сеанса и освобождение ресурсов
-    //     curl_close($ch);
+            // завершение сеанса и освобождение ресурсов
+            curl_close($ch);
 
-    // }
+        }
+    */
 
     public function index_register() {
         return view('auth.register');
@@ -50,6 +55,7 @@ class AuthController extends Controller
             'contact' => 'required',
             'email' => 'required|email',
             'password' => 'required',
+            'condition' => 'required'
         ]);
 
         $name = $request->input('name');
@@ -84,10 +90,32 @@ class AuthController extends Controller
         $user->save();
 
         Auth::login($user);
+        $notice = 'Congrats ' . Auth::user()->name . '! You did account!';
 
-        $message = 'Congrats ' . Auth::user()->name . '! You did account!';
+        // Send mail future
+        /*        
+            $message = "для завершения регистрации на сайте 'party-scope.com', необходимо подтвердить свою учётную запись, перейдя по ссылке ниже.";
+            $string_compare = bcrypt($email);
+            $link = route('confirms_account', ['string_compare' => $string_compare]);
+            Mail::send('layouts.miniTpl.email', [
+                    'name' => $name,
+                    'link' => $link,
+                    'message' => $message,
+                    'string_compare' => $string_compare
+                ], 
+                function($message) use ($email) {
+                    $message
+                    ->to($email)
+                    ->subject('You have a message from portfolio-reym!');
+                }
+            );
+        */
 
-    	return redirect(route('account'))->with('message', $message);
+    	return redirect(route('account'))->with('message', $notice);
+    }
+
+    public function confirms_account($string_compare) {
+        return 'confirms mail';
     }
 
     public function index_login() {

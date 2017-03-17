@@ -50,6 +50,11 @@ Route::get('logout', [
 	'uses' => 'AuthController@logout'
 ]);
 
+Route::get('confirms-account/{string_compare}', [
+	'as' => 'confirms_account',
+	'uses' => 'AuthController@confirms_account'
+]);
+
 Route::group(['prefix' => 'account'], function () {
 	Route::get('/', [
 		'uses' => 'UserController@index',
