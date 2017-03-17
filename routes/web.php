@@ -60,12 +60,12 @@ Route::group(['prefix' => 'account'], function () {
 		'uses' => 'UserController@index',
 		'as' => 'account'
 	]);
-
-	Route::post('event-store', [
-		'uses' => 'UserController@event_store',
-		'as' => 'event-store'
-	]);
 });
+
+Route::post('event-store', [
+	'uses' => 'EventController@store',
+	'as' => 'event-store'
+]);
 
 
 // AJAX

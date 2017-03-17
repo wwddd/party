@@ -1,15 +1,40 @@
-<form action="{{ route('user_store') }}" method="POST">
-	<input type="hidden" name="_token" value="{{ csrf_token() }}">
-	<input type="text" name="name" placeholder="Имя">
-	<label>Пол:</label>
-	<p><input type="radio" name="gender" value="man">Мужчина</p>
-	<p><input type="radio" name="gender" value="woman">Женщина</p>
-	<input type="number" name="age" min="15" max="90" placeholder="Возраст">
-	<input type="text" name="country" placeholder="Страна">
-	<input type="text" name="city" placeholder="Город">
-	<input type="text" name="contact" placeholder="Skype, телефон, messeger">
-	<input type="text" name="email" placeholder="email">
-	<input type="password" name="password" placeholder="password">
-	<input type="checkbox" name="condition"> C <a href="">правилами</a> согласен
-	<input type="submit" name="go">
+<form class="form" action="{{ route('user_store') }}" method="POST">
+	<div class="container">
+		<div class="col-6">
+			<div class="form-group required">
+				<input type="text" name="name" placeholder="Имя">
+			</div>
+			<div class="form-group required">
+				<input type="text" name="email" placeholder="email">
+			</div>
+			<div class="form-group required">
+				<p><input type="radio" name="gender" value="man">Мужчина</p>
+				<p><input type="radio" name="gender" value="woman">Женщина</p>
+			</div>
+			<div class="form-group required">
+				<input type="number" name="age" min="15" max="90" placeholder="Возраст">
+			</div>
+			<div class="form-group required">
+				<input type="text" name="contact" placeholder="Skype, телефон, messeger">
+			</div>
+		</div>
+		<div class="col-6">
+			<div class="form-group required">
+				<input type="text" name="country" placeholder="Страна">
+			</div>
+			<div class="form-group required">
+				<input type="text" name="city" placeholder="Город">
+			</div>
+			<div class="form-group required">
+				<input type="password" name="password" placeholder="password">
+			</div>
+			<div class="form-group required">
+				<input type="checkbox" name="condition"> C <a href="">правилами</a> согласен
+			</div>
+			<div class="form-group required">
+				<button type="submit" class="button create-button">Логин</button>
+			</div>
+		</div>
+		<input type="hidden" name="_token" value="{{ csrf_token() }}">
+	</div>
 </form>

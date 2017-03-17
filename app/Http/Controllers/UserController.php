@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use DB;
+use Illuminate\Support\Facades\Auth;
+// use DB;
 
 class UserController extends Controller {
 	public function __construct() {
@@ -14,11 +15,10 @@ class UserController extends Controller {
 	}
 
 	public function index() {
+		if(!Auth::user()){
+			return redirect()->route('login');
+		}
 		return view('account/account');
-	}
-
-	public function event_store() {
-
 	}
 
 

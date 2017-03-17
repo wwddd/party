@@ -156,4 +156,94 @@ $(function() {
 	});
 
 // /TAGS
+
+// NOTICES
+	setTimeout(function() {
+		$('.temporary-message').hide(300);
+	}, 4000);
+
+
+	var intervalMainNotice;
+	function mainNotice(text, status) {
+		clearInterval(intervalMainNotice);
+		var notice = $('#main-notice');
+		notice.removeAttr('class');
+		notice.find('.notice-message').text(text);
+		if(status == 'success') {
+			notice.addClass('success');
+		} else if(status == 'fail') {
+			notice.addClass('fail');
+		}
+		notice.addClass('active');
+
+		intervalMainNotice = setInterval(function() {
+			$('#main-notice').removeClass('active');
+		}, 4000);
+	}
+
+	$('#main-notice .notice-x').on('click', function() {
+		$('#main-notice').removeClass('active');
+	});
+// /NOTICES
+
+// FORMS
+	// function validate(formGroup) {
+	// 	var value = formGroup.find('input, textarea').val();
+	// 	if(value == '') {
+	// 		// formGroup.append('<b>error</b>');
+	// 	}
+	// 	// console.log(value);
+	// }
+
+	function createInputs(formGroup) {
+		if(formGroup.hasClass('form-input-tags')) {
+			var inputName = formGroup.find('input').attr('name');
+			formGroup.find('input[type="hidden"]').remove();
+			$(formGroup).find('.input-tag').each(function() {
+				formGroup.append('<input type="hidden" name="' + inputName + '" value="' + $(this).text() + '">');
+			});
+		} else {
+
+		}
+	}
+
+	$(document).on('submit', '.form', function(e) {
+		e.preventDefault();
+		var form = $(this);
+		form.find('button[type="submit"]').prop('disabled', true);
+		var action = form.attr('action');
+		var method = form.attr('method');
+		form.find('.form-group').each(function() {
+			if($(this).hasClass('required')) {
+				// validate($(this));
+			}
+			createInputs($(this));
+		});
+		var toSend = form.serializeArray();
+		// console.log(toSend);
+
+		$.ajax({
+			url: action,
+			data: toSend,
+			type: method,
+			success: function(data) {
+				// if(data == 'success') {
+					mainNotice('Успешно!', 'success');
+				// }
+				// else {
+				// 	mainNotice('Что-то пошло не так...', 'fail');
+				// }
+				form.find('button[type="submit"]').prop('disabled', false);
+			},
+			error: function(e) {
+				if(e.status == 422) {
+					mainNotice('Заполните все необходимые поля!', 'fail');
+				} else if(e.status == 500) {
+					mainNotice('Ошибка 500! Разработчик - мудак :)', 'fail');
+				}
+				form.find('button[type="submit"]').prop('disabled', false);
+			}
+		});
+	});
+// /FORMS
 });
