@@ -182,6 +182,7 @@ html, body {
 
 .form input[type="text"],
 .form input[type="number"],
+.form input[type="password"],
 .form select, .form textarea,
 .form .choosen-select,
 .form .select-multiple,

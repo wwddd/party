@@ -227,11 +227,12 @@ $(function() {
 			data: toSend,
 			type: method,
 			success: function(data) {
-				if(data == 'success') {
-					mainNotice('Поздравляем! Вы создали вписку!', 'success');
-				} else {
-					mainNotice('Что-то пошло не так...', 'fail');
-				}
+				// if(data == 'success') {
+					mainNotice('Успешно!', 'success');
+				// }
+				// else {
+				// 	mainNotice('Что-то пошло не так...', 'fail');
+				// }
 				form.find('button[type="submit"]').prop('disabled', false);
 			},
 			error: function(e) {
