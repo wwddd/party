@@ -84,6 +84,4 @@ Route::group(['prefix' => 'account'], function () {
 		'uses' => 'UserController@ajax_personal',
 		'as' => 'ajax-personal'
 	]);
-
 // /AJAX
-// });
