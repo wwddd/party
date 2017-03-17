@@ -15,6 +15,7 @@
 html, body {
 	margin: 0;
 	padding: 0;
+	height: 100%;
 }
 
 .container {
@@ -62,8 +63,9 @@ html, body {
 }
 
 .wrapper {
-	width: 1000px;
+	width: 980px;
 	margin: 0 auto;
+	overflow: hidden;
 }
 
 .clear {
@@ -79,12 +81,13 @@ html, body {
 }
 
 .main-background {
-	background-color: #0090c7;
+	background-color: #00b4f0;
 }
 
 .afterload, .afterload-tabs {
 	position: relative;
 	min-height: 300px;
+	display: none;
 }
 
 .afterload-overlay {
@@ -153,25 +156,98 @@ html, body {
 
 .tab {
 	height: 45px;
-	background: #00678e;
+	background: #00a8e0;
 	color: white;
 	text-align: center;
 	font-size: 16px;
 	cursor: pointer;
 	padding: 5px;
+	position: relative;
+	font-weight: bold;
+	line-height: 2;
 	transition: all .3s ease;
 }
 
 .tab:hover, .tab.active {
-	color: #00678e;
-	background: white;
+	color: white;
+	background: #019cd0;
 	transition: all .3s ease;
+}
+
+.form-group {
+	display: block;
+	margin: 10px 0;
+	text-align: center;
+}
+
+.form input, select, textarea, .choosen-tags {
+	display: inline-block;
+	width: 90%;
+	border: none;
+	padding: 10px 5px;
+	background: white;
+	color: black;
+	outline: none;
+}
+
+.form input, .form select {
+	height: 40px;
+}
+
+.choosen-tags {
+	height: 30px;
+	margin-bottom: -3px;
+}
+
+.form input {
+
+}
+
+.form select {
+	cursor: pointer;
+}
+
+.form textarea {
+	height: 70px;
+}
+
+.button-center {
+	display: block;
+	margin: 0 auto;
+}
+
+.button {
+	background: #00b4f0;
+	color: white;
+	border: none;
+	cursor: pointer;
+}
+
+.create-button {
+	width: 90%;
+	height: 68px;
+	font-size: 30px;
+}
+
+.required {
+	position: relative;
+}
+
+.required:before {
+	content: '*';
+	position: absolute;
+	top: 0px;
+	left: 10px;
+	color: red;
 }
 
 
 
 
 
+header {
+	height: 80px;
+}
 
 header, header a {
 	color: white;
@@ -202,7 +278,8 @@ header, header a {
 
 #content {
 	position: relative;
-	background-color: #ebfaff;
+	background-color: #f7f7f7;
+	min-height: calc(100% - 180px);
 }
 
 footer {
@@ -210,3 +287,11 @@ footer {
 	color: white;
 	padding: 30px 0;
 }
+
+.title {
+	text-align: center;
+	color: #019cd0;
+}
+
+
+

@@ -14,12 +14,16 @@
 
 <div class="full-wrapper">
 	<div class="wrapper">
+	<div id="register_tabs">		
 		<div class="container">
 			<div class="col-6 tab active" id="user" data-url="{{ route('user_form') }}"">User</div>
 			<div class="col-6 tab" id="company" data-url="{{ route('company_form') }}"">Company</div>
 		</div>
+		
 		<div class="clear"></div>
-		<div class="afterload-tabs"></div>
+		<div class="afterload-tabs" data-id="user"></div>
+		<div class="afterload-tabs" data-id="company"></div>
+	</div>
 	</div>	
 </div>
 
