@@ -65,7 +65,7 @@ class EventController extends Controller {
 		if(DB::table('events')->insert($record)) {
 			$response['status'] = 'success';
 			$response['message'] = 'Успешно! Вы создали вписку!';
-			$response['redirect'] = route('login');
+			// $response['redirect'] = route('login');
 			echo json_encode($response);
 		} else {
 			$response['status'] = 'fail';
