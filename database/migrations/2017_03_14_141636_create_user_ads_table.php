@@ -16,8 +16,7 @@ class CreateUserAdsTable extends Migration
         Schema::create('user_ads', function(Blueprint $table){
             $table->increments('id');
             $table->smallInteger('user_id');
-            $table->smallInteger('ad_id');
-            $table->integer('end');
+            $table->smallInteger('ads_id');
         });
     }
 

@@ -1,20 +1,10 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 Route::get('/', function () {
 	return view('index');
 });
 
+// Register
 Route::group(['prefix' => 'register'], function() {
 	Route::get('/', [
 		'as' => 'index_register',
@@ -34,6 +24,7 @@ Route::group(['prefix' => 'register'], function() {
 	]);
 });
 
+// Login
 Route::group(['prefix' => 'login'], function() {
 	Route::get('/', [
 		'as' => 'index_login',
@@ -45,6 +36,7 @@ Route::group(['prefix' => 'login'], function() {
 	]);
 });
 
+// Logout
 Route::get('logout', [
 	'as' => 'logout',
 	'uses' => 'AuthController@logout'
@@ -55,6 +47,29 @@ Route::get('confirms-account/{string_compare}', [
 	'uses' => 'AuthController@confirms_account'
 ]);
 
+// Cooperation
+Route::group(['prefix' => 'cooperation'], function() {
+	Route::get('/', [
+		'as' => 'cooperation',
+		'uses' => 'CooperationController@index'
+	]);
+	// ajax
+	Route::post('ads', [
+		'as' => 'ads',
+		'uses' => 'CooperationController@ajax_ads'
+	]);
+	// ajax
+	Route::post('membership', [
+		'as' => 'membership',
+		'uses' => 'CooperationController@ajax_membership'
+	]);
+	Route::post('ads/store', [
+		'as' => 'ads_store',
+		'uses' => 'CooperationController@ads_store'
+	]);
+});
+
+// Account
 Route::group(['prefix' => 'account'], function () {
 	Route::get('/', [
 		'uses' => 'UserController@index',

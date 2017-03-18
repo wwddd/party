@@ -16,8 +16,8 @@
 	<div class="wrapper">
 	<div id="register_tabs">		
 		<div class="container">
-			<div class="col-6 tab active" id="user" data-url="{{ route('user_form') }}"">Пользователь</div>
-			<div class="col-6 tab" id="company" data-url="{{ route('company_form') }}"">Компания</div>
+			<div class="col-6 tab active" id="user" data-url="{{ route('user_form') }}">Пользователь</div>
+			<div class="col-6 tab" id="company" data-url="{{ route('company_form') }}">Компания</div>
 		</div>
 		
 		<div class="clear"></div>
