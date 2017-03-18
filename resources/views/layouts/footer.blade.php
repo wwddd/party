@@ -6,7 +6,7 @@
 		<div class="container">
 			<div class="col-4"></div>
 			<div class="col-4 center-child">
-				<button class="button button-footer">СОТРУДНИЧЕСТВО</button>
+				<button class="button button-footer"><a href="{{ route('cooperation') }}">СОТРУДНИЧЕСТВО</a></button>
 				<button class="button button-footer">ПРАВИЛА</button>
 			</div>
 			<div class="col-4"></div>

@@ -1,4 +1,5 @@
 <form class="form" action="{{ route('user_store') }}" method="POST">
+	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	<div class="container">
 		<div class="col-6">
 			<div class="form-group required">
@@ -26,15 +27,14 @@
 				<input type="text" name="city" placeholder="Город">
 			</div>
 			<div class="form-group required">
-				<input type="password" name="password" placeholder="password">
+				<input type="password" name="password" placeholder="Пароль">
 			</div>
 			<div class="form-group required">
 				<input type="checkbox" name="condition"> C <a href="">правилами</a> согласен
 			</div>
 			<div class="form-group required">
-				<button type="submit" class="button create-button">Логин</button>
+				<button type="submit" class="button create-button">Зарегестрироваться</button>
 			</div>
 		</div>
-		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	</div>
 </form>
