@@ -70,7 +70,7 @@ Route::group(['prefix' => 'cooperation'], function() {
 });
 
 // Account
-Route::group(['prefix' => 'account'], function () {
+Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
 	Route::get('/', [
 		'uses' => 'UserController@index',
 		'as' => 'account'

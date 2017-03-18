@@ -66,11 +66,11 @@ class EventController extends Controller {
 			$response['status'] = 'success';
 			$response['message'] = 'Успешно! Вы создали вписку!';
 			// $response['redirect'] = route('login');
-			echo json_encode($response);
+			return json_encode($response);
 		} else {
 			$response['status'] = 'fail';
 			$response['message'] = 'Что-то пошло не так...';
-			echo json_encode($response);
+			return json_encode($response);
 		}
 	}
 }
