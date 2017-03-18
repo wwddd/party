@@ -29,7 +29,7 @@
 				<input type="password" name="password" placeholder="password">
 			</div>
 			<div class="form-group required">
-				<input type="checkbox" required> C <a href="">правилами</a> согласен
+				<input type="checkbox" name="condition"> C <a href="">правилами</a> согласен
 			</div>
 			<div class="form-group required">
 				<button type="submit" class="button create-button">Логин</button>

@@ -16,7 +16,6 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix' => 'register'], function() {
-	// User Auth
 	Route::get('/', [
 		'as' => 'index_register',
 		'uses' => 'AuthController@index_register'
@@ -49,6 +48,11 @@ Route::group(['prefix' => 'login'], function() {
 Route::get('logout', [
 	'as' => 'logout',
 	'uses' => 'AuthController@logout'
+]);
+
+Route::get('confirms-account/{string_compare}', [
+	'as' => 'confirms_account',
+	'uses' => 'AuthController@confirms_account'
 ]);
 
 Route::group(['prefix' => 'account'], function () {
