@@ -90,7 +90,6 @@ class AuthController extends Controller
         $user->save();
 
         Auth::login($user);
-        $notice = 'Congrats ' . Auth::user()->name . '! You did account!';
 
         // Send mail future
         /*        
@@ -111,8 +110,12 @@ class AuthController extends Controller
             );
         */
 
-    	return redirect(route('account'))->with('message', $notice);
+    	$response['status'] = 'success';
+        $response['message'] = 'Поздравляем ' . Auth::user()->name . '! Вы создали аккаунт!';
+        $response['redirect'] = route('account');
+        echo json_encode($response);
     }
+
 
     public function confirms_account($string_compare) {
         return 'confirms mail';

@@ -178,6 +178,7 @@ html, body {
 	display: block;
 	margin: 10px 0;
 	text-align: center;
+	position: relative;
 }
 
 .form input[type="text"],
@@ -213,6 +214,42 @@ html, body {
 .form textarea {
 	height: 70px;
 }
+
+.form .error {
+	-webkit-animation-name: animateErr;
+	-webkit-animation-duration: 0.4s;
+	animation-name: animateErr;
+	animation-duration: 0.4s;
+	position: absolute;
+	line-height: 14px;
+	left: 26px;
+	top: -8px;
+	padding: 1px 3px;
+	font-size: 13px;
+	color: white;
+	background-color: rgba(153, 0, 0, 0.66);
+	border-radius: 5px;
+	display: block;
+}
+
+@keyframes animateErr {
+	0% {
+		top: 0;
+		opacity: 0;
+	}
+	100% {
+		top: -8px;
+		opacity: 1;
+	}
+}
+
+
+
+
+
+
+
+
 
 .button-center {
 	display: block;
@@ -264,6 +301,7 @@ button:disabled {
 	top: -70px;
 	left: 50%;
 	opacity: 0;
+	font-size: 14px;
 	margin-left: -250px;
 	background: white;
 	border-radius: 5px;

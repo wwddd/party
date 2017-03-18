@@ -207,6 +207,10 @@ $(function() {
 		}
 	}
 
+	$(document).on('focus', 'input, textarea, select', function() {
+		$(this).closest('.form-group').find('.error').remove();
+	});
+
 	$(document).on('submit', '.form', function(e) {
 		e.preventDefault();
 		var form = $(this);
@@ -220,22 +224,33 @@ $(function() {
 			createInputs($(this));
 		});
 		var toSend = form.serializeArray();
-		// console.log(toSend);
-
 		$.ajax({
 			url: action,
 			data: toSend,
 			type: method,
+			beforeSend: function() {
+				$('.error').remove();
+			},
 			success: function(data) {
-				// if(data == 'success') {
-					mainNotice('Успешно!', 'success');
-				// }
-				// else {
-				// 	mainNotice('Что-то пошло не так...', 'fail');
-				// }
-				form.find('button[type="submit"]').prop('disabled', false);
+				var response = $.parseJSON(data);
+				if(response.status == 'success') {
+					mainNotice(response.message, 'success');
+				} else if(response.status == 'fail') {
+					mainNotice(response.message, 'fail');
+				}
+
+				if(response.redirect !== undefined) {
+					setTimeout(function() {
+						window.location.href = response.redirect;
+					}, 2000);
+				}
 			},
 			error: function(e) {
+				var errors = e.responseJSON;
+				for(err in errors) {
+					form.find('*[name="' + err + '"]').closest('.form-group').append('<span class="error">' + errors[err] + '</span>');
+				}
+
 				if(e.status == 422) {
 					mainNotice('Заполните все необходимые поля!', 'fail');
 				} else if(e.status == 500) {

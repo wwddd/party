@@ -61,10 +61,16 @@ class EventController extends Controller {
 			$record['offer'] = $request['offer'];
 		}
 
+		$response = [];
 		if(DB::table('events')->insert($record)) {
-			echo "success";
+			$response['status'] = 'success';
+			$response['message'] = 'Успешно! Вы создали вписку!';
+			$response['redirect'] = route('login');
+			echo json_encode($response);
 		} else {
-			echo "fail";
+			$response['status'] = 'fail';
+			$response['message'] = 'Что-то пошло не так...';
+			echo json_encode($response);
 		}
 	}
 }
