@@ -35,7 +35,7 @@ class UserController extends Controller {
 		$user->country = $request['country'];
 		$user->city = $request['city'];
 
-		if ($request['password'] !== '') {
+		if ($request['password'] != '') {
 			$user->password = bcrypt($request['password']);
 		}
 		$user->save();
