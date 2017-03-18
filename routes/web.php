@@ -75,6 +75,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
 		'uses' => 'UserController@index',
 		'as' => 'account'
 	]);
+	Route::put('user_update', [
+	'uses' => 'UserController@user_update',
+	'as' => 'user_update'
+]);
 });
 
 Route::post('event-store', [

@@ -203,8 +203,9 @@ html, body {
 	height: 40px;
 }
 
-.form input {
-
+.form input[type="radio"], .form input[type="checkbox"] {
+	vertical-align: middle;
+	cursor: pointer;
 }
 
 .form select {

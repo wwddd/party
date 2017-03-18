@@ -6,6 +6,7 @@
 				<div id="menu">
 					<ul class="register">
 						@if(Auth::user())
+							<li><a href="{{ route('account') }}">Кабинет</a></li>
 							<li><a href="{{ route('logout') }}">Выход</a></li>
 						@else
 							<li><a href="{{ route('index_login') }}">Вход</a></li>

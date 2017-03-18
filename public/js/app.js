@@ -246,6 +246,7 @@ $(function() {
 						window.location.href = response.redirect;
 					}, 2000);
 				}
+				form.find('button.no-disabled').prop('disabled', false);
 			},
 			error: function(e) {
 				var errors = e.responseJSON;

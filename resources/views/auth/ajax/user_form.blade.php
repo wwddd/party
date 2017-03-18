@@ -9,8 +9,8 @@
 				<input type="text" name="email" placeholder="email">
 			</div>
 			<div class="form-group required">
-				<p><input type="radio" name="gender" value="man">Мужчина</p>
-				<p><input type="radio" name="gender" value="woman">Женщина</p>
+				<input type="radio" name="gender" value="man">Мужчина
+				<input type="radio" name="gender" value="woman">Женщина
 			</div>
 			<div class="form-group required">
 				<input type="number" name="age" min="15" max="90" placeholder="Возраст">
