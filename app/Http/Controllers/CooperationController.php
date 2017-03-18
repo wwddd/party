@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input; 
 use App\Http\Controllers\Controller;
 
+use Carbon/Carbon;
+
 class CooperationController extends Controller
 {
     public function index() {
@@ -17,6 +19,7 @@ class CooperationController extends Controller
     		'title' => 'required',
     		'image' => 'required',
     		'link' => 'required',
+    		'condition' => 'required',
     		'end' => 'required'
     	]);
 
@@ -25,8 +28,13 @@ class CooperationController extends Controller
     	$file_name = time() . "_" . Input::file('image')->getClientOriginalName();
     	Input::file('image')->move($path_to_pictures, $file_name);
 
-    	
-    	
+    	// 
+
+    	$title = $request->input('title');
+    	$image_path = $path_to_pictures . $file_name;
+    	$link = $request->input('link');
+    	$end = 
+
     	return 'store';
     }
 

@@ -242,6 +242,7 @@ $(function() {
 				if(response.redirect !== undefined) {
 					setTimeout(function() {
 						window.location.href = response.redirect;
+						// window.location.replace(response.redirect);
 					}, 2000);
 				}
 			},
