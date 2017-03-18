@@ -69,7 +69,7 @@ class EventController extends Controller {
 		} else {
 			$response['status'] = 'fail';
 			$response['message'] = 'Что-то пошло не так...';
-			echo json_encode($response);
+			return json_encode($response);
 		}
 	}
 }

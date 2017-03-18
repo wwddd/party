@@ -18,7 +18,7 @@ class CreateAdsTable extends Migration
             $table->string('title');
             $table->string('image');
             $table->string('link');
-            $table->integer('end');
+            $table->string('end', 100);
         });
     }
 

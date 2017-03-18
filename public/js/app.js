@@ -30,10 +30,12 @@ $(function() {
 		}
 	};
 
-	if(!currentTab) {
-		sendTab($('.tab').first());
-	} else {
-		sendTab($('#' + currentTab));
+	if($('.tab').length > 0) {
+		if(!currentTab) {
+			sendTab($('.tab').first());
+		} else {
+			sendTab($('#' + currentTab));
+		}
 	}
 
 	function sendTab(tab) {
@@ -242,7 +244,6 @@ $(function() {
 				if(response.redirect !== undefined) {
 					setTimeout(function() {
 						window.location.href = response.redirect;
-						// window.location.replace(response.redirect);
 					}, 2000);
 				}
 			},

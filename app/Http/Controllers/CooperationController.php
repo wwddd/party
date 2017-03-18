@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input; 
 use App\Http\Controllers\Controller;
 
-use Carbon/Carbon;
+use Carbon\Carbon;
+use DB;
 
 class CooperationController extends Controller
 {
@@ -15,25 +16,38 @@ class CooperationController extends Controller
     }
 
     public function ads_store(Request $request) {
-    	$this->validate($request, [
-    		'title' => 'required',
-    		'image' => 'required',
-    		'link' => 'required',
-    		'condition' => 'required',
-    		'end' => 'required'
-    	]);
+    	// $this->validate($request, [
+    	// 	'title' => 'required',
+    	// 	'image' => 'required',
+    	// 	'link' => 'required',
+    	// 	'condition' => 'required',
+    	// 	'end' => 'required'
+    	// ]);
 
-    	// record picture in file system
+    	//record picture in file system
     	$path_to_pictures = base_path().'public/images';
     	$file_name = time() . "_" . Input::file('image')->getClientOriginalName();
     	Input::file('image')->move($path_to_pictures, $file_name);
 
-    	// 
-
     	$title = $request->input('title');
     	$image_path = $path_to_pictures . $file_name;
     	$link = $request->input('link');
-    	$end = 
+    	// date when payment expires
+    	$end = Carbon::now()->addDays(30);
+
+    	$ads_id = DB::table('ads')->insertGetId(array(
+    		'title' => $title,
+    		'image' => $image_path,
+    		'link' => $link,
+    		'end' => $end
+    	));
+
+    	$user_id = $request->user()->id;
+
+    	DB::table('user_ads')->insert(array(
+    		'user_id' => $user_id,
+    		'ads_id' => $ads_id
+    	));
 
     	return 'store';
     }
