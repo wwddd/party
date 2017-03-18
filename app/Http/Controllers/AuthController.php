@@ -114,6 +114,7 @@ class AuthController extends Controller
         $response['message'] = 'Поздравляем ' . Auth::user()->name . '! Вы создали аккаунт!';
         $response['redirect'] = route('account');
         echo json_encode($response);
+        // return redirect(route('account'))->with('message', $notice);
     }
 
 
