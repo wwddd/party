@@ -213,7 +213,7 @@ $(function() {
 		$(this).closest('.form-group').find('.error').remove();
 	});
 
-	$(document).on('submit', '.form', function(e) {
+	$(document).on('submit', 'form.form', function(e) {
 		e.preventDefault();
 		var form = $(this);
 		// form.find('button[type="submit"]').prop('disabled', true);
@@ -225,12 +225,17 @@ $(function() {
 			}
 			createInputs($(this));
 		});
-		var toSend = form.serializeArray();
+		// var toSend = form.serializeArray();
+		var toSend = new FormData(form[0]);
+		// console.log(toSend);
 		// console.log(toSend);
 		$.ajax({
 			url: action,
 			data: toSend,
 			type: method,
+			contentType: false,
+			cache: false,
+			processData:false,
 			beforeSend: function() {
 				$('.error').remove();
 			},

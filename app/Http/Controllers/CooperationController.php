@@ -17,13 +17,13 @@ class CooperationController extends Controller
     }
 
     public function ads_store(Request $request) {
-    	// $this->validate($request, [
-    	// 	'title' => 'required',
-    	// 	'image' => 'mimes:jpeg,png,gif|required',
-    	// 	'link' => 'required',
-    	// 	'end' => 'required',
-     //        'condition' => 'required',
-    	// ]);
+    	$this->validate($request, [
+    		'title' => 'required',
+    		'image' => 'mimes:jpeg,png,gif|required',
+    		'link' => 'required',
+    		'end' => 'required',
+            'condition' => 'required',
+    	]);
 
         // Обработка фоток (не больше 200 кб)
 
@@ -33,6 +33,8 @@ class CooperationController extends Controller
     	// Input::file('image')->move($path_to_pictures, $file_name);
 
         $image = $request->file('image');
+
+        // dd($image);
 
         if($image != null) {
                 $count = 0;
@@ -76,7 +78,10 @@ class CooperationController extends Controller
     		'ads_id' => $ads_id
     	));
 
-    	return redirect()->back()->with('message', 'Спасибо за покупку, теперь ваша реклама активна!');
+        $response = [];
+        $response['status'] = 'success';
+        $response['message'] = 'Спасибо за покупку, теперь ваша реклама активна!';
+        return json_encode($response);
     }
 
     public function ajax_ads() {

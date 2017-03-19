@@ -9,7 +9,7 @@
 	<div class="event">
 
 		<?php $title = (strlen($event->title) > 20) ? substr($event->title,0,20).'...' : $event->title; ?>
-		<div class="event-title"><a href="{{ $event->id }}" class="title" target="_blank">{{ $title }}</a></div>
+		<div class="event-title"><a href="{{ route('show_event', $event->id) }}" class="title">{{ $title }}</a></div>
 
 		<?php if($event->tags !== NULL) { ?>
 			<div class="event-tags">
