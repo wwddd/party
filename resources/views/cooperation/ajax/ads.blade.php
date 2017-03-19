@@ -18,7 +18,7 @@
 					</select>
 					<input type="checkbox" name="condition"> C <a href="">правилами</a> согласен
 					<button type="submit">Купить</button>
-	</form>	 -->
+	</form> -->	
 
 	<form class="form" enctype="multipart/form-data" action="{{ route('ads_store') }}" method="POST">
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">

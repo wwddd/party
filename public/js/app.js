@@ -226,7 +226,6 @@ $(function() {
 			createInputs($(this));
 		});
 		var toSend = form.serializeArray();
-		// console.log(toSend);
 		$.ajax({
 			url: action,
 			data: toSend,

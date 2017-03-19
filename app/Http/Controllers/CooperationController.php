@@ -17,13 +17,13 @@ class CooperationController extends Controller
     }
 
     public function ads_store(Request $request) {
-    	// $this->validate($request, [
-    	// 	'title' => 'required',
-    	// 	'image' => 'mimes:jpeg,png,gif|required',
-    	// 	'link' => 'required',
-    	// 	'end' => 'required',
-     //        'condition' => 'required',
-    	// ]);
+    	$this->validate($request, [
+    		'title' => 'required',
+    		'image' => 'mimes:jpeg,png,gif|required',
+    		'link' => 'required',
+    		'end' => 'required',
+            'condition' => 'required',
+    	]);
 
         // Обработка фоток (не больше 200 кб)
 
@@ -35,22 +35,22 @@ class CooperationController extends Controller
         $image = $request->file('image');
 
         if($image != null) {
-                $count = 0;
-                $img = Image::make($image);
-                $natural_width = $img->width();
-                $natural_height = $img->height();
-                $file_name = Auth::user()->id . '-' . 
-                             Auth::user()->name . '-' . 
-                             $count . '' . 
-                             time() . '.' .
-                             $image->getClientOriginalExtension();
+            $count = 0;
+            $img = Image::make($image);
+            $natural_width = $img->width();
+            $natural_height = $img->height();
+            $file_name = Auth::user()->id . '-' . 
+                         Auth::user()->name . '-' . 
+                         $count . '' . 
+                         time() . '.' .
+                         $image->getClientOriginalExtension();
 
-                $img->resize(220, 160, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                })->save(base_path() . '/public/images/ads/' . $file_name, 100);
+            $img->resize(220, 160, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            })->save(base_path() . '/public/images/ads/' . $file_name, 100);
 
-                $image_path = base_path().'/images/ads/' . $file_name;
+            $image_path = base_path().'/images/ads/' . $file_name;
         }
 
     	$title = $request->input('title');
@@ -75,7 +75,6 @@ class CooperationController extends Controller
     		'ads_id' => $ads_id
     	));
 
-    	return redirect()->back()->with('message', 'Спасибо за покупку, теперь ваша реклама активна!');
     }
 
     public function ajax_ads() {
