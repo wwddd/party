@@ -4,6 +4,18 @@
 
 @include('layouts.head')
 @include('layouts.header')
+
+@foreach($errors->all() as $error)
+	<div class="container">
+		<p>{{ $error }}</p>
+	</div>
+@endforeach
+
+@if(Session::has('message'))
+	<div class="container">
+		<p>{{ Session::get('message') }}</p>
+	</div>
+@endif
 	
 <div class="full-wrapper">
 	<div class="wrapper">
