@@ -66,7 +66,7 @@ $(function() {
 	function afterload() {
 		$(document).find('.afterload').each(function() {
 			if($(this).is(':empty')) {
-				$('.afterload').hide();
+				// $('.afterload').hide();
 				$(this).show();
 				getAfterload($(this));
 			}
@@ -74,7 +74,7 @@ $(function() {
 	}
 
 	function afterloadOverlay(selector) {
-		selector.html(afterloadOverlayTpl);
+		selector.html(afterloadOverlayTpl).show();
 	}
 
 	function getAfterload(selector, attemps = 0) {
@@ -216,7 +216,7 @@ $(function() {
 	$(document).on('submit', '.form', function(e) {
 		e.preventDefault();
 		var form = $(this);
-		form.find('button[type="submit"]').prop('disabled', true);
+		// form.find('button[type="submit"]').prop('disabled', true);
 		var action = form.attr('action');
 		var method = form.attr('method');
 		form.find('.form-group').each(function() {

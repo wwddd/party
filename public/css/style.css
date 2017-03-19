@@ -29,9 +29,13 @@ html, body {
 	content: " ";
 }
 
-.col-2, .col-3, .col-4, .col-6, .col-8, .col-12 {
+.col-1, .col-2, .col-3, .col-4, .col-6, .col-8, .col-9, .col-12 {
 	float: left;
 	min-height: 1px;
+}
+
+.col-1 {
+	width: 8.333333333%;
 }
 
 .col-2 {
@@ -52,6 +56,10 @@ html, body {
 
 .col-8 {
 	width: 66.666666667%;
+}
+
+.col-9 {
+	width: 75%;
 }
 
 .col-12 {
@@ -99,6 +107,7 @@ html, body {
 	height: 100%;
 	border-radius: inherit;
 	background-color: rgba(249,249,249,.9);
+	border: 3px solid #efefef;
 }
 
 .afterload-loader {
@@ -386,6 +395,7 @@ button:disabled {
 
 .select-inner {
 	position: absolute;
+	z-index: 100;
 	overflow: hidden;
 	opacity: 0;
 	top: 36px;
@@ -425,7 +435,7 @@ button:disabled {
 	cursor: pointer;
 }
 
-span.tag, span.input-tag {
+span.tag, span.input-tag, .event-tag {
 	background: #00b4f0;
 	color: white;
 	margin: 2px 2px;
@@ -500,3 +510,72 @@ footer {
 
 
 
+/*Search*/
+
+.adve {
+	height: 250px;
+	width: 160px;
+	overflow: hidden;
+}
+
+.adve-body {
+	display: block;
+}
+
+.adve-img {
+	width: 100%;
+	height: 200px;
+	overflow: hidden;
+}
+
+.adve-title {
+	text-align: center;
+	font-size: 12px;
+	margin: 2px;
+}
+
+.adve a {
+	text-decoration: none;
+	color: #019cd0;
+}
+
+.event-inline {
+	margin-top: 10px;
+}
+
+.event-inline>div {
+	display: inline-block;
+}
+
+.events {
+	background: white;
+}
+
+.event {
+	border-bottom: 3px solid #efefef;
+	margin-bottom: 20px;
+	padding: 10px;
+}
+
+.event a {
+	text-decoration: none;
+}
+
+.event-note, .event-note i {
+	display: inline-block;
+	color: #aaa;
+	margin-left: 5px;
+}
+
+.event-note i {
+	text-align: center;
+}
+
+.event .event-tag {
+	cursor: default;
+}
+
+.event .event-title {
+	font-size: 30px;
+}
+/*/Search*/

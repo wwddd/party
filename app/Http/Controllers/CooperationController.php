@@ -33,6 +33,7 @@ class CooperationController extends Controller
     	$image_path = $path_to_pictures . $file_name;
     	$link = $request->input('link');
     	// date when payment expires
+
     	$end = Carbon::now()->addDays(30);
         dd($end);
 
