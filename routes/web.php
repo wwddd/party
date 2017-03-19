@@ -72,12 +72,42 @@ Route::group(['prefix' => 'cooperation'], function() {
 // Account
 Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
 	Route::get('/', [
-		'uses' => 'UserController@index',
-		'as' => 'account'
+		'as' => 'account',
+		'uses' => 'UserController@index'
+	]);
+	Route::post('event-store', [
+		'as' => 'event-store',
+		'uses' => 'EventController@store'
 	]);
 	Route::put('user_update', [
 	'uses' => 'UserController@user_update',
 	'as' => 'user_update'
+	]);
+
+	// Ajax
+	Route::post('ajax-opened', [
+		'as' => 'ajax-opened',
+		'uses' => 'UserController@ajax_opened_events'
+	]);
+	Route::post('ajax-closed', [
+		'as' => 'ajax-closed',
+		'uses' => 'UserController@ajax_closed_events'
+	]);
+	Route::post('ajax-favourite', [
+		'as' => 'ajax-favourite',
+		'uses' => 'UserController@ajax_favourite_events'
+	]);
+	Route::post('ajax-create', [
+		'as' => 'ajax-create',
+		'uses' => 'UserController@ajax_create_event'
+	]);
+	Route::post('ajax-achievements', [
+		'as' => 'ajax-achievements',
+		'uses' => 'UserController@ajax_achievements'
+	]);
+	Route::post('ajax-personal', [
+		'as' => 'ajax-personal',
+		'uses' => 'UserController@ajax_personal'
 	]);
 });
 
@@ -92,30 +122,18 @@ Route::group(['prefix' => 'event'], function() {
 	]);
 });
 
-
-// AJAX
-	Route::post('ajax-opened', [
-		'uses' => 'UserController@ajax_opened_events',
-		'as' => 'ajax-opened'
+// Search
+Route::group(['prefix' => 'search'], function() {
+	Route::get('/', [
+		'as' => 'search',
+		'uses' => 'SearchController@index'
 	]);
-	Route::post('ajax-closed', [
-		'uses' => 'UserController@ajax_closed_events',
-		'as' => 'ajax-closed'
+	Route::post('ajax-search', [
+		'as' => 'ajax-search',
+		'uses' => 'SearchController@ajax_search'
 	]);
-	Route::post('ajax-favourite', [
-		'uses' => 'UserController@ajax_favourite_events',
-		'as' => 'ajax-favourite'
+	Route::post('ajax-ads', [
+		'as' => 'ajax-ads',
+		'uses' => 'SearchController@ajax_ads'
 	]);
-	Route::post('ajax-create', [
-		'uses' => 'UserController@ajax_create_event',
-		'as' => 'ajax-create'
-	]);
-	Route::post('ajax-achievements', [
-		'uses' => 'UserController@ajax_achievements',
-		'as' => 'ajax-achievements'
-	]);
-	Route::post('ajax-personal', [
-		'uses' => 'UserController@ajax_personal',
-		'as' => 'ajax-personal'
-	]);
-// /AJAX
+});

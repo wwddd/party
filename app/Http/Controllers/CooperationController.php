@@ -34,6 +34,8 @@ class CooperationController extends Controller
 
         $image = $request->file('image');
 
+        // dd($image);
+
         if($image != null) {
             $count = 0;
             $img = Image::make($image);
@@ -50,13 +52,14 @@ class CooperationController extends Controller
                 $constraint->upsize();
             })->save(base_path() . '/public/images/ads/' . $file_name, 100);
 
-            $image_path = base_path().'/images/ads/' . $file_name;
+            $image_path = '/images/ads/' . $file_name;
         }
 
     	$title = $request->input('title');
     	// $image_path = $path_to_pictures . $file_name;
     	$link = $request->input('link');
     	// date when payment expires
+
         $time = time();
         $days = (3600 * 24) * intval($request->input('end'));
         $end = $time + $days;
@@ -75,6 +78,10 @@ class CooperationController extends Controller
     		'ads_id' => $ads_id
     	));
 
+        $response = [];
+        $response['status'] = 'success';
+        $response['message'] = 'Спасибо за покупку, теперь ваша реклама активна!';
+        return json_encode($response);
     }
 
     public function ajax_ads() {

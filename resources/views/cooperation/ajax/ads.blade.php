@@ -31,7 +31,7 @@
 					<input type="text" name="link" placeholder="Ссылка">
 				</div>
 				<div class="form-group required">
-					<input type="file" name="image" placeholder="картинка">
+					<input id="file" type="file" name="image" placeholder="картинка">
 				</div>
 				<div class="form-group required">
 					<label>Срок действия</label>

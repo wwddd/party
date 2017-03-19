@@ -66,7 +66,7 @@ $(function() {
 	function afterload() {
 		$(document).find('.afterload').each(function() {
 			if($(this).is(':empty')) {
-				$('.afterload').hide();
+				// $('.afterload').hide();
 				$(this).show();
 				getAfterload($(this));
 			}
@@ -74,7 +74,7 @@ $(function() {
 	}
 
 	function afterloadOverlay(selector) {
-		selector.html(afterloadOverlayTpl);
+		selector.html(afterloadOverlayTpl).show();
 	}
 
 	function getAfterload(selector, attemps = 0) {
@@ -213,10 +213,10 @@ $(function() {
 		$(this).closest('.form-group').find('.error').remove();
 	});
 
-	$(document).on('submit', '.form', function(e) {
+	$(document).on('submit', 'form.form', function(e) {
 		e.preventDefault();
 		var form = $(this);
-		form.find('button[type="submit"]').prop('disabled', true);
+		// form.find('button[type="submit"]').prop('disabled', true);
 		var action = form.attr('action');
 		var method = form.attr('method');
 		form.find('.form-group').each(function() {
@@ -225,11 +225,18 @@ $(function() {
 			}
 			createInputs($(this));
 		});
-		var toSend = form.serializeArray();
+		// var toSend = form.serializeArray();
+		// var toSend = form.serializeArray();
+		var toSend = new FormData(form[0]);
+		// console.log(toSend);
+		// console.log(toSend);
 		$.ajax({
 			url: action,
 			data: toSend,
 			type: method,
+			contentType: false,
+			cache: false,
+			processData:false,
 			beforeSend: function() {
 				$('.error').remove();
 			},
