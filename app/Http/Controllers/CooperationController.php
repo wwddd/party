@@ -17,13 +17,13 @@ class CooperationController extends Controller
     }
 
     public function ads_store(Request $request) {
-    	$this->validate($request, [
-    		'title' => 'required',
-    		'image' => 'mimes:jpeg,png,gif|required',
-    		'link' => 'required',
-    		'end' => 'required',
-            'condition' => 'required',
-    	]);
+    	// $this->validate($request, [
+    	// 	'title' => 'required',
+    	// 	'image' => 'mimes:jpeg,png,gif|required',
+    	// 	'link' => 'required',
+    	// 	'end' => 'required',
+     //        'condition' => 'required',
+    	// ]);
 
         // Обработка фоток (не больше 200 кб)
 
