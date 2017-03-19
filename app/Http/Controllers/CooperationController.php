@@ -35,6 +35,7 @@ class CooperationController extends Controller
         $image = $request->file('image');
 
         if($image != null) {
+                $count = 0;
                 $img = Image::make($image);
                 $natural_width = $img->width();
                 $natural_height = $img->height();
