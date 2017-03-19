@@ -80,8 +80,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
 		'uses' => 'EventController@store'
 	]);
 	Route::put('user_update', [
-	'uses' => 'UserController@user_update',
-	'as' => 'user_update'
+		'uses' => 'UserController@user_update',
+		'as' => 'user_update'
 	]);
 
 	// Ajax

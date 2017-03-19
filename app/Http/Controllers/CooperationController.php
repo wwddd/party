@@ -52,7 +52,7 @@ class CooperationController extends Controller
                     $constraint->upsize();
                 })->save(base_path() . '/public/images/ads/' . $file_name, 100);
 
-                $image_path = base_path().'/images/ads/' . $file_name;
+                $image_path = '/images/ads/' . $file_name;
         }
 
     	$title = $request->input('title');
