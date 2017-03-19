@@ -34,6 +34,7 @@ class CooperationController extends Controller
     	$link = $request->input('link');
     	// date when payment expires
     	$end = Carbon::now()->addDays(30);
+        dd($end);
 
     	$ads_id = DB::table('ads')->insertGetId(array(
     		'title' => $title,

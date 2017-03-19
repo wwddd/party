@@ -113,6 +113,7 @@ class AuthController extends Controller
         $response = [];
     	$response['status'] = 'success';
         $response['message'] = 'Поздравляем ' . Auth::user()->name . '! Вы создали аккаунт!';
+        $response['redirect'] = route('account');
         return json_encode($response);
     }
 

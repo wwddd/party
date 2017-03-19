@@ -7,7 +7,8 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
-// use DB;
+use DB;
+use App\User;
 
 class UserController extends Controller {
 	public function __construct() {
@@ -16,6 +17,33 @@ class UserController extends Controller {
 
 	public function index() {
 		return view('account/account');
+	}
+
+	public function user_update(Request $request) {
+		$this->validate($request, [
+			'name' => 'required|min:2',
+			'age' => 'required|integer',
+			'contact' => 'required',
+			'country' => 'required',
+			'city' => 'required'
+		]);
+
+		$user = Auth::user();
+		$user->name = $request['name'];
+		$user->age = $request['age'];
+		$user->contact = $request['contact'];
+		$user->country = $request['country'];
+		$user->city = $request['city'];
+
+		if ($request['password'] != '') {
+			$user->password = bcrypt($request['password']);
+		}
+		$user->save();
+
+		$response = [];
+		$response['status'] = 'success';
+		$response['message'] = 'Сохранено!';
+		return json_encode($response);
 	}
 
 
@@ -41,7 +69,8 @@ class UserController extends Controller {
 	}
 
 	public function ajax_personal() {
-		return view('account/ajax/personal');
+		$user = Auth::user();
+		return view('account/ajax/personal', ['user' => $user]);
 	}
 // /AJAX
 }
