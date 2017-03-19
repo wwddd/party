@@ -73,4 +73,11 @@ class EventController extends Controller {
 			return json_encode($response);
 		}
 	}
+
+	public function show($id) {
+		$event = DB::table('events')
+					->where('id', $id)
+					->get();
+		return view('event.event', ['event' => $event]);
+	}
 }

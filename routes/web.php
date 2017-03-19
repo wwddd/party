@@ -79,10 +79,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
 		'as' => 'event-store',
 		'uses' => 'EventController@store'
 	]);
-
 	Route::put('user_update', [
-		'as' => 'user_update',
-		'uses' => 'UserController@user_update'
+	'uses' => 'UserController@user_update',
+	'as' => 'user_update'
 	]);
 
 	// Ajax
@@ -109,6 +108,17 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
 	Route::post('ajax-personal', [
 		'as' => 'ajax-personal',
 		'uses' => 'UserController@ajax_personal'
+	]);
+});
+
+Route::group(['prefix' => 'event'], function() {
+	Route::get('{id}', [
+		'as' => 'show_event',
+		'uses' => 'EventController@show'
+	]);
+	Route::post('store', [
+		'as' => 'event-store',
+		'uses' => 'EventController@store'
 	]);
 });
 
