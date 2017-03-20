@@ -229,6 +229,7 @@ $(function() {
 		var toSend = new FormData(form[0]);
 		// console.log(toSend);
 		// console.log(toSend);
+		// console.log($('meta[name="csrf-token"]').attr('content'));
 		$.ajax({
 			url: action,
 			data: toSend,
@@ -236,6 +237,9 @@ $(function() {
 			contentType: false,
 			cache: false,
 			processData:false,
+			 headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			},
 			beforeSend: function() {
 				$('.error').remove();
 			},
