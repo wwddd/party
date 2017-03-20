@@ -17,11 +17,24 @@ class SearchController extends Controller {
 
 	public function ajax_search(Request $request) {
 		$query = DB::table('events');
+
+		if(isset($request['city'])) {
+			$query->where('city', $request['city']);
+		}
+
+		if(isset($request['tags'])) {
+			$query->where('tags', 'like', '%' . $request['tags'] . '%');
+		}
+
+		if(isset($request['peoples_count'])) {
+			$query->where('peoples_count', '>' , $request['peoples_count']);
+		}
+
+
+
 		$query->where('status', 1);
 		$query->orderBy('start', 'ASC');
-
 		$events = $query->get();
-		// dd($events);
 		return view('search/ajax/search', ['events' => $events]);
 	}
 

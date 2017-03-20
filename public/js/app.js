@@ -1,4 +1,4 @@
-$(function() {
+// $(function() {
 // TABS, AJAX LOADING
 	var afterloadOverlayTpl = '<div class="afterload-overlay"><div class="afterload-loader"></div></div>';
 	var afterloadErrorTpl = '<div class="afterload-error"><p>Something goes wrong...</p></div>';
@@ -92,9 +92,9 @@ $(function() {
 					afterloadOverlay(selector);
 				},
 				success: function(data) {
-					// setTimeout(function() {
+					setTimeout(function() {
 					selector.html(data);
-					// }, 2000);
+					}, 1000);
 				},
 				error: function() {
 					getAfterload(selector, ++attemps);
@@ -274,4 +274,4 @@ $(function() {
 		});
 	});
 // /FORMS
-});
+// });
