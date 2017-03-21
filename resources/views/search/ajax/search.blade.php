@@ -2,7 +2,7 @@
 	@foreach($events as $event)
 	<div class="event">
 
-		<?php $title = (strlen($event->title) > 20) ? substr($event->title,0,20).'...' : $event->title; ?>
+		<?php $title = (strlen($event->title) > 50) ? substr($event->title,0,50).'...' : $event->title; ?>
 		<div class="event-title"><a href="{{ route('index_event', $event->id) }}" class="title">{{ $title }}</a></div>
 
 		<?php if($event->tags != NULL) { ?>
