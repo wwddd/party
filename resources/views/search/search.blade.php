@@ -19,26 +19,33 @@
 							<form id="properties">
 								<select name="city">
 									<option value="">--Город--</option>
-									<option value="Москва">Москва</option>
-									<option value="Таганрог">Таганрог</option>
-									<option value="Санкт-Петербург">Санкт-Петербург</option>
+									<option {{ app('request')->get('city') == 'Москва' ? 'selected="selected"' : '' }} value="Москва">Москва</option>
+									<option {{ app('request')->get('city') == 'Таганрог' ? 'selected="selected"' : '' }} value="Таганрог">Таганрог</option>
+									<option {{ app('request')->get('city') == 'Санкт-Петербург' ? 'selected="selected"' : '' }} value="Санкт-Петербург">Санкт-Петербург</option>
 								</select>
 								<select name="tags">
 									<option value="">--Условия входа--</option>
-									<option value="деньги">Платный вход</option>
-									<option value="мужчины">Для мужчин</option>
-									<option value="женщин">Для женщин</option>
-									<option value="дети">Для детей</option>
+									<option {{ app('request')->get('tags') == 'деньги' ? 'selected="selected"' : '' }} value="деньги">Платный вход</option>
+									<option {{ app('request')->get('tags') == 'мужчины' ? 'selected="selected"' : '' }} value="мужчины">Для мужчин</option>
+									<option {{ app('request')->get('tags') == 'женщины' ? 'selected="selected"' : '' }} value="женщины">Для женщин</option>
+									<option {{ app('request')->get('tags') == 'дети' ? 'selected="selected"' : '' }} value="дети">Для детей</option>
 								</select>
 								<select name="peoples_count">
 									<option value="">--Количество гостей--</option>
-									<option value="3">> 3</option>
-									<option value="10">> 10</option>
+									<option {{ app('request')->get('peoples_count') == '3' ? 'selected="selected"' : '' }} value="3">> 3</option>
+									<option {{ app('request')->get('peoples_count') == '10' ? 'selected="selected"' : '' }} value="10">> 10</option>
 								</select>
 							</form>
 						</div>
 					</div>
-					<div id="search" class="afterload" data-url="{{ route('ajax-search') }}"></div>
+					<?php
+						$getParams = app('request')->all();
+						$dataParams = '';
+						foreach ($getParams as $name => $value) {
+							$dataParams .= 'data-' . $name . '=' . $value . ' ';
+						}
+					?>
+					<div id="search" class="afterload" {{ $dataParams }} data-url="{{ route('ajax-search') }}"></div>
 				</div>
 			</div>
 		</div>
@@ -47,10 +54,14 @@
 
 @include('layouts.footer')
 @include('layouts.scripts')
+<link rel="stylesheet" type="text/css" href="{{ asset('/js/pluigins/select2/dist/css/select2.min.css') }}"/>
+<script src="{{ asset('/js/pluigins/select2/dist/js/select2.full.min.js') }}"></script>
 <script type="text/javascript">
+	$('select').select2();
 	$(function() {
 		var search = $('#search');
 		var dataUrl = search.data('url');
+
 		function handleParams(params) {
 			var i = params.length;
 			while(i--) {
@@ -69,11 +80,50 @@
 		}
 
 		function addData(data) {
+			var urlString = '?';
 			for(var i in data) {
 				search.data(data[i].name, data[i].value);
+				urlString += generateUrlString(data[i].name, data[i].value);
+			}
+			if(urlString != '?') {
+				window.history.pushState(' ', ' ', urlString.slice(0, -1));
+			} else {
+				window.history.pushState(' ', ' ', window.location.pathname);
 			}
 			search.data('url', dataUrl);
 		}
+
+		function generateUrlString(name, value) {
+			return name + '=' + value + '&';
+		}
+
+		function getSearchParams(k){
+			var p={};
+			location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,function(s,k,v){p[k]=decodeURI(v)})
+			return k?p[k]:p;
+		}
+
+		function addDataFromUrl() {
+			clearData();
+			$('option').prop('selected', false);
+			var params = getSearchParams();
+			for(i in params) {
+				$('#properties')
+					.find('select[name="' + i + '"]')
+					.find('option[value="' + params[i] + '"]')
+					.prop('selected', true);
+				search.data(i, params[i]);
+			}
+			search.data('url', dataUrl);
+			afterloadOverlay(search);
+			getAfterload(search);
+		}
+
+		window.onpopstate = function(e){
+			// if(e.state){
+				addDataFromUrl();
+			// }
+		};
 
 		$('form#properties').submit(function(e) {
 			e.preventDefault();
@@ -82,7 +132,6 @@
 			addData(data);
 			afterloadOverlay(search);
 			getAfterload(search);
-			console.log(data);
 		});
 
 		$('form#properties select').on('change', function() {

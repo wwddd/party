@@ -23,9 +23,11 @@
 	}
 
 	window.onpopstate = function(e){
-		if(!loading) {
-			if(e.state){
-				sendTab($('#' + e.state));
+		if($('.tab').length > 0) {
+			if(!loading) {
+				if(e.state){
+					sendTab($('#' + e.state));
+				}
 			}
 		}
 	};

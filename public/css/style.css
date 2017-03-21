@@ -589,6 +589,16 @@ footer {
 
 form#properties select {
 	width: 180px;
+}
+.select2-container {
+	font-size: 12px;
+}
+.select2-container--default .select2-selection--single {
+	outline: none;
+}
+/*
+form#properties select {
+	width: 180px;
 	padding: 5px 35px 5px 5px;
 	border: 1px solid #ccc;
 	-webkit-appearance: none;
@@ -608,5 +618,5 @@ form#properties select::-ms-expand {
 		background:none\9;
 		padding: 5px\9;
 	}
-}
+}*/
 /*/Search*/
