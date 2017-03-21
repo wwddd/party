@@ -1,30 +1,12 @@
-<div class="adve">
-	<a href="#" target="_blank">
-		<div class="adve-img">
-			<img src="{{ asset('/images/temporary/ad.jpg') }}">
-		</div>
-		<div class="adve-title">
-			<span>Реклама 1</span>
-		</div>
-	</a>
-</div>
-<div class="adve">
-	<a href="#" target="_blank">
-		<div class="adve-img">
-			<img src="{{ asset('/images/temporary/ad.jpg') }}">
-		</div>
-		<div class="adve-title">
-			<span>Реклама 2</span>
-		</div>
-	</a>
-</div>
-<div class="adve">
-	<a href="#" target="_blank">
-		<div class="adve-img">
-			<img src="{{ asset('/images/temporary/ad.jpg') }}">
-		</div>
-		<div class="adve-title">
-			<span>Реклама 3</span>
-		</div>
-	</a>
-</div>
+@foreach($ads as $ad)
+	<div class="adve">
+		<a href="{{ $ad->link }}" target="_blank">
+			<div class="adve-img">
+				<img src="{{ $ad->image }}">
+			</div>
+			<div class="adve-title">
+				<span>{{ $ad->title }}</span>
+			</div>
+		</a>
+	</div>
+@endforeach

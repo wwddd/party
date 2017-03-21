@@ -136,10 +136,19 @@ class AuthController extends Controller
         $password = $request->input('password');
 
         if (Auth::attempt(['email' => $email, 'password' => $password])) {
-            return redirect(route('account'));
-        } else {        
-            $message = 'Email or Password not valid';
-            return redirect()->back()->withInput()->with('message', $message);
+            $response = [];
+            $response['status'] = 'success';
+            $response['message'] = 'Успешно';
+            $response['redirect'] = route('account');
+            return json_encode($response);
+            // return redirect(route('account'));
+        } else {
+            $response = [];
+            $response['status'] = 'fail';
+            $response['message'] = 'Неправильный email или пароль';
+            return json_encode($response);       
+            // $message = 'Email or Password not valid';
+            // return redirect()->back()->withInput()->with('message', $message);
         }
     }
 

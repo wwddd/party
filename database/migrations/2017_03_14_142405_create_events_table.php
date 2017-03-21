@@ -29,6 +29,7 @@ class CreateEventsTable extends Migration
             $table->string('peoples_count')->nullable();
             $table->smallInteger('status');
             $table->smallInteger('verify');
+            $table->string('reason')->nullable();
         });
     }
 

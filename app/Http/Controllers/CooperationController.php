@@ -50,9 +50,9 @@ class CooperationController extends Controller
             $img->resize(220, 160, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
-            })->save(base_path() . '/public/images/ads/' . $file_name, 100);
+            })->save(base_path() . '/public/images/cooperation/' . $file_name, 100);
 
-            $image_path = '/images/ads/' . $file_name;
+            $image_path = '/images/cooperation/' . $file_name;
         }
 
     	$title = $request->input('title');

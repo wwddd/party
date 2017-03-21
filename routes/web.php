@@ -80,8 +80,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
 		'uses' => 'EventController@store'
 	]);
 	Route::put('user_update', [
-	'uses' => 'UserController@user_update',
-	'as' => 'user_update'
+		'uses' => 'UserController@user_update',
+		'as' => 'user_update'
 	]);
 
 	// Ajax
@@ -111,14 +111,39 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
 	]);
 });
 
+// Event
 Route::group(['prefix' => 'event'], function() {
 	Route::get('{id}', [
-		'as' => 'show_event',
-		'uses' => 'EventController@show'
+		'as' => 'index_event',
+		'uses' => 'EventController@index'
 	]);
 	Route::post('store', [
 		'as' => 'event-store',
 		'uses' => 'EventController@store'
+	]);
+	Route::post('subscribe/{event_id}/{follower_id}', [
+		'as' => 'event_subscribe',
+		'uses' => 'EventController@subscribe'
+	]);
+	Route::post('unsubscribe/{event_id}/{follower_id}', [
+		'as' => 'event_un_subscribe',
+		'uses' => 'EventController@un_subscribe'
+	]);
+	Route::post('favorites/{user_id}/{event_id}', [
+		'as' => 'event_to_favorites',
+		'uses' => 'EventController@to_favorites'
+	]);
+	Route::post('unfavorites/{user_id}/{event_id}', [
+		'as' => 'event_un_favorites',
+		'uses' => 'EventController@un_favorites'
+	]);
+	Route::post('complete/{event_id}', [
+		'as' => 'event_complete',
+		'uses' => 'EventController@complete'
+	]);
+	Route::post('close/{event_id}', [
+		'as' => 'event_close',
+		'uses' => 'EventController@close'
 	]);
 });
 
