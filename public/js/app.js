@@ -240,7 +240,7 @@
 			contentType: false,
 			cache: false,
 			processData:false,
-			 headers: {
+			headers: {
 				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 			},
 			beforeSend: function() {
@@ -258,6 +258,11 @@
 					setTimeout(function() {
 						window.location.href = response.redirect;
 					}, 2000);
+				}
+
+				if(response.event_action !== undefined && response.event_button !== undefined) {
+					form.attr('action', response.event_action);
+					form.find('button[type="submit"]').text(response.event_button);
 				}
 				form.find('button.no-disabled').prop('disabled', false);
 			},

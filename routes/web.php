@@ -129,11 +129,11 @@ Route::group(['prefix' => 'event'], function() {
 		'as' => 'event_un_subscribe',
 		'uses' => 'EventController@un_subscribe'
 	]);
-	Route::post('favorites/{user_id}/{event_id}', [
+	Route::post('favorites/{event_id}/{user_id}', [
 		'as' => 'event_to_favorites',
 		'uses' => 'EventController@to_favorites'
 	]);
-	Route::post('unfavorites/{user_id}/{event_id}', [
+	Route::post('unfavorites/{event_id}/{user_id}', [
 		'as' => 'event_un_favorites',
 		'uses' => 'EventController@un_favorites'
 	]);
