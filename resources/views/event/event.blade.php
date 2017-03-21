@@ -6,7 +6,7 @@
 @include('layouts.header')
 <div class="container events">
 	<div class="wrapper">
-		<div class="event">
+		<div class="event no-pading">
 
 			<div class=" event-title">{{ $event->title }}</div>
 
