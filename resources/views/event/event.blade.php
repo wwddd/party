@@ -109,7 +109,7 @@
 					<button type="submit" class="button">Убрать из закладок</button>
 				</form>			
 			</div>
-		@elseif(empty($event_follower[0]->id) == false && empty($event_to_favorites[0]->id) == false))
+		@elseif(empty($event_follower[0]->id) == false && empty($event_to_favorites[0]->id) == false)
 			<div class="event-inline">
 				<form class="form" action="{{ route('event_un_subscribe', ['event_id' => $event->id, 'follower_id' => $event_follower[0]->follower_id]) }}" method="POST">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">

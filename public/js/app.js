@@ -1,4 +1,4 @@
-$(function() {
+// $(function() {
 // TABS, AJAX LOADING
 	var afterloadOverlayTpl = '<div class="afterload-overlay"><div class="afterload-loader"></div></div>';
 	var afterloadErrorTpl = '<div class="afterload-error"><p>Something goes wrong...</p></div>';
@@ -23,9 +23,11 @@ $(function() {
 	}
 
 	window.onpopstate = function(e){
-		if(!loading) {
-			if(e.state){
-				sendTab($('#' + e.state));
+		if($('.tab').length > 0) {
+			if(!loading) {
+				if(e.state){
+					sendTab($('#' + e.state));
+				}
 			}
 		}
 	};
@@ -92,9 +94,9 @@ $(function() {
 					afterloadOverlay(selector);
 				},
 				success: function(data) {
-					// setTimeout(function() {
+					setTimeout(function() {
 					selector.html(data);
-					// }, 2000);
+					}, 1000);
 				},
 				error: function() {
 					getAfterload(selector, ++attemps);
@@ -230,6 +232,7 @@ $(function() {
 		var toSend = new FormData(form[0]);
 		// console.log(toSend);
 		// console.log(toSend);
+		// console.log($('meta[name="csrf-token"]').attr('content'));
 		$.ajax({
 			url: action,
 			data: toSend,
@@ -237,6 +240,9 @@ $(function() {
 			contentType: false,
 			cache: false,
 			processData:false,
+			 headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			},
 			beforeSend: function() {
 				$('.error').remove();
 			},
@@ -271,5 +277,9 @@ $(function() {
 		});
 	});
 // /FORMS
-});
+
+// });
+
+
+// });
 

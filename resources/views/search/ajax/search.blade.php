@@ -1,9 +1,3 @@
-<div class="container">
-	<div class="search-properties">
-		
-	</div>
-</div>
-
 <div class="container events">
 	@foreach($events as $event)
 	<div class="event">
@@ -11,7 +5,7 @@
 		<?php $title = (strlen($event->title) > 20) ? substr($event->title,0,20).'...' : $event->title; ?>
 		<div class="event-title"><a href="{{ route('show_event', $event->id) }}" class="title">{{ $title }}</a></div>
 
-		<?php if($event->tags !== NULL) { ?>
+		<?php if($event->tags != NULL) { ?>
 			<div class="event-tags">
 				<div class="event-note">Условия входа: </div>
 				<?php
@@ -29,7 +23,7 @@
 
 		<div class="event-inline">
 			<div class="event-place">
-				<div class="event-note"><i class="fa fa-map-marker" aria-hidden="true"></i> </div>
+				<div class="event-nm event-note"><i class="fa fa-map-marker" aria-hidden="true"></i> </div>
 				{{ $event->country }}, {{ $event->city }}, {{ $event->place }}
 			</div>
 
@@ -41,12 +35,12 @@
 			<?php
 				$max_peoples = '';
 				if($event->peoples_count !== NULL) {
-					$max_peoples = ' из ' . $max_peoples;
+					$max_peoples = ' из ' . $event->peoples_count;
 				}
 			?>
 			<div class="event-currentpeoples">
 				<div class="event-note"><i class="fa fa-users" aria-hidden="true"></i> </div>
-				0{{ $event->peoples_count }}
+				0 {{ $max_peoples }}
 			</div>
 		</div>
 

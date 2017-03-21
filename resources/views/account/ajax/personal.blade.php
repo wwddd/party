@@ -1,6 +1,5 @@
-<form class="form" action="{{ route('user_update') }}" method="PUT">
-	<input type="hidden" name="_token" value="{{ csrf_token() }}">
-	<!-- <input type="hidden" value="put"> -->
+<form class="form" action="{{ route('user_update') }}" method="POST">
+	<input type="hidden" name='_method' value="PUT">
 	<div class="container">
 		<div class="col-6">
 			<div class="form-group">
