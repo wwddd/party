@@ -9,10 +9,16 @@
 
 		<div class=" event-title">{{ $event->title }}</div>
 
-		<?php if($event->tags !== NULL) { ?>
-			<div class="event-inline">
+		<?php if($event->tags != NULL) { ?>
+			<div class="event-tags">
 				<div class="event-note">Условия входа: </div>
-				{{ $event->tags }}
+				<?php
+					$tags_arr = explode(',', $event->tags);
+					foreach ($tags_arr as $key => $tag) {
+						if($tag !== '') { ?>
+							<span class="event-tag">{{ $tag }}</span>
+						<?php } ?>
+					<?php } ?>
 			</div>
 		<?php } ?>
 
@@ -66,6 +72,11 @@
 			</div>
 			<div class="event-inline to-favourites">
 				<form class="form" action="{{ $actions_arr['action2'] }}" method="POST">
+					@if($owner->id == Auth::user()->id)
+						<div class="form-group required">
+							<textarea type="text" name="reason" placeholder="Причина закрытия"></textarea>
+						</div>
+					@endif
 					<button type="submit" class="button">{{ $actions_arr['button2'] }}</button>
 				</form>
 			</div>
