@@ -18,6 +18,10 @@ html, body {
 	height: 100%;
 }
 
+body {
+	overflow-y: scroll;
+}
+
 .container {
 	margin-right: auto;
 	margin-left: auto;
@@ -86,6 +90,10 @@ html, body {
 
 .center-block {
 	margin: 0 auto;
+}
+
+.no-pading {
+	padding: 0 !important;
 }
 
 .main-background {
@@ -160,7 +168,8 @@ html, body {
 
 .afterload-error p {
 	text-align: center;
-	color: white;
+	color: black;
+	font-size: 30px;
 }
 
 .tab {
@@ -590,12 +599,40 @@ footer {
 form#properties select {
 	width: 180px;
 }
+
 .select2-container {
 	font-size: 12px;
 }
+
 .select2-container--default .select2-selection--single {
 	outline: none;
 }
+
+.paginate {
+	padding: 0 20px 10px 20px;
+}
+
+.paginate ul {
+	list-style: none;
+	padding: 0;
+}
+
+.paginate li {
+	display: inline-block;
+	cursor: pointer;
+	width: 30px;
+	padding: 5px;
+	border: 1px solid gray;
+	border-radius: 2px;
+	text-align: center;
+}
+
+.paginate li.active {
+	background: #00b4f0;
+	color: white;
+	cursor: not-allowed;
+}
+
 /*
 form#properties select {
 	width: 180px;

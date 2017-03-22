@@ -96,7 +96,7 @@
 				success: function(data) {
 					setTimeout(function() {
 					selector.html(data);
-					}, 1000);
+					}, 300);
 				},
 				error: function() {
 					getAfterload(selector, ++attemps);
@@ -259,6 +259,11 @@
 						window.location.href = response.redirect;
 					}, 2000);
 				}
+
+				if(response.event_action !== undefined && response.event_button !== undefined) {
+					form.attr('action', response.event_action);
+					form.find('button[type="submit"]').text(response.event_button);
+				}
 				form.find('button.no-disabled').prop('disabled', false);
 			},
 			error: function(e) {
@@ -277,6 +282,8 @@
 		});
 	});
 // /FORMS
+
+// google api key - AIzaSyBDXGYgmltbd4c0zuLi7DbEjeldxlTRlUg
 
 // });
 
