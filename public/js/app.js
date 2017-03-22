@@ -4,6 +4,7 @@
 	var afterloadErrorTpl = '<div class="afterload-error"><p>Something goes wrong...</p></div>';
 	var currentTab = getUrlParameter('tab');
 	var loading = false;
+	var _token = $('meta[name="csrf-token"]').attr('content');
 
 	function getUrlParameter(sParam) {
 		var sPageURL = decodeURIComponent(window.location.search.substring(1)),
@@ -85,7 +86,7 @@
 			var toSend = selector.data();
 			$.ajax({
 				headers: {
-					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					'X-CSRF-TOKEN': _token
 				},
 				url: toSend.url,
 				data: toSend,
@@ -241,7 +242,7 @@
 			cache: false,
 			processData:false,
 			headers: {
-				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				'X-CSRF-TOKEN': _token
 			},
 			beforeSend: function() {
 				$('.error').remove();

@@ -312,4 +312,20 @@ class EventController extends Controller {
 		$response['message'] = 'Ваша вписка закрыта!';
 		return json_encode($response);
 	}
+
+	public function ajax_store_rating(Request $request) {
+		$star = $request['star'];
+		$event_id = $request['event_id'];
+
+		DB::table('event_followers')
+			->where('follower_id', Auth::user()->id)
+			->where('event_id', $event_id)
+			->update(array(
+				'follower_eval' => $star
+			));
+
+		$response['status'] = 'success';
+		$response['message'] = 'Оценка принята!';
+		return json_encode($response);
+	}
 }

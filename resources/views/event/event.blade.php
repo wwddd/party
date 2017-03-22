@@ -84,13 +84,32 @@
 				@endif
 			@else
 				@if($follower_info && $follower_info->count() && !$follower_info[0]->follower_eval)
-					Оценить
-					<div class="stars eval">
-						<div class="star-bar"></div>
-					</div>
+					<form class="rating form" action="{{ route('ajax_store_rating') }}" method="POST">
+						<div class="stars">
+							<input value="1" type="radio" name="star" class="star-1" id="star-1" />
+							<label class="star-1" for="star-1">1</label>
+							<input value="2" type="radio" name="star" class="star-2" id="star-2" />
+							<label class="star-2" for="star-2">2</label>
+							<input value="3" type="radio" name="star" class="star-3" id="star-3" />
+							<label class="star-3" for="star-3">3</label>
+							<input value="4" type="radio" name="star" class="star-4" id="star-4" />
+							<label class="star-4" for="star-4">4</label>
+							<input value="5" type="radio" name="star" class="star-5" id="star-5" />
+							<label class="star-5" for="star-5">5</label>
+							<span></span>
+						</div>
+						<input type="hidden" name="event_id" value="{{ $event->id }}">
+						<button class="button" type="submit">Оценить</button>
+					</form>
 				@else
 					<div class="stars">
-						<div class="star star-bar"></div>
+						<div class="star star-bar">
+							<div class="star"></div>
+							<div class="star"></div>
+							<div class="star"></div>
+							<div class="star"></div>
+							<div class="star"></div>
+						</div>
 					</div>
 				@endif
 			@endif
