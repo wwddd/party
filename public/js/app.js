@@ -96,7 +96,7 @@
 				success: function(data) {
 					setTimeout(function() {
 					selector.html(data);
-					}, 1000);
+					}, 300);
 				},
 				error: function() {
 					getAfterload(selector, ++attemps);
@@ -282,6 +282,8 @@
 		});
 	});
 // /FORMS
+
+// google api key - AIzaSyBDXGYgmltbd4c0zuLi7DbEjeldxlTRlUg
 
 // });
 

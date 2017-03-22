@@ -1,4 +1,7 @@
 <div class="container events">
+	@if($events->count() == 0)
+		<h2 class="title">К сожалению, по запросу ничего не найдено :(</h2>
+	@endif
 	@foreach($events as $event)
 	<div class="event">
 
@@ -40,7 +43,7 @@
 			?>
 			<div class="event-currentpeoples">
 				<div class="event-note"><i class="fa fa-users" aria-hidden="true"></i> </div>
-				0 {{ $max_peoples }}
+				{{ $event->current_followers }} {{ $max_peoples }}
 			</div>
 		</div>
 
@@ -48,4 +51,12 @@
 		<div class="event-rating"></div>
 	</div>
 	@endforeach
+
+	<div class="paginate">
+		<ul>
+			<?php for($i = 1; $i <= $paginate_count; $i++) { ?>
+				<li class="<?php $current_page == $i ? print 'active' : ''; ?>" data-page="{{ $i }}">{{ $i }}</li>
+			<?php } ?>
+		</ul>
+	</div>
 </div>

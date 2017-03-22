@@ -61,6 +61,7 @@
 	$(function() {
 		var search = $('#search');
 		var dataUrl = search.data('url');
+		var clickedPage = $('.paginate li.active').data('page');
 
 		function handleParams(params) {
 			var i = params.length;
@@ -91,6 +92,7 @@
 				window.history.pushState(' ', ' ', window.location.pathname);
 			}
 			search.data('url', dataUrl);
+			// search.data('page', clickedPage);
 		}
 
 		function generateUrlString(name, value) {
@@ -107,6 +109,7 @@
 			clearData();
 			$('option').prop('selected', false);
 			var params = getSearchParams();
+			console.log(params);
 			for(i in params) {
 				$('#properties')
 					.find('select[name="' + i + '"]')
@@ -125,13 +128,26 @@
 			// }
 		};
 
-		$('form#properties').submit(function(e) {
-			e.preventDefault();
-			var data = handleParams($(this).serializeArray());
+		function sendAll() {
+			var data = handleParams($('form#properties').serializeArray());
+			data['page'] = {};
+			data['page']['name'] = 'page';
+			data['page']['value'] = clickedPage;
 			clearData();
 			addData(data);
 			afterloadOverlay(search);
 			getAfterload(search);
+		}
+
+		$('form#properties').submit(function(e) {
+			e.preventDefault();
+			clickedPage = 1;
+			sendAll();
+		});
+
+		$(document).on('click', '.paginate li:not(.active)', function() {
+			clickedPage = $(this).data('page');
+			sendAll();
 		});
 
 		$('form#properties select').on('change', function() {
