@@ -59,29 +59,40 @@
 
 			<div class="event-inline">
 				<div class="event-note">О пользователе: </div>
-				{{ $owner->name }} ({{ $owner->age }} лет) 
+				{{ $event->name }} ({{ $event->age }} лет) 
 			</div>
 
-			@if(!Auth::user())
-				<p>Для участия во встрече необсходимо <a href="{{ route('index_login') }}">войти</a> или <a href="{{ route('index_register') }}">зарегистрироваться</a></p>
+			@if($event->status == 1)
+				@if(!Auth::user())
+					<p>Для участия во встрече необсходимо <a href="{{ route('index_login') }}">войти</a> или <a href="{{ route('index_register') }}">зарегистрироваться</a></p>
+				@else
+					<div class="event-inline subscribe">
+						<form class="form" action="{{ $actions_arr['action1'] }}" method="POST">
+							<button type="submit" class="button">{{ $actions_arr['button1'] }}</button>
+						</form>
+					</div>
+					<div class="event-inline to-favourites">
+						<form class="form" action="{{ $actions_arr['action2'] }}" method="POST">
+							@if($event->user_id == Auth::user()->id)
+								<div class="form-group required">
+									<textarea type="text" name="reason" placeholder="Причина закрытия"></textarea>
+								</div>
+							@endif
+							<button type="submit" class="button">{{ $actions_arr['button2'] }}</button>
+						</form>
+					</div>
+				@endif
 			@else
-
-				<div class="event-inline subscribe">
-					<form class="form" action="{{ $actions_arr['action1'] }}" method="POST">
-						<button type="submit" class="button">{{ $actions_arr['button1'] }}</button>
-					</form>
-				</div>
-				<div class="event-inline to-favourites">
-					<form class="form" action="{{ $actions_arr['action2'] }}" method="POST">
-						@if($owner->id == Auth::user()->id)
-							<div class="form-group required">
-								<textarea type="text" name="reason" placeholder="Причина закрытия"></textarea>
-							</div>
-						@endif
-						<button type="submit" class="button">{{ $actions_arr['button2'] }}</button>
-					</form>
-				</div>
-
+				@if($follower_info && $follower_info->count() && !$follower_info[0]->follower_eval)
+					Оценить
+					<div class="stars eval">
+						<div class="star-bar"></div>
+					</div>
+				@else
+					<div class="stars">
+						<div class="star star-bar"></div>
+					</div>
+				@endif
 			@endif
 		</div>
 	</div>

@@ -17,6 +17,7 @@ class CreateEventFollowersTable extends Migration
             $table->increments('id');
             $table->smallInteger('event_id');
             $table->smallInteger('follower_id');
+            $table->smallInteger('follower_eval')->nullable();
         });
     }
 

@@ -11,12 +11,24 @@ use DB;
 
 class EventController extends Controller {
 	public function index(Request $request, $id) {
-		$event = DB::table('events')
-					->where('id', $id)
-					->get();
-		$owner = DB::table('users')->where('id', $event[0]->user_id)->get();
-		// dd($owner);
-		$is_follower = $this->is_follower($id);
+		$query = DB::table('events');
+		$query->leftJoin('event_followers', 'event_followers.event_id', '=', 'events.id');
+		$query->leftJoin('users', 'users.id', '=', 'events.user_id');
+		$query->where('events.id', $id);
+		$query->select(
+					'events.*',
+					'users.name',
+					'users.gender',
+					'users.age',
+					'users.events_count',
+					'users.followers_count',
+					'users.rating',
+					DB::raw("count(event_followers.event_id) as current_followers")
+				);
+		$query->groupBy('events.id');
+		$event = $query->get();
+
+		$follower_info = $this->follower_info($id);
 		$in_favourites = $this->in_favourites($id);
 
 		$action1 = '';
@@ -25,13 +37,13 @@ class EventController extends Controller {
 		$button2 = '';
 
 		if(Auth::user()) {
-			if($owner[0]->id == Auth::user()->id) {
+			if($event[0]->user_id == Auth::user()->id) {
 				$action1 = route('event_complete', ['event_id' => $event[0]->id]);
 				$action2 = route('event_close', ['event_id' => $event[0]->id]);
 				$button1 = 'Завершить';
 				$button2 = 'Закрыть';
 			} else {
-				if($is_follower) {
+				if($follower_info && $follower_info->count()) {
 					$action1 = route('event_un_subscribe', ['event_id' => $event[0]->id, 'follower_id' => Auth::user()->id]);
 					$button1 = 'Отписаться';
 				} else {
@@ -50,11 +62,9 @@ class EventController extends Controller {
 
 		}
 
-
 		return view('event.event', [
 			'event' => $event[0],
-			'owner' => $owner[0],
-			'is_follower' => $is_follower,
+			'follower_info' => $follower_info,
 			'in_favourites' => $in_favourites,
 			'actions_arr' => [
 				'action1' => $action1,
@@ -65,23 +75,90 @@ class EventController extends Controller {
 		]);
 	}
 
-	public function is_follower($event_id) {
+
+	// public function index(Request $request, $id) {
+	// 	$event = DB::table('events')
+	// 				->where('id', $id)
+	// 				->get();
+	// 	$owner = DB::table('users')->where('id', $event[0]->user_id)->get();
+	// 	// dd($owner);
+	// 	$is_follower = $this->is_follower($id);
+	// 	$in_favourites = $this->in_favourites($id);
+
+	// 	$action1 = '';
+	// 	$action2 = '';
+	// 	$button1 = '';
+	// 	$button2 = '';
+
+	// 	if(Auth::user()) {
+	// 		if($owner[0]->id == Auth::user()->id) {
+	// 			$action1 = route('event_complete', ['event_id' => $event[0]->id]);
+	// 			$action2 = route('event_close', ['event_id' => $event[0]->id]);
+	// 			$button1 = 'Завершить';
+	// 			$button2 = 'Закрыть';
+	// 		} else {
+	// 			if($is_follower) {
+	// 				$action1 = route('event_un_subscribe', ['event_id' => $event[0]->id, 'follower_id' => Auth::user()->id]);
+	// 				$button1 = 'Отписаться';
+	// 			} else {
+	// 				$action1 = route('event_subscribe', ['event_id' => $event[0]->id, 'follower_id' => Auth::user()->id]);
+	// 				$button1 = 'Вписаться';
+	// 			}
+
+	// 			if($in_favourites) {
+	// 				$action2 = route('event_un_favorites', ['event_id' => $event[0]->id, 'user_id' => Auth::user()->id]);
+	// 				$button2 = 'Убрать из закладок';
+	// 			} else {
+	// 				$action2 = route('event_to_favorites', ['event_id' => $event[0]->id, 'user_id' => Auth::user()->id]);
+	// 				$button2 = 'В закладки';
+	// 			}
+	// 		}
+
+	// 	}
+
+
+	// 	return view('event.event', [
+	// 		'event' => $event[0],
+	// 		'owner' => $owner[0],
+	// 		'is_follower' => $is_follower,
+	// 		'in_favourites' => $in_favourites,
+	// 		'actions_arr' => [
+	// 			'action1' => $action1,
+	// 			'action2' => $action2,
+	// 			'button1' => $button1,
+	// 			'button2' => $button2
+	// 		]
+	// 	]);
+	// }
+
+	public function follower_info($event_id) {
 		if(Auth::user()) {
 			$event_follower = DB::table('event_followers')
 								->where('event_id', $event_id)
 								->where('follower_id', Auth::user()->id)
 								->get();
-
-			if($event_follower->count()) {
-				return true;
-				// return $event_follower[0]->follower_id;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
+			return $event_follower;
 		}
+		return false;
 	}
+
+	// public function is_follower($event_id) {
+	// 	if(Auth::user()) {
+	// 		$event_follower = DB::table('event_followers')
+	// 							->where('event_id', $event_id)
+	// 							->where('follower_id', Auth::user()->id)
+	// 							->get();
+
+	// 		if($event_follower->count()) {
+	// 			return true;
+	// 			// return $event_follower[0]->follower_id;
+	// 		} else {
+	// 			return false;
+	// 		}
+	// 	} else {
+	// 		return false;
+	// 	}
+	// }
 
 	public function in_favourites($event_id) {
 		if(Auth::user()) {
