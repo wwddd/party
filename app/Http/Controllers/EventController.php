@@ -316,7 +316,9 @@ class EventController extends Controller {
 	public function ajax_store_rating(Request $request) {
 		$star = $request['star'];
 		$event_id = $request['event_id'];
+		$owner_id = $request['owner_id'];
 
+		// followers update and get avg
 		DB::table('event_followers')
 			->where('follower_id', Auth::user()->id)
 			->where('event_id', $event_id)
@@ -324,8 +326,41 @@ class EventController extends Controller {
 				'follower_eval' => $star
 			));
 
+		$avg_event = DB::table('event_followers')
+			->where('event_id', $event_id)
+			->avg('follower_eval');
+
+
+		// events update and get avg
+		DB::table('events')
+			->where('id', $event_id)
+			->update(array(
+				'rating' => $avg_event
+			));
+
+		$avg_events = DB::table('events')
+			->where('user_id', $owner_id)
+			->avg('rating');
+
+
+		// user update rating
+		DB::table('users')
+			->where('id', $owner_id)
+			->update(array(
+				'rating' => $avg_events
+			));
+
+
+
+
+		// $owner_rating_count = DB::table('users')
+		// 	->where('id', $owner_id)
+		// 	->select('rating');
+
+
 		$response['status'] = 'success';
 		$response['message'] = 'Оценка принята!';
+		$response['avg_event'] = $avg_event;
 		return json_encode($response);
 	}
 }
