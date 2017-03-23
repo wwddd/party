@@ -34,7 +34,12 @@ Route::group(['prefix' => 'login'], function() {
 		'as' => 'login',
 		'uses' => 'AuthController@login'
 	]);
+	Route::get('vk', [
+		'as' => 'vk_login',
+		'uses' => 'AuthController@vk_login'
+	]);
 });
+
 
 // Logout
 Route::get('logout', [

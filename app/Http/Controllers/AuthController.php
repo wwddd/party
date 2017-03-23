@@ -152,6 +152,14 @@ class AuthController extends Controller
         }
     }
 
+    public function vk_register() {
+        
+    }
+
+    public function vk_login() {
+        return 'vk';
+    }
+
     public function logout() {
         Auth::logout();
         return redirect(route('index_login'));
