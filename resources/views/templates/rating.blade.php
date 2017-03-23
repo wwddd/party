@@ -1,5 +1,5 @@
 <div class="rated">
-	<div class="rating-note">Средняя оценка</div>
+	<div class="rating-note event-note">Средняя оценка {{ $sense }}</div>
 	<div class="stars">
 		<input value="1" type="radio" name="star" class="star-1" id="star-1" />
 		<label class="star-1" for="star-1">1</label>

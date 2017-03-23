@@ -360,7 +360,7 @@ class EventController extends Controller {
 
 		$response['status'] = 'success';
 		$response['message'] = 'Оценка принята!';
-		$response['avg_event'] = view('templates.rating', ['rating' => $avg_event])->render();
+		$response['avg_event'] = view('templates.rating', ['rating' => $avg_event, 'sense' => 'События'])->render();
 		return json_encode($response);
 	}
 }

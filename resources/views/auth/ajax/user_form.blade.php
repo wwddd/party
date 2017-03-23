@@ -23,8 +23,9 @@
 			<div class="form-group required">
 				<input type="text" name="country" placeholder="Страна">
 			</div>
-			<div class="form-group required">
-				<input type="text" name="city" placeholder="Город">
+			<div class="form-group required autocomplete-body">
+				<input autocomplete="off" data-sense="city" class="autocomplete-input" type="text" name="city" placeholder="Город">
+				<div class="autocomplete-result"></div>
 			</div>
 			<div class="form-group required">
 				<input type="password" name="password" placeholder="Пароль">

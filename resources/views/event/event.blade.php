@@ -107,7 +107,7 @@
 						</form>
 					</div>
 				@else
-					<?php $rating = $event->event_rating; ?>
+					<?php $rating = $event->event_rating; $sense = 'события'; ?>
 					@include('templates.rating')
 				@endif
 			@endif

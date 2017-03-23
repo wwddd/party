@@ -44,7 +44,7 @@
 
 	<div class="event-achivements"></div>
 	<div class="event-rating">
-		<?php $rating = $event->user_rating; ?>
+		<?php $rating = $event->user_rating; $sense = 'пользователя'; ?>
 		@include('templates.rating')
 	</div>
 </div>

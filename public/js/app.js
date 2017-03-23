@@ -1,4 +1,3 @@
-// $(function() {
 // TABS, AJAX LOADING
 	var afterloadOverlayTpl = '<div class="afterload-overlay"><div class="afterload-loader"></div></div>';
 	var afterloadErrorTpl = '<div class="afterload-error"><p>Something goes wrong...</p></div>';
@@ -286,63 +285,84 @@
 			}
 		});
 	});
+
+
+
+
+
+	function generateAutocomplete(input, items) {
+		var resultBlock = input.siblings('.autocomplete-result');
+		var result = '';
+		for(i in items) {
+			result += '<div>' + items[i].title + '</div>';
+		}
+		resultBlock.html(result);
+		resultBlock.fadeIn(200);
+	}
+
+	$(document).on('keypress', '.autocomplete-input', function(e) {
+		if(e.keyCode == 13) {
+			e.preventDefault();
+			var resultBlock = $(this).siblings('.autocomplete-result');
+			$(this).val(resultBlock.find('div.active').text());
+			resultBlock.fadeOut(200);
+		}
+	});
+
+	$(document).on('blur', '.autocomplete-input', function(e) {
+		$(this).siblings('.autocomplete-result').fadeOut(200);
+	});
+
+	$(document).on('click', '.autocomplete-result div', function(e) {
+		$(this).closest('.autocomplete-body').find('.autocomplete-input').val($(this).text());
+	});
+
+	$(document).on('keyup focus', '.autocomplete-input', function(e) {
+		var input = $(this);
+		var resultBlock = input.siblings('.autocomplete-result');
+		var q = input.val();
+		var keyCode = e.keyCode;
+		if (keyCode == 38 || keyCode == 40) {
+			if(keyCode == 38) {
+				if(resultBlock.find('div.active').length > 0) {
+					resultBlock.find('div.active').removeClass('active').prev().addClass('active');
+				} else {
+					resultBlock.find('div').last().addClass('active');
+				}
+			}
+			if(keyCode == 40) {
+				if(resultBlock.find('div.active').length > 0) {
+					resultBlock.find('div.active').removeClass('active').next().addClass('active');
+				} else {
+					resultBlock.find('div').first().addClass('active');
+				}
+			}
+		} else if(e.keyCode == 13) {
+			
+		} else {
+			if(input.data('sense') == 'city') {
+				setTimeout(function() {
+					$.ajax({
+						url: "https://api.vk.com/method/database.getCities",
+						crossDomain: true,
+						dataType: 'jsonp',
+						type: 'GET',
+						data: {
+							access_token: '83e2d3fb83e2d3fb83509f1f8183b8bc76883e283e2d3fbdb2b9eaaab67dfda22037aeb',
+							country_id: 1,
+							count: 7,
+							q: q,
+							v: 5.62
+						},
+						success: function(data) {
+							var items = data.response.items;
+							generateAutocomplete(input, items);
+						}
+					});
+				}, 100);
+			}
+		}
+	});
 // /FORMS
 
 // google api key - AIzaSyBDXGYgmltbd4c0zuLi7DbEjeldxlTRlUg
-
-// });
-
-
-// });
-
-
-
-// var MIN_LENGTH = 2;
-// $(document).ready(function() {
-// 	$("#keyword").keyup(function(e) {
-// 		var keyCode = e.keyCode;
-// 		var keyword = $("#keyword").val();
-// 		if (keyword.length >= MIN_LENGTH && keyCode !== 38 && keyCode !== 40) {
-// 			$.get("/autocomplete", {
-// 				keyword: keyword
-// 			}).done(function(data) {
-// 				$('#results').html('');
-// 				var results = jQuery.parseJSON(data);
-// 				$(results).each(function(key, value) {
-// 					if (typeof value.image != 'undefined') {
-// 						$('#results').append('<div class="item col-xs-12"><div class="col-xs-2"><a href="/' + value.controller + '/' + value.cat_slug + '"><img src="' + value.image + '"/></a></div><div class="col-xs-10"><a href="/' + value.controller + '/' + value.cat_slug + '">' + value.cat_name + '</a></div></div>');
-// 					} else {
-// 						$('#results').append('<div class="item col-xs-12 autosuggest"><a href="/' + value.controller + '/' + value.cat_slug + '">' + value.cat_name + '</a></div>');
-// 					}
-// 				})
-// 			});
-// 		} else if (keyCode == 38 || keyCode == 40) {
-// 			if (!$('.autosuggest').hasClass('.search-selected')) {
-// 				if (keyCode === 38) {
-// 					if ($('.search-selected').prev('.autosuggest').length > 0) {
-// 						$('.search-selected').removeClass('search-selected').prev('.autosuggest').addClass('search-selected');
-// 					} else {
-// 						$('.search-selected').removeClass('search-selected');
-// 						$('.autosuggest:last-child').addClass('search-selected');
-// 					}
-// 				} else {
-// 					if ($('.search-selected').next('.autosuggest').length > 0) {
-// 						$('.search-selected').removeClass('search-selected').next('.autosuggest').addClass('search-selected');
-// 					} else {
-// 						$('.search-selected').removeClass('search-selected');
-// 						$('.autosuggest:first-child').addClass('search-selected');
-// 					}
-// 				}
-// 			}
-// 			$("#keyword").val($('.search-selected a').text());
-// 			$('form.header-search').attr('action', $('.search-selected a').attr('href'));
-// 		} else {
-// 			$('#results').html('');
-// 		}
-// 	});
-// 	$("#keyword").blur(function() {
-// 		$("#results").fadeOut(500);
-// 	}).focus(function() {
-// 		$("#results").show();
-// 	});
-// });

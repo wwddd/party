@@ -465,6 +465,31 @@ span.tag, span.input-tag, .event-tag {
 	border: none !important;
 	float: left;
 }
+
+.autocomplete-body {
+	position: relative;
+}
+
+.autocomplete-result {
+	position: absolute;
+	text-align: left;
+	left: 25px;
+	border: 1px solid #c7c7c7;
+	background: white;
+	z-index: 1000;
+	border-top: none;
+	font-size: 13px;
+	display: none;
+}
+
+.autocomplete-result div {
+	padding: 5px;
+}
+
+.autocomplete-result div.active, .autocomplete-result div:hover {
+	background: #f7f7f7;
+	cursor: pointer;
+}
 /*select*/
 
 
