@@ -84,34 +84,31 @@
 				@endif
 			@else
 				@if($follower_info && $follower_info->count() && !$follower_info[0]->follower_eval)
-					<form class="rating form" action="{{ route('ajax_store_rating') }}" method="POST">
-						<div class="stars">
-							<input value="1" type="radio" name="star" class="star-1" id="star-1" />
-							<label class="star-1" for="star-1">1</label>
-							<input value="2" type="radio" name="star" class="star-2" id="star-2" />
-							<label class="star-2" for="star-2">2</label>
-							<input value="3" type="radio" name="star" class="star-3" id="star-3" />
-							<label class="star-3" for="star-3">3</label>
-							<input value="4" type="radio" name="star" class="star-4" id="star-4" />
-							<label class="star-4" for="star-4">4</label>
-							<input value="5" type="radio" name="star" class="star-5" id="star-5" />
-							<label class="star-5" for="star-5">5</label>
-							<span></span>
-						</div>
-						<input type="hidden" name="event_id" value="{{ $event->id }}">
-						<input type="hidden" name="owner_id" value="{{ $event->user_id }}">
-						<button class="button" type="submit">Оценить</button>
-					</form>
-				@else
-					<div class="stars">
-						<div class="star star-bar">
-							<div class="star"></div>
-							<div class="star"></div>
-							<div class="star"></div>
-							<div class="star"></div>
-							<div class="star"></div>
-						</div>
+					<div class="rating_block">
+						<form class="rating form" action="{{ route('ajax_store_rating') }}" method="POST">
+							<div class="rating-note">
+								<button class="button" type="submit">Оценить</button>
+							</div>
+							<div class="stars">
+								<input value="1" type="radio" name="star" class="star-1" id="star-1" />
+								<label class="star-1" for="star-1">1</label>
+								<input value="2" type="radio" name="star" class="star-2" id="star-2" />
+								<label class="star-2" for="star-2">2</label>
+								<input value="3" type="radio" name="star" class="star-3" id="star-3" />
+								<label class="star-3" for="star-3">3</label>
+								<input value="4" type="radio" name="star" class="star-4" id="star-4" />
+								<label class="star-4" for="star-4">4</label>
+								<input value="5" type="radio" name="star" class="star-5" id="star-5" />
+								<label class="star-5" for="star-5">5</label>
+								<span></span>
+							</div>
+							<input type="hidden" name="event_id" value="{{ $event->id }}">
+							<input type="hidden" name="owner_id" value="{{ $event->user_id }}">
+						</form>
 					</div>
+				@else
+					<?php $rating = $event->event_rating; ?>
+					@include('templates.rating')
 				@endif
 			@endif
 		</div>

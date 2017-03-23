@@ -27,7 +27,7 @@ class CreateEventsTable extends Migration
             $table->string('tags')->nullable();
             $table->string('offer')->nullable();
             $table->string('peoples_count')->nullable();
-            $table->integer('rating')->default(0); // change without check
+            $table->integer('event_rating')->default(0); // change without check
             $table->smallInteger('status');
             $table->smallInteger('verify');
             $table->string('reason')->nullable();

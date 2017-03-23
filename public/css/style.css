@@ -669,35 +669,41 @@ form#properties select::-ms-expand {
 
 
 /*rating*/
-form.rating {
+.rating, .rated {
 	display: inline-block;
 }
-form.rating .stars {
+.rating .stars, .rated .stars {
 	background: url("../images/stars.png") repeat-x 0 0;
 	width: 150px;
 	margin: 0 auto;
+	display: inline-block;
 }
-form.rating .stars input[type="radio"] {
+.rating-note {
+	display: inline-block;
+	vertical-align: top;
+	line-height: 1.9;
+}
+.rating .stars input[type="radio"], .rated .stars input[type="radio"] {
 	position: absolute;
 	opacity: 0;
 	filter: alpha(opacity=0);
 }
-form.rating .stars input[type="radio"].star-5:checked ~ span {
+.rating .stars input[type="radio"].star-5:checked ~ span {
 	width: 100%;
 }
-form.rating .stars input[type="radio"].star-4:checked ~ span {
+.rating .stars input[type="radio"].star-4:checked ~ span {
 	width: 80%;
 }
-form.rating .stars input[type="radio"].star-3:checked ~ span {
+.rating .stars input[type="radio"].star-3:checked ~ span {
 	width: 60%;
 }
-form.rating .stars input[type="radio"].star-2:checked ~ span {
+.rating .stars input[type="radio"].star-2:checked ~ span {
 	width: 40%;
 }
-form.rating .stars input[type="radio"].star-1:checked ~ span {
+.rating .stars input[type="radio"].star-1:checked ~ span {
 	width: 20%;
 }
-form.rating .stars label {
+.rating .stars label, .rated .stars label {
 	display: block;
 	width: 30px;
 	height: 30px;
@@ -710,22 +716,22 @@ form.rating .stars label {
 	background: transparent!important;
 	cursor: pointer;
 }
-form.rating .stars label.star-5:hover ~ span {
+.rating .stars label.star-5:hover ~ span {
 	width: 100% !important;
 }
-form.rating .stars label.star-4:hover ~ span {
+.rating .stars label.star-4:hover ~ span {
 	width: 80% !important;
 }
-form.rating .stars label.star-3:hover ~ span {
+.rating .stars label.star-3:hover ~ span {
 	width: 60% !important;
 }
-form.rating .stars label.star-2:hover ~ span {
+.rating .stars label.star-2:hover ~ span {
 	width: 40% !important;
 }
-form.rating .stars label.star-1:hover ~ span {
+.rating .stars label.star-1:hover ~ span {
 	width: 20% !important;
 }
-form.rating .stars span {
+.rating .stars span, .rated .stars span {
 	display: block;
 	width: 0;
 	position: relative;
@@ -738,5 +744,13 @@ form.rating .stars span {
 	-ms-transition: -ms-width 0.2s;
 	-o-transition: -o-width 0.2s;
 	transition: width 0.2s;
+}
+
+.rated .stars label {
+	cursor: default !important;
+}
+
+.rated .stars span {
+	width: 0%;
 }
 /*/rating*/

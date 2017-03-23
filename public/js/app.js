@@ -265,6 +265,10 @@
 					form.attr('action', response.event_action);
 					form.find('button[type="submit"]').text(response.event_button);
 				}
+
+				if(response.avg_event !== undefined) {
+					$('.rating_block').html(response.avg_event);
+				}
 				form.find('button.no-disabled').prop('disabled', false);
 			},
 			error: function(e) {
@@ -291,3 +295,54 @@
 
 // });
 
+
+
+// var MIN_LENGTH = 2;
+// $(document).ready(function() {
+// 	$("#keyword").keyup(function(e) {
+// 		var keyCode = e.keyCode;
+// 		var keyword = $("#keyword").val();
+// 		if (keyword.length >= MIN_LENGTH && keyCode !== 38 && keyCode !== 40) {
+// 			$.get("/autocomplete", {
+// 				keyword: keyword
+// 			}).done(function(data) {
+// 				$('#results').html('');
+// 				var results = jQuery.parseJSON(data);
+// 				$(results).each(function(key, value) {
+// 					if (typeof value.image != 'undefined') {
+// 						$('#results').append('<div class="item col-xs-12"><div class="col-xs-2"><a href="/' + value.controller + '/' + value.cat_slug + '"><img src="' + value.image + '"/></a></div><div class="col-xs-10"><a href="/' + value.controller + '/' + value.cat_slug + '">' + value.cat_name + '</a></div></div>');
+// 					} else {
+// 						$('#results').append('<div class="item col-xs-12 autosuggest"><a href="/' + value.controller + '/' + value.cat_slug + '">' + value.cat_name + '</a></div>');
+// 					}
+// 				})
+// 			});
+// 		} else if (keyCode == 38 || keyCode == 40) {
+// 			if (!$('.autosuggest').hasClass('.search-selected')) {
+// 				if (keyCode === 38) {
+// 					if ($('.search-selected').prev('.autosuggest').length > 0) {
+// 						$('.search-selected').removeClass('search-selected').prev('.autosuggest').addClass('search-selected');
+// 					} else {
+// 						$('.search-selected').removeClass('search-selected');
+// 						$('.autosuggest:last-child').addClass('search-selected');
+// 					}
+// 				} else {
+// 					if ($('.search-selected').next('.autosuggest').length > 0) {
+// 						$('.search-selected').removeClass('search-selected').next('.autosuggest').addClass('search-selected');
+// 					} else {
+// 						$('.search-selected').removeClass('search-selected');
+// 						$('.autosuggest:first-child').addClass('search-selected');
+// 					}
+// 				}
+// 			}
+// 			$("#keyword").val($('.search-selected a').text());
+// 			$('form.header-search').attr('action', $('.search-selected a').attr('href'));
+// 		} else {
+// 			$('#results').html('');
+// 		}
+// 	});
+// 	$("#keyword").blur(function() {
+// 		$("#results").fadeOut(500);
+// 	}).focus(function() {
+// 		$("#results").show();
+// 	});
+// });
