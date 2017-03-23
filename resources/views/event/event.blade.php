@@ -59,29 +59,60 @@
 
 			<div class="event-inline">
 				<div class="event-note">О пользователе: </div>
-				{{ $owner->name }} ({{ $owner->age }} лет) 
+				{{ $event->name }} ({{ $event->age }} лет) 
 			</div>
 
-			@if(!Auth::user())
-				<p>Для участия во встрече необсходимо <a href="{{ route('index_login') }}">войти</a> или <a href="{{ route('index_register') }}">зарегистрироваться</a></p>
+			@if($event->status == 1)
+				@if(!Auth::user())
+					<p>Для участия во встрече необсходимо <a href="{{ route('index_login') }}">войти</a> или <a href="{{ route('index_register') }}">зарегистрироваться</a></p>
+				@else
+					<div class="event-inline subscribe">
+						<form class="form" action="{{ $actions_arr['action1'] }}" method="POST">
+							<button type="submit" class="button">{{ $actions_arr['button1'] }}</button>
+						</form>
+					</div>
+					<div class="event-inline to-favourites">
+						<form class="form" action="{{ $actions_arr['action2'] }}" method="POST">
+							@if($event->user_id == Auth::user()->id)
+								<div class="form-group required">
+									<textarea type="text" name="reason" placeholder="Причина закрытия"></textarea>
+								</div>
+							@endif
+							<button type="submit" class="button">{{ $actions_arr['button2'] }}</button>
+						</form>
+					</div>
+				@endif
 			@else
-
-				<div class="event-inline subscribe">
-					<form class="form" action="{{ $actions_arr['action1'] }}" method="POST">
-						<button type="submit" class="button">{{ $actions_arr['button1'] }}</button>
+				@if($follower_info && $follower_info->count() && !$follower_info[0]->follower_eval)
+					<form class="rating form" action="{{ route('ajax_store_rating') }}" method="POST">
+						<div class="stars">
+							<input value="1" type="radio" name="star" class="star-1" id="star-1" />
+							<label class="star-1" for="star-1">1</label>
+							<input value="2" type="radio" name="star" class="star-2" id="star-2" />
+							<label class="star-2" for="star-2">2</label>
+							<input value="3" type="radio" name="star" class="star-3" id="star-3" />
+							<label class="star-3" for="star-3">3</label>
+							<input value="4" type="radio" name="star" class="star-4" id="star-4" />
+							<label class="star-4" for="star-4">4</label>
+							<input value="5" type="radio" name="star" class="star-5" id="star-5" />
+							<label class="star-5" for="star-5">5</label>
+							<span></span>
+						</div>
+						<input type="hidden" name="event_id" value="{{ $event->id }}">
+						<input type="hidden" name="owner_id" value="{{ $event->user_id }}">
+						<button class="button" type="submit">Оценить</button>
 					</form>
-				</div>
-				<div class="event-inline to-favourites">
-					<form class="form" action="{{ $actions_arr['action2'] }}" method="POST">
-						@if($owner->id == Auth::user()->id)
-							<div class="form-group required">
-								<textarea type="text" name="reason" placeholder="Причина закрытия"></textarea>
-							</div>
-						@endif
-						<button type="submit" class="button">{{ $actions_arr['button2'] }}</button>
-					</form>
-				</div>
-
+				@else
+					<div class="stars">
+						<div class="star star-bar">
+							<div class="star"></div>
+							<div class="star"></div>
+							<div class="star"></div>
+							<div class="star"></div>
+							<div class="star"></div>
+						</div>
+					</div>
+				@endif
 			@endif
 		</div>
 	</div>
