@@ -18,6 +18,10 @@
 						<div class="search-properties">
 							<form id="properties">
 								<div class="autocomplete-body">
+									<input autocomplete="off" data-sense="country" class="autocomplete-input" type="text" name="country" placeholder="Страна">
+									<div class="autocomplete-result"></div>
+								</div>
+								<div class="autocomplete-body">
 									<input autocomplete="off" data-sense="city" class="autocomplete-input" type="text" name="city" placeholder="Город">
 									<div class="autocomplete-result"></div>
 								</div>

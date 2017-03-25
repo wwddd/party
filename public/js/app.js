@@ -346,6 +346,7 @@
 
 	$(document).on('blur', '.autocomplete-input', function(e) {
 		$(this).siblings('.autocomplete-result').fadeOut(200);
+		$(this).siblings('.autocomplete-result').find('div.active').removeClass('active');
 	});
 
 	$(document).on('click', '.autocomplete-result div', function(e) {
@@ -361,14 +362,14 @@
 		if (keyCode == 38 || keyCode == 40) {
 			if(keyCode == 38) {
 				if(resultBlock.find('div.active:visible').length > 0) {
-					resultBlock.find('div.active:visible').removeClass('active').prevAll('div:visible').first().addClass('active');
+					resultBlock.find('div.active').removeClass('active').prevAll('div:visible').first().addClass('active');
 				} else {
 					resultBlock.find('div:visible').last().addClass('active');
 				}
 			}
 			if(keyCode == 40) {
 				if(resultBlock.find('div.active:visible').length > 0) {
-					resultBlock.find('div.active:visible').removeClass('active').nextAll('div:visible').first().addClass('active');
+					resultBlock.find('div.active').removeClass('active').nextAll('div:visible').first().addClass('active');
 				} else {
 					resultBlock.find('div:visible').first().addClass('active');
 				}
@@ -394,13 +395,15 @@
 				}
 			});
 
+			// 83e2d3fb83e2d3fb83509f1f8183b8bc76883e283e2d3fbdb2b9eaaab67dfda22037aeb
+			// ff61b0b5ff61b0b5ffd3fc5121ff3b0e14fff61ff61b0b5a7b7555d105a7be78cdc5d48
 			$.ajax({
 				url: "https://api.vk.com/method/database." + sense,
 				crossDomain: true,
 				dataType: 'jsonp',
 				type: 'GET',
 				data: {
-					access_token: '83e2d3fb83e2d3fb83509f1f8183b8bc76883e283e2d3fbdb2b9eaaab67dfda22037aeb',
+					access_token: 'ff61b0b5ff61b0b5ffd3fc5121ff3b0e14fff61ff61b0b5a7b7555d105a7be78cdc5d48',
 					country_id: country_id,
 					count: count,
 					need_all: need_all,
