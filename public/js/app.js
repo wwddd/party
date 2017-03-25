@@ -294,9 +294,21 @@
 		var resultBlock = input.siblings('.autocomplete-result');
 		var result = '';
 		for(i in items) {
-			result += '<div>' + items[i].title + '</div>';
+			result += '<div data-id="' + items[i].id + '">' + items[i].title + '</div>';
 		}
 		resultBlock.html(result);
+		resultBlock.fadeIn(200);
+	}
+
+	function autocompleteByName(input) {
+		var resultBlock = input.siblings('.autocomplete-result');
+		resultBlock.find('div').each(function() {
+			if($(this).is(':contains("' + input.val() + '")')) {
+				$(this).show();
+			} else {
+				$(this).hide();
+			}
+		});
 		resultBlock.fadeIn(200);
 	}
 
@@ -304,7 +316,11 @@
 		if(e.keyCode == 13) {
 			e.preventDefault();
 			var resultBlock = $(this).siblings('.autocomplete-result');
-			$(this).val(resultBlock.find('div.active').text());
+			if(resultBlock.find('div.active').length > 0) {
+				$(this).val(resultBlock.find('div.active').text());
+				$(this).data('id', resultBlock.find('div.active').data('id'));
+			}
+			$(this).blur();
 			resultBlock.fadeOut(200);
 		}
 	});
@@ -315,6 +331,7 @@
 
 	$(document).on('click', '.autocomplete-result div', function(e) {
 		$(this).closest('.autocomplete-body').find('.autocomplete-input').val($(this).text());
+		$(this).closest('.autocomplete-body').find('.autocomplete-input').data('id', $(this).data('id'));
 	});
 
 	$(document).on('keyup focus', '.autocomplete-input', function(e) {
@@ -324,43 +341,59 @@
 		var keyCode = e.keyCode;
 		if (keyCode == 38 || keyCode == 40) {
 			if(keyCode == 38) {
-				if(resultBlock.find('div.active').length > 0) {
-					resultBlock.find('div.active').removeClass('active').prev().addClass('active');
+				if(resultBlock.find('div.active:visible').length > 0) {
+					resultBlock.find('div.active:visible').removeClass('active').prevAll('div:visible').first().addClass('active');
 				} else {
-					resultBlock.find('div').last().addClass('active');
+					resultBlock.find('div:visible').last().addClass('active');
 				}
 			}
 			if(keyCode == 40) {
-				if(resultBlock.find('div.active').length > 0) {
-					resultBlock.find('div.active').removeClass('active').next().addClass('active');
+				if(resultBlock.find('div.active:visible').length > 0) {
+					resultBlock.find('div.active:visible').removeClass('active').nextAll('div:visible').first().addClass('active');
 				} else {
-					resultBlock.find('div').first().addClass('active');
+					resultBlock.find('div:visible').first().addClass('active');
 				}
 			}
-		} else if(e.keyCode == 13) {
-			
 		} else {
+			var count = 7;
+			var need_all = 0;
 			if(input.data('sense') == 'city') {
-				setTimeout(function() {
-					$.ajax({
-						url: "https://api.vk.com/method/database.getCities",
-						crossDomain: true,
-						dataType: 'jsonp',
-						type: 'GET',
-						data: {
-							access_token: '83e2d3fb83e2d3fb83509f1f8183b8bc76883e283e2d3fbdb2b9eaaab67dfda22037aeb',
-							country_id: 1,
-							count: 7,
-							q: q,
-							v: 5.62
-						},
-						success: function(data) {
-							var items = data.response.items;
-							generateAutocomplete(input, items);
-						}
-					});
-				}, 100);
+				var sense = 'getCities';
+			} else if(input.data('sense') == 'country') {
+				var sense = 'getCountries';
+				count = 200;
+				need_all = 1;
+				if(resultBlock.find('div').length > 0) {
+					autocompleteByName(input);
+					return false;
+				}
 			}
+			var country_id = 1;
+			$('.autocomplete-input').each(function() {
+				if($(this).data('sense') == 'country' && $(this).data('id')) {
+					country_id = $(this).data('id');
+				}
+			});
+
+			$.ajax({
+				url: "https://api.vk.com/method/database." + sense,
+				crossDomain: true,
+				dataType: 'jsonp',
+				type: 'GET',
+				data: {
+					access_token: '83e2d3fb83e2d3fb83509f1f8183b8bc76883e283e2d3fbdb2b9eaaab67dfda22037aeb',
+					country_id: country_id,
+					count: count,
+					need_all: need_all,
+					q: q,
+					v: 5.62
+				},
+				success: function(data) {
+					console.log(data);
+					var items = data.response.items;
+					generateAutocomplete(input, items);
+				}
+			});
 		}
 	});
 // /FORMS

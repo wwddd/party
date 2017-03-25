@@ -39,12 +39,13 @@
 			<div class="col-6">
 				<div class="place">
 
-					<div class="form-group required">
-						<input placeholder="Страна" type="text" name="country">
+					<div class="form-group required autocomplete-body">
+						<input autocomplete="off" data-sense="country" class="autocomplete-input" type="text" name="country" placeholder="Страна">
+						<div class="autocomplete-result"></div>
 					</div>
-
-					<div class="form-group required">
-						<input placeholder="Город" type="text" name="city">
+					<div class="form-group required autocomplete-body">
+						<input autocomplete="off" data-sense="city" class="autocomplete-input" type="text" name="city" placeholder="Город">
+						<div class="autocomplete-result"></div>
 					</div>
 
 					<div class="form-group required">

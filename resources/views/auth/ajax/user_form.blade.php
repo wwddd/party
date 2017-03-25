@@ -20,8 +20,9 @@
 			</div>
 		</div>
 		<div class="col-6">
-			<div class="form-group required">
-				<input type="text" name="country" placeholder="Страна">
+			<div class="form-group required autocomplete-body">
+				<input autocomplete="off" data-sense="country" class="autocomplete-input" type="text" name="country" placeholder="Страна">
+				<div class="autocomplete-result"></div>
 			</div>
 			<div class="form-group required autocomplete-body">
 				<input autocomplete="off" data-sense="city" class="autocomplete-input" type="text" name="city" placeholder="Город">

@@ -480,6 +480,8 @@ span.tag, span.input-tag, .event-tag {
 	border-top: none;
 	font-size: 13px;
 	display: none;
+	max-height: 200px;
+	overflow-y: scroll;
 }
 
 .autocomplete-result div {
@@ -628,7 +630,27 @@ footer {
 	margin: 5px 0;
 }
 
-form#properties select {
+form#properties .autocomplete-body {
+	display: inline-block;
+}
+
+form#properties .autocomplete-result {
+	left: 0;
+}
+
+form#properties input {
+	color: #444;
+	height: 28px;
+	border-radius: 4px;
+	border: 1px solid #aaaaaa;
+	padding-left: 8px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	outline: none;
+}
+
+form#properties select, form#properties input {
 	width: 180px;
 }
 
