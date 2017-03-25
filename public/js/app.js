@@ -215,75 +215,94 @@
 		$(this).closest('.form-group').find('.error').remove();
 	});
 
+	function sendForm(form, confirm = false) {
+		if(confirm) {
+			// form.find('button[type="submit"]').prop('disabled', true);
+			var action = form.attr('action');
+			var method = form.attr('method');
+			form.find('.form-group').each(function() {
+				createInputs($(this));
+			});
+			var toSend = new FormData(form[0]);
+			$.ajax({
+				url: action,
+				data: toSend,
+				type: method,
+				contentType: false,
+				cache: false,
+				processData:false,
+				headers: {
+					'X-CSRF-TOKEN': _token
+				},
+				beforeSend: function() {
+					$('.error').remove();
+				},
+				success: function(data) {
+					var response = $.parseJSON(data);
+					if(response.status == 'success') {
+						mainNotice(response.message, 'success');
+					} else if(response.status == 'fail') {
+						mainNotice(response.message, 'fail');
+					}
+
+					if(response.redirect !== undefined) {
+						setTimeout(function() {
+							window.location.href = response.redirect;
+						}, 2000);
+					}
+
+					if(response.event_action !== undefined && response.event_button !== undefined) {
+						form.attr('action', response.event_action);
+						form.find('button[type="submit"]').text(response.event_button);
+					}
+
+					if(response.avg_event !== undefined) {
+						$('.rating_block').html(response.avg_event);
+					}
+					form.find('button.no-disabled').prop('disabled', false);
+				},
+				error: function(e) {
+					var errors = e.responseJSON;
+					for(err in errors) {
+						form.find('*[name="' + err + '"]').closest('.form-group').append('<span class="error">' + errors[err] + '</span>');
+					}
+
+					if(e.status == 422) {
+						mainNotice('Заполните все необходимые поля!', 'fail');
+					} else if(e.status == 500) {
+						mainNotice('Ошибка 500! Разработчик - мудак :)', 'fail');
+					}
+					form.find('button[type="submit"]').prop('disabled', false);
+				}
+			});
+		}
+	}
+
+	function confirmSend(form) {
+		$('#confirm-modal').addClass('active');
+		$('#confirm-overlay').fadeIn(300);
+		$('.confirm-yes').on('click.confirm', function() {
+			$('#confirm-modal').removeClass('active');
+			$('#confirm-overlay').fadeOut(300);
+			sendForm(form, true);
+		});
+	}
+
+	$('.confirm-no').on('click', function() {
+		$('.confirm-yes').off('click.confirm');
+		$('#confirm-modal').removeClass('active');
+		$('#confirm-overlay').fadeOut(300);
+	});
+
 	$(document).on('submit', 'form.form', function(e) {
+		$('.confirm-yes').off('click.confirm');
 		e.preventDefault();
 		var form = $(this);
-		// form.find('button[type="submit"]').prop('disabled', true);
-		var action = form.attr('action');
-		var method = form.attr('method');
-		form.find('.form-group').each(function() {
-			if($(this).hasClass('required')) {
-				// validate($(this));
-			}
-			createInputs($(this));
-		});
-		// var toSend = form.serializeArray();
-		// var toSend = form.serializeArray();
-		var toSend = new FormData(form[0]);
-		// console.log(toSend);
-		// console.log(toSend);
-		// console.log($('meta[name="csrf-token"]').attr('content'));
-		$.ajax({
-			url: action,
-			data: toSend,
-			type: method,
-			contentType: false,
-			cache: false,
-			processData:false,
-			headers: {
-				'X-CSRF-TOKEN': _token
-			},
-			beforeSend: function() {
-				$('.error').remove();
-			},
-			success: function(data) {
-				var response = $.parseJSON(data);
-				if(response.status == 'success') {
-					mainNotice(response.message, 'success');
-				} else if(response.status == 'fail') {
-					mainNotice(response.message, 'fail');
-				}
-
-				if(response.redirect !== undefined) {
-					setTimeout(function() {
-						window.location.href = response.redirect;
-					}, 2000);
-				}
-
-				if(response.event_action !== undefined && response.event_button !== undefined) {
-					form.attr('action', response.event_action);
-					form.find('button[type="submit"]').text(response.event_button);
-				}
-
-				if(response.avg_event !== undefined) {
-					$('.rating_block').html(response.avg_event);
-				}
-				form.find('button.no-disabled').prop('disabled', false);
-			},
-			error: function(e) {
-				var errors = e.responseJSON;
-				for(err in errors) {
-					form.find('*[name="' + err + '"]').closest('.form-group').append('<span class="error">' + errors[err] + '</span>');
-				}
-
-				if(e.status == 422) {
-					mainNotice('Заполните все необходимые поля!', 'fail');
-				} else if(e.status == 500) {
-					mainNotice('Ошибка 500! Разработчик - мудак :)', 'fail');
-				}
-				form.find('button[type="submit"]').prop('disabled', false);
-			}
-		});
+		if(form.hasClass('confirm')) {
+			confirmSend(form);
+		} else {
+			sendForm(form, true);
+		}
 	});
 
 

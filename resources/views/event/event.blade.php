@@ -67,12 +67,12 @@
 					<p>Для участия во встрече необсходимо <a href="{{ route('index_login') }}">войти</a> или <a href="{{ route('index_register') }}">зарегистрироваться</a></p>
 				@else
 					<div class="event-inline subscribe">
-						<form class="form" action="{{ $actions_arr['action1'] }}" method="POST">
+						<form class="form confirm" action="{{ $actions_arr['action1'] }}" method="POST">
 							<button type="submit" class="button">{{ $actions_arr['button1'] }}</button>
 						</form>
 					</div>
 					<div class="event-inline to-favourites">
-						<form class="form" action="{{ $actions_arr['action2'] }}" method="POST">
+						<form class="form confirm" action="{{ $actions_arr['action2'] }}" method="POST">
 							@if($event->user_id == Auth::user()->id)
 								<div class="form-group required">
 									<textarea type="text" name="reason" placeholder="Причина закрытия"></textarea>

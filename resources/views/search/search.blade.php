@@ -17,12 +17,6 @@
 					<div class="container">
 						<div class="search-properties">
 							<form id="properties">
-								<!-- <select name="city">
-									<option value="">--Город--</option>
-									<option {{ app('request')->get('city') == 'Москва' ? 'selected="selected"' : '' }} value="Москва">Москва</option>
-									<option {{ app('request')->get('city') == 'Таганрог' ? 'selected="selected"' : '' }} value="Таганрог">Таганрог</option>
-									<option {{ app('request')->get('city') == 'Санкт-Петербург' ? 'selected="selected"' : '' }} value="Санкт-Петербург">Санкт-Петербург</option>
-								</select> -->
 								<div class="autocomplete-body">
 									<input autocomplete="off" data-sense="city" class="autocomplete-input" type="text" name="city" placeholder="Город">
 									<div class="autocomplete-result"></div>

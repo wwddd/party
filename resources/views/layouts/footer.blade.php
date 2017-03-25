@@ -31,3 +31,12 @@
 		</div>
 	</div>
 </footer>
+
+<div id="confirm-overlay"></div>
+<div id="confirm-modal">
+	<div class="confirm-title">Вы уверены?</div>
+	<div class="container">
+		<div class="col-6 confirm-yes"><button class="button create-button">Да</button></div>
+		<div class="col-6 confirm-no"><button class="button create-button">Нет</button></div>
+	</div>
+</div>
