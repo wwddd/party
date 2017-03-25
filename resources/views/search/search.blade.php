@@ -149,7 +149,7 @@
 			sendAll();
 		});
 
-		$(document).on('keypress', '.autocomplete-input', function(e) {
+		$(document).on('keypress', 'input', function(e) {
 			if(e.keyCode == 13) {
 				clickedPage = 1;
 				sendAll();
