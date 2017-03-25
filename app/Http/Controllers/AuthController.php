@@ -8,31 +8,13 @@ use Illuminate\Http\Input;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Mail;
-
-
-use DB;
 use App\User;
+use DB, Crypt;
+
+use App\Http\Controllers\MailController;
 
 class AuthController extends Controller
 {
-    // Country, city future
-    /*
-        public function __construct() {
-            // создание нового cURL ресурса
-            $ch = curl_init();
-
-            // устрановка параметров
-            curl_setopt($ch, CURLOPT_URL, "https://api.vk.com/method/database.getCountries?need_all&access_token=83e2d3fb83e2d3fb83509f1f8183b8bc76883e283e2d3fbdb2b9eaaab67dfda22037aeb&v=5.62");
-
-            // загрузка страницы и выдача её браузеру
-            $countries = curl_exec($ch);
-
-            // завершение сеанса и освобождение ресурсов
-            curl_close($ch);
-
-        }
-    */
-
     public function index_register() {
         return view('auth.register');
     }
@@ -45,7 +27,7 @@ class AuthController extends Controller
         return view('auth.ajax.company_form');
     }
 
-    public function user_store(Request $request) {
+    public function user_store(Request $request, MailController $mail) {
         $this->validate($request, [
             'name' => 'required|min:2',
             'gender' => 'required',
@@ -91,35 +73,87 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        // Send mail future
-        /*        
-            $message = "для завершения регистрации на сайте 'party-scope.com', необходимо подтвердить свою учётную запись, перейдя по ссылке ниже.";
-            $string_compare = bcrypt($email);
-            $link = route('confirms_account', ['string_compare' => $string_compare]);
-            Mail::send('layouts.miniTpl.email', [
-                    'name' => $name,
-                    'link' => $link,
-                    'message' => $message,
-                    'string_compare' => $string_compare
-                ], 
-                function($message) use ($email) {
-                    $message
-                    ->to($email)
-                    ->subject('You have a message from portfolio-reym!');
-                }
-            );
-        */
+        // Verification accaunt
+        $content = "для завершения регистрации на сайте 'party-scope.com', необходимо подтвердить свою учётную запись, перейдя по ссылке ниже.";
+        $string_compare = Crypt::encrypt($email);
+        $link = route('confirm_account', ['string_compare' => $string_compare]);
+        $template = 'verifi_account';
+        $mail->send($link, $email, $content, $template);
 
         $response = [];
     	$response['status'] = 'success';
-        $response['message'] = 'Поздравляем ' . Auth::user()->name . '! Вы создали аккаунт!';
+        $response['message'] = 'Поздравляем ' . Auth::user()->name . '! Вы создали аккаунт! Для полноценного использования русурса необходимо перейти в почту и подтвердить аккаунт';
         $response['redirect'] = route('account');
         return json_encode($response);
     }
 
 
-    public function confirms_account($string_compare) {
-        return 'confirms mail';
+    public function confirm_account($string_compare) {
+        $decrypted = Crypt::decrypt($string_compare);
+        $result = DB::table('users')
+                        ->where('email', $decrypted)
+                        ->get();
+
+        if (count($result) == 1) {
+            DB::table('users')
+                        ->where('email', $decrypted)
+                        ->update(array(
+                            'verified' => 1
+                        ));
+            return redirect(route('account'))
+                                ->with('message', 'Подтверждение прошло успешно');
+        } else {        
+            return redirect(route('account'))
+                                ->with('message', 'Что то пошло не так...Попробуйте ещё раз!');
+        }
+    }
+
+    public function forgot_password() {
+        return view('auth.forgot_password');
+    }
+
+    public function reset_password_init(Request $request, MailController $mail) {
+        $email = $request->input('email');
+
+        $content = "Для сброса пароля перейдите по ссылке ниже";
+        $string_compare = Crypt::encrypt($email);
+        $link = route('reset-password-confirm', ['string_compare' => $string_compare]);
+        $template = 'reset_password';
+        $mail->send($link, $email, $content, $template);
+
+        $response = [];
+        $response['status'] = 'success';
+        $response['message'] = 'Зайдите на вашу почту и подтвердите сброс пароля';
+        return json_encode($response);
+    }
+
+    public function reset_password_confirm($string_compare) {
+        $decrypted = Crypt::decrypt($string_compare);
+
+        $result = DB::table('users')
+                        ->where('email', $decrypted)
+                        ->get();
+
+        if (count($result) == 1) {
+            return view('auth.reset_password', ['user_id' => $result[0]->id]);
+        } else {
+            return view('templates.page_not_found');
+        }
+    }
+
+    public function reset_password(Request $request, $user_id) {
+        $password = bcrypt($request->input('password'));
+        DB::table('users')
+                    ->where('id', $user_id)
+                    ->update(array(
+                        'password' => $password
+                    ));
+
+        $response = [];
+        $response['status'] = 'success';
+        $response['message'] = 'Пароль успешно изменён!';
+        $response['redirect'] = route('login');
+        return json_encode($response);
     }
 
     public function index_login() {
@@ -141,23 +175,12 @@ class AuthController extends Controller
             $response['message'] = 'Успешно';
             $response['redirect'] = route('account');
             return json_encode($response);
-            // return redirect(route('account'));
         } else {
             $response = [];
             $response['status'] = 'fail';
             $response['message'] = 'Неправильный email или пароль';
-            return json_encode($response);       
-            // $message = 'Email or Password not valid';
-            // return redirect()->back()->withInput()->with('message', $message);
+            return json_encode($response);
         }
-    }
-
-    public function vk_register() {
-        
-    }
-
-    public function vk_login() {
-        return 'vk';
     }
 
     public function logout() {

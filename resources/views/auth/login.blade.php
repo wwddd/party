@@ -30,6 +30,9 @@
 			<div class="form-group required">
 				<input type="password" name="password" placeholder="Пароль">
 			</div>
+			<div class="form-group">
+				<p><a href="{{ route('forgot-password') }}">Забыли пароль?</a></p>
+			</div>
 			<div class="form-group required">
 				<button type="submit" class="button create-button">Войти</button>
 			</div>
