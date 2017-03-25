@@ -34,6 +34,10 @@ Route::group(['prefix' => 'login'], function() {
 		'as' => 'login',
 		'uses' => 'AuthController@login'
 	]);
+	Route::get('vk', [
+		'as' => 'vk_login',
+		'uses' => 'AuthController@vk_login'
+	]);
 });
 
 // Logout
@@ -42,9 +46,28 @@ Route::get('logout', [
 	'uses' => 'AuthController@logout'
 ]);
 
-Route::get('confirms-account/{string_compare}', [
-	'as' => 'confirms_account',
-	'uses' => 'AuthController@confirms_account'
+// Confirm account
+Route::get('confirm-account/{string_compare}', [
+	'as' => 'confirm_account',
+	'uses' => 'AuthController@confirm_account'
+]);
+
+// Reset password
+Route::get('forgot-password', [
+	'as' => 'forgot-password',
+	'uses' => 'AuthController@forgot_password'
+]);
+Route::post('reset-password-init', [
+	'as' => 'reset-password-init',
+	'uses' => 'AuthController@reset_password_init'
+]);
+Route::get('reset-password-confirm/{string_compare}', [
+	'as' => 'reset-password-confirm',
+	'uses' => 'AuthController@reset_password_confirm'
+]);
+Route::post('reset-password/{user_id}', [
+	'as' => 'reset-password',
+	'uses' => 'AuthController@reset_password'
 ]);
 
 // Cooperation
