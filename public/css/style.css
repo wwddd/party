@@ -282,6 +282,11 @@ body {
 	cursor: pointer;
 }
 
+.button-mid {
+	font-size: 20px;
+	padding: 5px;
+}
+
 .create-button {
 	width: 90%;
 	height: 50px;
@@ -564,11 +569,23 @@ header, header a {
 }
 
 .header {
-	padding: 30px 0;
+	padding: 5px 0;
 }
 
 #logo {
 	float: left;
+	background: white;
+	border-radius: 50px 0px 15px 0px;
+	height: 60px;
+	overflow: hidden;
+}
+
+#logo a {
+	text-decoration: none;
+}
+
+#logo img {
+	width: 220px;
 }
 
 #menu {
@@ -860,3 +877,7 @@ form#properties select::-ms-expand {
 	width: 0%;
 }
 /*/rating*/
+
+.repost-vk * {
+	box-sizing: content-box;
+}

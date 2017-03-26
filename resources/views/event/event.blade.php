@@ -1,5 +1,5 @@
 @section('title')
-	Event page
+	{{ $event->title }}
 @stop
 
 @include('layouts.head')
@@ -68,7 +68,7 @@
 				@else
 					<div class="event-inline subscribe">
 						<form class="form confirm" action="{{ $actions_arr['action1'] }}" method="POST">
-							<button type="submit" class="button">{{ $actions_arr['button1'] }}</button>
+							<button type="submit" class="button button-mid">{{ $actions_arr['button1'] }}</button>
 						</form>
 					</div>
 					<div class="event-inline to-favourites">
@@ -78,7 +78,7 @@
 									<textarea type="text" name="reason" placeholder="Причина закрытия"></textarea>
 								</div>
 							@endif
-							<button type="submit" class="button">{{ $actions_arr['button2'] }}</button>
+							<button type="submit" class="button button-mid">{{ $actions_arr['button2'] }}</button>
 						</form>
 					</div>
 				@endif
@@ -87,7 +87,7 @@
 					<div class="rating_block">
 						<form class="rating form" action="{{ route('ajax_store_rating') }}" method="POST">
 							<div class="rating-note">
-								<button class="button" type="submit">Оценить</button>
+								<button class="button button-mid" type="submit">Оценить</button>
 							</div>
 							<div class="stars">
 								<input value="1" type="radio" name="star" class="star-1" id="star-1" />
@@ -110,6 +110,15 @@
 					<?php $rating = $event->event_rating; $sense = 'события'; ?>
 					@include('templates.rating')
 				@endif
+			@endif
+
+			@if(Auth::user())
+				<div class="event-inline repost-vk">
+					<script type="text/javascript" src="https://vk.com/js/api/share.js?94" charset="windows-1251"></script>
+					<script type="text/javascript">
+						document.write(VK.Share.button(false,{type: "round", text: "Поделиться"}));
+					</script>
+				</div>
 			@endif
 		</div>
 	</div>

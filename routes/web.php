@@ -189,3 +189,16 @@ Route::group(['prefix' => 'search'], function() {
 		'uses' => 'SearchController@ajax_ads'
 	]);
 });
+
+
+// Social
+Route::group(['prefix' => 'social'], function() {
+	Route::get('auth_vk', [
+		'as' => 'auth_vk',
+		'uses' => 'SocialController@auth_vk'
+	]);
+	Route::get('share_vk', [
+		'as' => 'share_vk',
+		'uses' => 'SocialController@share_vk'
+	]);
+});
