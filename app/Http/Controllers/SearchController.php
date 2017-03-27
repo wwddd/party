@@ -21,7 +21,11 @@ class SearchController extends Controller {
 		$query->leftJoin('users', 'users.id', '=', 'events.user_id');
 
 		if(isset($request['city'])) {
-			$query->where('events.city', $request['city']);
+			$query->where('events.city', 'like', '%' . $request['city'] . '%');
+		}
+
+		if(isset($request['country'])) {
+			$query->where('events.country', 'like', '%' . $request['country'] . '%');
 		}
 
 		if(isset($request['tags'])) {

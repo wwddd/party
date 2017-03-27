@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
+use Intervention\Image\ImageManagerStatic as Image;
 use DB;
 
 class EventController extends Controller {
@@ -38,10 +39,12 @@ class EventController extends Controller {
 
 		if(Auth::user()) {
 			if($event[0]->user_id == Auth::user()->id) {
-				$action1 = route('event_complete', ['event_id' => $event[0]->id]);
 				$action2 = route('event_close', ['event_id' => $event[0]->id]);
-				$button1 = 'Завершить';
-				$button2 = 'Закрыть';
+				$button2 = 'Отменить';
+				if($event[0]->start < time()) {
+					$action1 = route('event_complete', ['event_id' => $event[0]->id]);
+					$button1 = 'Завершить';
+				}
 			} else {
 				if($follower_info && $follower_info->count()) {
 					$action1 = route('event_un_subscribe', ['event_id' => $event[0]->id, 'follower_id' => Auth::user()->id]);
@@ -75,62 +78,6 @@ class EventController extends Controller {
 		]);
 	}
 
-
-	// public function index(Request $request, $id) {
-	// 	$event = DB::table('events')
-	// 				->where('id', $id)
-	// 				->get();
-	// 	$owner = DB::table('users')->where('id', $event[0]->user_id)->get();
-	// 	// dd($owner);
-	// 	$is_follower = $this->is_follower($id);
-	// 	$in_favourites = $this->in_favourites($id);
-
-	// 	$action1 = '';
-	// 	$action2 = '';
-	// 	$button1 = '';
-	// 	$button2 = '';
-
-	// 	if(Auth::user()) {
-	// 		if($owner[0]->id == Auth::user()->id) {
-	// 			$action1 = route('event_complete', ['event_id' => $event[0]->id]);
-	// 			$action2 = route('event_close', ['event_id' => $event[0]->id]);
-	// 			$button1 = 'Завершить';
-	// 			$button2 = 'Закрыть';
-	// 		} else {
-	// 			if($is_follower) {
-	// 				$action1 = route('event_un_subscribe', ['event_id' => $event[0]->id, 'follower_id' => Auth::user()->id]);
-	// 				$button1 = 'Отписаться';
-	// 			} else {
-	// 				$action1 = route('event_subscribe', ['event_id' => $event[0]->id, 'follower_id' => Auth::user()->id]);
-	// 				$button1 = 'Вписаться';
-	// 			}
-
-	// 			if($in_favourites) {
-	// 				$action2 = route('event_un_favorites', ['event_id' => $event[0]->id, 'user_id' => Auth::user()->id]);
-	// 				$button2 = 'Убрать из закладок';
-	// 			} else {
-	// 				$action2 = route('event_to_favorites', ['event_id' => $event[0]->id, 'user_id' => Auth::user()->id]);
-	// 				$button2 = 'В закладки';
-	// 			}
-	// 		}
-
-	// 	}
-
-
-	// 	return view('event.event', [
-	// 		'event' => $event[0],
-	// 		'owner' => $owner[0],
-	// 		'is_follower' => $is_follower,
-	// 		'in_favourites' => $in_favourites,
-	// 		'actions_arr' => [
-	// 			'action1' => $action1,
-	// 			'action2' => $action2,
-	// 			'button1' => $button1,
-	// 			'button2' => $button2
-	// 		]
-	// 	]);
-	// }
-
 	public function follower_info($event_id) {
 		if(Auth::user()) {
 			$event_follower = DB::table('event_followers')
@@ -141,24 +88,6 @@ class EventController extends Controller {
 		}
 		return false;
 	}
-
-	// public function is_follower($event_id) {
-	// 	if(Auth::user()) {
-	// 		$event_follower = DB::table('event_followers')
-	// 							->where('event_id', $event_id)
-	// 							->where('follower_id', Auth::user()->id)
-	// 							->get();
-
-	// 		if($event_follower->count()) {
-	// 			return true;
-	// 			// return $event_follower[0]->follower_id;
-	// 		} else {
-	// 			return false;
-	// 		}
-	// 	} else {
-	// 		return false;
-	// 	}
-	// }
 
 	public function in_favourites($event_id) {
 		if(Auth::user()) {
@@ -314,6 +243,9 @@ class EventController extends Controller {
 	}
 
 	public function ajax_store_rating(Request $request) {
+		$this->validate($request, [
+			'star' => 'required'
+		]); 
 		$star = $request['star'];
 		$event_id = $request['event_id'];
 		$owner_id = $request['owner_id'];
@@ -340,8 +272,9 @@ class EventController extends Controller {
 
 		$avg_events = DB::table('events')
 			->where('user_id', $owner_id)
+			->where('event_rating', '!=', 0.0)
 			->avg('event_rating');
-
+			// ->get();
 
 		// user update rating
 		DB::table('users')
@@ -351,16 +284,49 @@ class EventController extends Controller {
 			));
 
 
-
-
-		// $owner_rating_count = DB::table('users')
-		// 	->where('id', $owner_id)
-		// 	->select('rating');
-
-
 		$response['status'] = 'success';
 		$response['message'] = 'Оценка принята!';
 		$response['avg_event'] = view('templates.rating', ['rating' => $avg_event, 'sense' => 'События'])->render();
 		return json_encode($response);
+	}
+
+	public function event_upload_image(Request $request) {
+		$this->validate($request, [
+			'image' => 'mimes:jpg,jpeg,png,gif|required',
+		]);
+		$image = $request->file('image');
+		$event_id = $request['event_id'];
+
+		if($image != null) {
+			$count = 0;
+			$img = Image::make($image);
+			$natural_width = $img->width();
+			$natural_height = $img->height();
+			$file_name = Auth::user()->id . '-' . 
+						 time() . '.' .
+						 $image->getClientOriginalExtension();
+
+			$img->resize(800, null, function ($constraint) {
+				$constraint->aspectRatio();
+				$constraint->upsize();
+			});
+			$img->insert(base_path() . '/public/images/alco.png', 'bottom-right', 10, 10);
+			$img->save(base_path() . '/public/images/events/' . $file_name, 100);
+
+
+			$image_path = '/images/events/' . $file_name;
+		}
+
+		DB::table('events')->where('id', $event_id)->update(array(
+			'image' => $image_path
+		));
+
+		$response = [];
+		$response['status'] = 'success';
+		$response['message'] = 'Фото загружено!';
+		$response['event_image'] = $image_path;
+		return json_encode($response);
+
+		// return view('layouts.miniTpl.image', ['files' => $paths]);
 	}
 }

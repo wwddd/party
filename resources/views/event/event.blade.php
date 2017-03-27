@@ -10,6 +10,37 @@
 
 			<div class=" event-title">{{ $event->title }}</div>
 
+			@if(Auth::user() && $event->user_id == Auth::user()->id && $event->image === NULL)
+				<div class="event-upload">
+					<form class="form" action="{{ route('event_upload_image') }}" method="POST">
+						<div class="form-group left">
+							<span class="fileContainer">
+								Загрузить фото
+								<input class="submit_upload" type="file" name="image">
+							</span>
+						</div>
+						<input type="hidden" name="event_id" value="{{ $event->id }}">
+					</form>
+				</div>
+			@endif
+
+			<div class="event-image">
+				@if(Auth::user() && $event->user_id == Auth::user()->id)
+					<div class="event-imageprop">
+						<form class="form" action="{{ route('event_upload_image') }}" method="POST">
+							<div class="form-group">
+								<span class="fileContainer">
+									Сменить фото
+									<input class="submit_upload" type="file" name="image">
+								</span>
+							</div>
+							<input type="hidden" name="event_id" value="{{ $event->id }}">
+						</form>
+					</div>
+				@endif
+				<img src="<?php $event->image !== NULL ? print $event->image : '' ?>">
+			</div>
+
 			<?php if($event->tags != NULL) { ?>
 				<div class="event-tags">
 					<div class="event-note">Условия входа: </div>
@@ -42,13 +73,13 @@
 				<?php
 					$max_peoples = '';
 					if($event->peoples_count !== NULL) {
-						$max_peoples = ' из ' . $max_peoples;
+						$max_peoples = ' из ' . $event->peoples_count;
 					}
 				?>
 				<br>
 				<div class="event-currentpeoples">
-					<div class="event-note">Максимальное кол-во гостей: </div>
-					{{ $event->peoples_count }}
+					<div class="event-note">Кол-во гостей: </div>
+					{{ $event->current_followers }} {{ $max_peoples }}
 				</div>
 			</div>
 
@@ -66,11 +97,13 @@
 				@if(!Auth::user())
 					<p>Для участия во встрече необсходимо <a href="{{ route('index_login') }}">войти</a> или <a href="{{ route('index_register') }}">зарегистрироваться</a></p>
 				@else
-					<div class="event-inline subscribe">
-						<form class="form confirm" action="{{ $actions_arr['action1'] }}" method="POST">
-							<button type="submit" class="button button-mid">{{ $actions_arr['button1'] }}</button>
-						</form>
-					</div>
+					@if($actions_arr['action1'] !== '' && $actions_arr['button1'] !== '')
+						<div class="event-inline subscribe">
+							<form class="form confirm" action="{{ $actions_arr['action1'] }}" method="POST">
+								<button type="submit" class="button button-mid">{{ $actions_arr['button1'] }}</button>
+							</form>
+						</div>
+					@endif
 					<div class="event-inline to-favourites">
 						<form class="form confirm" action="{{ $actions_arr['action2'] }}" method="POST">
 							@if($event->user_id == Auth::user()->id)
@@ -116,7 +149,15 @@
 				<div class="event-inline repost-vk">
 					<script type="text/javascript" src="https://vk.com/js/api/share.js?94" charset="windows-1251"></script>
 					<script type="text/javascript">
-						document.write(VK.Share.button(false,{type: "round", text: "Поделиться"}));
+						document.write(VK.Share.button({
+							url: 'http://pre05.deviantart.net/bfd7/th/pre/f/2011/006/8/6/position_46_by_ivanpaduano-d36kjqa.jpg',
+							title: 'Заголовок страницы',
+							image: 'http://pre05.deviantart.net/bfd7/th/pre/f/2011/006/8/6/position_46_by_ivanpaduano-d36kjqa.jpg',
+							noparse: true
+						}, {
+							text: 'Поделиться',
+							type: 'round'
+						}));
 					</script>
 				</div>
 			@endif

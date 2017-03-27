@@ -10,9 +10,9 @@
 		<div id="account_tabs">
 			<div class="container">
 				<div class="col-2 tab" id="create" data-url="{{ route('ajax-create') }}">Создать</div>
-				<div class="col-2 tab" id="opened" data-url="{{ route('ajax-opened') }}">Открытые</div>
-				<div class="col-2 tab" id="closed" data-url="{{ route('ajax-closed') }}">Завершенные</div>
-				<div class="col-2 tab" id="favourite" data-url="{{ route('ajax-favourite') }}">Избранное</div>
+				<div class="col-2 tab dynamic" id="opened" data-url="{{ route('ajax-opened') }}">Открытые</div>
+				<div class="col-2 tab dynamic" id="closed" data-url="{{ route('ajax-closed') }}">Завершенные</div>
+				<div class="col-2 tab dynamic" id="favourite" data-url="{{ route('ajax-favourite') }}">Избранное</div>
 				<div class="col-2 tab" id="achievements" data-url="{{ route('ajax-achievements') }}">Мои достижения</div>
 				<div class="col-2 tab" id="personal" data-url="{{ route('ajax-personal') }}">Личные данные</div>
 			</div>

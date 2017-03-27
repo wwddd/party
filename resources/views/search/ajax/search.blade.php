@@ -6,11 +6,13 @@
 		@include('templates.event')
 	@endforeach
 
-	<div class="paginate">
-		<ul>
-			<?php for($i = 1; $i <= $paginate_count; $i++) { ?>
-				<li class="<?php $current_page == $i ? print 'active' : ''; ?>" data-page="{{ $i }}">{{ $i }}</li>
-			<?php } ?>
-		</ul>
-	</div>
+	@if($paginate_count > 1)
+		<div class="paginate">
+			<ul>
+				<?php for($i = 1; $i <= $paginate_count; $i++) { ?>
+					<li class="<?php $current_page == $i ? print 'active' : ''; ?>" data-page="{{ $i }}">{{ $i }}</li>
+				<?php } ?>
+			</ul>
+		</div>
+	@endif
 </div>
