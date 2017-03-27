@@ -1,4 +1,3 @@
-// $(function() {
 // TABS, AJAX LOADING
 	var afterloadOverlayTpl = '<div class="afterload-overlay"><div class="afterload-loader"></div></div>';
 	var afterloadErrorTpl = '<div class="afterload-error"><p>Something goes wrong...</p></div>';
@@ -216,78 +215,209 @@
 		$(this).closest('.form-group').find('.error').remove();
 	});
 
+	function sendForm(form, confirm = false) {
+		if(confirm) {
+			// form.find('button[type="submit"]').prop('disabled', true);
+			var action = form.attr('action');
+			var method = form.attr('method');
+			form.find('.form-group').each(function() {
+				createInputs($(this));
+			});
+			var toSend = new FormData(form[0]);
+			$.ajax({
+				url: action,
+				data: toSend,
+				type: method,
+				contentType: false,
+				cache: false,
+				processData:false,
+				headers: {
+					'X-CSRF-TOKEN': _token
+				},
+				beforeSend: function() {
+					$('.error').remove();
+				},
+				success: function(data) {
+					var response = $.parseJSON(data);
+					if(response.status == 'success') {
+						mainNotice(response.message, 'success');
+					} else if(response.status == 'fail') {
+						mainNotice(response.message, 'fail');
+					}
+
+					if(response.redirect !== undefined) {
+						setTimeout(function() {
+							window.location.href = response.redirect;
+						}, 2000);
+					}
+
+					if(response.event_action !== undefined && response.event_button !== undefined) {
+						form.attr('action', response.event_action);
+						form.find('button[type="submit"]').text(response.event_button);
+					}
+
+					if(response.avg_event !== undefined) {
+						$('.rating_block').html(response.avg_event);
+					}
+					form.find('button.no-disabled').prop('disabled', false);
+				},
+				error: function(e) {
+					var errors = e.responseJSON;
+					for(err in errors) {
+						form.find('*[name="' + err + '"]').closest('.form-group').append('<span class="error">' + errors[err] + '</span>');
+					}
+
+					if(e.status == 422) {
+						mainNotice('Заполните все необходимые поля!', 'fail');
+					} else if(e.status == 500) {
+						mainNotice('Ошибка 500! Разработчик - мудак :)', 'fail');
+					}
+					form.find('button[type="submit"]').prop('disabled', false);
+				}
+			});
+		}
+	}
+
+	function confirmSend(form) {
+		$('#confirm-modal').addClass('active');
+		$('#confirm-overlay').fadeIn(300);
+		$('.confirm-yes').on('click.confirm', function() {
+			$('#confirm-modal').removeClass('active');
+			$('#confirm-overlay').fadeOut(300);
+			sendForm(form, true);
+		});
+	}
+
+	$('.confirm-no').on('click', function() {
+		$('.confirm-yes').off('click.confirm');
+		$('#confirm-modal').removeClass('active');
+		$('#confirm-overlay').fadeOut(300);
+	});
+
 	$(document).on('submit', 'form.form', function(e) {
+		$('.confirm-yes').off('click.confirm');
 		e.preventDefault();
 		var form = $(this);
-		// form.find('button[type="submit"]').prop('disabled', true);
-		var action = form.attr('action');
-		var method = form.attr('method');
-		form.find('.form-group').each(function() {
-			if($(this).hasClass('required')) {
-				// validate($(this));
-			}
-			createInputs($(this));
-		});
-		// var toSend = form.serializeArray();
-		// var toSend = form.serializeArray();
-		var toSend = new FormData(form[0]);
-		// console.log(toSend);
-		// console.log(toSend);
-		// console.log($('meta[name="csrf-token"]').attr('content'));
-		$.ajax({
-			url: action,
-			data: toSend,
-			type: method,
-			contentType: false,
-			cache: false,
-			processData:false,
-			headers: {
-				'X-CSRF-TOKEN': _token
-			},
-			beforeSend: function() {
-				$('.error').remove();
-			},
-			success: function(data) {
-				var response = $.parseJSON(data);
-				if(response.status == 'success') {
-					mainNotice(response.message, 'success');
-				} else if(response.status == 'fail') {
-					mainNotice(response.message, 'fail');
-				}
+		if(form.hasClass('confirm')) {
+			confirmSend(form);
+		} else {
+			sendForm(form, true);
+		}
+	});
 
-				if(response.redirect !== undefined) {
-					setTimeout(function() {
-						window.location.href = response.redirect;
-					}, 2000);
-				}
 
-				if(response.event_action !== undefined && response.event_button !== undefined) {
-					form.attr('action', response.event_action);
-					form.find('button[type="submit"]').text(response.event_button);
-				}
-				form.find('button.no-disabled').prop('disabled', false);
-			},
-			error: function(e) {
-				var errors = e.responseJSON;
-				for(err in errors) {
-					form.find('*[name="' + err + '"]').closest('.form-group').append('<span class="error">' + errors[err] + '</span>');
-				}
 
-				if(e.status == 422) {
-					mainNotice('Заполните все необходимые поля!', 'fail');
-				} else if(e.status == 500) {
-					mainNotice('Ошибка 500! Разработчик - мудак :)', 'fail');
-				}
-				form.find('button[type="submit"]').prop('disabled', false);
+
+
+	function generateAutocomplete(input, items) {
+		var resultBlock = input.siblings('.autocomplete-result');
+		var result = '';
+		for(i in items) {
+			result += '<div data-id="' + items[i].id + '">' + items[i].title + '</div>';
+		}
+		resultBlock.html(result);
+		resultBlock.fadeIn(200);
+	}
+
+	function autocompleteByName(input) {
+		var resultBlock = input.siblings('.autocomplete-result');
+		resultBlock.find('div').each(function() {
+			if($(this).is(':contains("' + input.val() + '")')) {
+				$(this).show();
+			} else {
+				$(this).hide();
 			}
 		});
+		resultBlock.fadeIn(200);
+	}
+
+	$(document).on('keypress', '.autocomplete-input', function(e) {
+		if(e.keyCode == 13) {
+			e.preventDefault();
+			var resultBlock = $(this).siblings('.autocomplete-result');
+			if(resultBlock.find('div.active').length > 0) {
+				$(this).val(resultBlock.find('div.active').text());
+				$(this).data('id', resultBlock.find('div.active').data('id'));
+			}
+			$(this).blur();
+			resultBlock.fadeOut(200);
+		}
+	});
+
+	$(document).on('blur', '.autocomplete-input', function(e) {
+		$(this).siblings('.autocomplete-result').fadeOut(200);
+		$(this).siblings('.autocomplete-result').find('div.active').removeClass('active');
+	});
+
+	$(document).on('click', '.autocomplete-result div', function(e) {
+		$(this).closest('.autocomplete-body').find('.autocomplete-input').val($(this).text());
+		$(this).closest('.autocomplete-body').find('.autocomplete-input').data('id', $(this).data('id'));
+	});
+
+	$(document).on('keyup focus', '.autocomplete-input', function(e) {
+		var input = $(this);
+		var resultBlock = input.siblings('.autocomplete-result');
+		var q = input.val();
+		var keyCode = e.keyCode;
+		if (keyCode == 38 || keyCode == 40) {
+			if(keyCode == 38) {
+				if(resultBlock.find('div.active:visible').length > 0) {
+					resultBlock.find('div.active').removeClass('active').prevAll('div:visible').first().addClass('active');
+				} else {
+					resultBlock.find('div:visible').last().addClass('active');
+				}
+			}
+			if(keyCode == 40) {
+				if(resultBlock.find('div.active:visible').length > 0) {
+					resultBlock.find('div.active').removeClass('active').nextAll('div:visible').first().addClass('active');
+				} else {
+					resultBlock.find('div:visible').first().addClass('active');
+				}
+			}
+		} else {
+			var count = 7;
+			var need_all = 0;
+			if(input.data('sense') == 'city') {
+				var sense = 'getCities';
+			} else if(input.data('sense') == 'country') {
+				var sense = 'getCountries';
+				count = 200;
+				need_all = 1;
+				if(resultBlock.find('div').length > 0) {
+					autocompleteByName(input);
+					return false;
+				}
+			}
+			var country_id = 1;
+			$('.autocomplete-input').each(function() {
+				if($(this).data('sense') == 'country' && $(this).data('id')) {
+					country_id = $(this).data('id');
+				}
+			});
+
+			// 83e2d3fb83e2d3fb83509f1f8183b8bc76883e283e2d3fbdb2b9eaaab67dfda22037aeb
+			// ff61b0b5ff61b0b5ffd3fc5121ff3b0e14fff61ff61b0b5a7b7555d105a7be78cdc5d48
+			$.ajax({
+				url: "https://api.vk.com/method/database." + sense,
+				crossDomain: true,
+				dataType: 'jsonp',
+				type: 'GET',
+				data: {
+					access_token: 'ff61b0b5ff61b0b5ffd3fc5121ff3b0e14fff61ff61b0b5a7b7555d105a7be78cdc5d48',
+					country_id: country_id,
+					count: count,
+					need_all: need_all,
+					q: q,
+					v: 5.62
+				},
+				success: function(data) {
+					console.log(data);
+					var items = data.response.items;
+					generateAutocomplete(input, items);
+				}
+			});
+		}
 	});
 // /FORMS
 
 // google api key - AIzaSyBDXGYgmltbd4c0zuLi7DbEjeldxlTRlUg
-
-// });
-
-
-// });
-

@@ -1,6 +1,6 @@
 <div class="event">
 
-	<?php $title = (strlen($event->title) > 50) ? substr($event->title,0,50).'...' : $event->title; ?>
+	<?php $title = (strlen($event->title) > 70) ? substr($event->title,0,70).'...' : $event->title; ?>
 	<div class="event-title"><a href="{{ route('index_event', $event->id) }}" class="title">{{ $title }}</a></div>
 
 	<?php if($event->tags != NULL) { ?>
@@ -43,5 +43,8 @@
 	</div>
 
 	<div class="event-achivements"></div>
-	<div class="event-rating"></div>
+	<div class="event-rating">
+		<?php $rating = $event->user_rating; $sense = 'пользователя'; ?>
+		@include('templates.rating')
+	</div>
 </div>

@@ -22,7 +22,7 @@ class EventController extends Controller {
 					'users.age',
 					'users.events_count',
 					'users.followers_count',
-					'users.rating',
+					'users.user_rating',
 					DB::raw("count(event_followers.event_id) as current_followers")
 				);
 		$query->groupBy('events.id');
@@ -335,19 +335,19 @@ class EventController extends Controller {
 		DB::table('events')
 			->where('id', $event_id)
 			->update(array(
-				'rating' => $avg_event
+				'event_rating' => $avg_event
 			));
 
 		$avg_events = DB::table('events')
 			->where('user_id', $owner_id)
-			->avg('rating');
+			->avg('event_rating');
 
 
 		// user update rating
 		DB::table('users')
 			->where('id', $owner_id)
 			->update(array(
-				'rating' => $avg_events
+				'user_rating' => $avg_events
 			));
 
 
@@ -360,7 +360,7 @@ class EventController extends Controller {
 
 		$response['status'] = 'success';
 		$response['message'] = 'Оценка принята!';
-		$response['avg_event'] = $avg_event;
+		$response['avg_event'] = view('templates.rating', ['rating' => $avg_event, 'sense' => 'События'])->render();
 		return json_encode($response);
 	}
 }

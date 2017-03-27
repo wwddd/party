@@ -2,7 +2,11 @@
 	<div class="wrapper">
 		<div class="header">
 			<nav>
-				<div id="logo">PARTY-SCOPE.COM</div>
+				<div id="logo">
+					<a href="/">
+						<img src="{{ asset('/images/logo.png') }}">
+					</a>
+				</div>
 				<div id="menu">
 					<ul class="register">
 							<li><a href="{{ route('search') }}">Поиск</a></li>

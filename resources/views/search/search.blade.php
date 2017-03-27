@@ -17,12 +17,14 @@
 					<div class="container">
 						<div class="search-properties">
 							<form id="properties">
-								<select name="city">
-									<option value="">--Город--</option>
-									<option {{ app('request')->get('city') == 'Москва' ? 'selected="selected"' : '' }} value="Москва">Москва</option>
-									<option {{ app('request')->get('city') == 'Таганрог' ? 'selected="selected"' : '' }} value="Таганрог">Таганрог</option>
-									<option {{ app('request')->get('city') == 'Санкт-Петербург' ? 'selected="selected"' : '' }} value="Санкт-Петербург">Санкт-Петербург</option>
-								</select>
+								<div class="autocomplete-body">
+									<input autocomplete="off" data-sense="country" class="autocomplete-input" type="text" name="country" placeholder="Страна">
+									<div class="autocomplete-result"></div>
+								</div>
+								<div class="autocomplete-body">
+									<input autocomplete="off" data-sense="city" class="autocomplete-input" type="text" name="city" placeholder="Город">
+									<div class="autocomplete-result"></div>
+								</div>
 								<select name="tags">
 									<option value="">--Условия входа--</option>
 									<option {{ app('request')->get('tags') == 'деньги' ? 'selected="selected"' : '' }} value="деньги">Платный вход</option>
@@ -141,6 +143,18 @@
 
 		$('form#properties').submit(function(e) {
 			e.preventDefault();
+			clickedPage = 1;
+			sendAll();
+		});
+
+		$(document).on('keypress', 'input', function(e) {
+			if(e.keyCode == 13) {
+				clickedPage = 1;
+				sendAll();
+			}
+		});
+
+		$(document).on('click', '.autocomplete-result div', function(e) {
 			clickedPage = 1;
 			sendAll();
 		});

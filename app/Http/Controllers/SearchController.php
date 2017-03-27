@@ -41,7 +41,7 @@ class SearchController extends Controller {
 					'users.age',
 					'users.events_count',
 					'users.followers_count',
-					'users.rating',
+					'users.user_rating',
 					DB::raw("count(event_followers.event_id) as current_followers")
 				);
 		$query->groupBy('events.id');
