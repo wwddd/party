@@ -27,7 +27,7 @@ class CreateUsersTable extends Migration
             $table->integer('payment_time')->nullable();
             $table->integer('events_count')->nullable();
             $table->integer('followers_count')->nullable();
-            $table->integer('user_rating')->default(0); // here changes without check
+            $table->float('user_rating')->default(0); // here changes without check
             $table->string('ip', 50)->nullable();
             $table->smallInteger('blocked')->nullable();
             $table->smallInteger('verified')->nullable();

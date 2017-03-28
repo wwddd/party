@@ -195,6 +195,14 @@ Route::group(['prefix' => 'event'], function() {
 		'as' => 'ajax_store_rating',
 		'uses' => 'EventController@ajax_store_rating'
 	]);
+	Route::post('event_upload_image', [
+		'as' => 'event_upload_image',
+		'uses' => 'EventController@event_upload_image'
+	]);
+	Route::post('report', [
+		'as' => 'send_report',
+		'uses' => 'ReportController@send'
+	]);
 });
 
 // Search

@@ -19,7 +19,7 @@ class CooperationController extends Controller
     public function ads_store(Request $request) {
     	$this->validate($request, [
     		'title' => 'required',
-    		'image' => 'mimes:jpeg,png,gif|required',
+    		'image' => 'mimes:jpg,jpeg,png,gif|required',
     		'link' => 'required',
     		'end' => 'required',
             'condition' => 'required',

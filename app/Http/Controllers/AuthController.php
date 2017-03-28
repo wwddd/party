@@ -85,6 +85,7 @@ class AuthController extends Controller
 
             try {
                 $mail->send_verify_account($email);
+
             } catch (Exception $e) {
                 // dd($e->getMessage());
             }
@@ -110,7 +111,7 @@ class AuthController extends Controller
             $response['status'] = 'fail';
             $response['message'] = 'Что то пошло не так...';
             return json_encode($response);
-        } 
+        }
     }
 
     public function confirm_account($token) {
@@ -157,7 +158,6 @@ class AuthController extends Controller
             try {
                 $mail->send_new_password_confirm($email);
             } catch (Exception $e) {
-                // dd($e->getMessage());
                 $response = [];
                 $response['status'] = 'fail';
                 $response['message'] = 'Что то пошло не так...';

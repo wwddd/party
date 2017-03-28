@@ -47,7 +47,7 @@
 			tab.addClass('active');
 			$(document).find('.afterload-tabs').each(function() {
 				if(tab[0].id == $(this).data('id')) {
-					if($(this).is(':empty')) {
+					if($(this).is(':empty') || tab.hasClass('dynamic')) {
 						$('.afterload-tabs').hide();
 						$(this).show();
 						$(this).data('url', tab.data('url'));
@@ -259,6 +259,17 @@
 					if(response.avg_event !== undefined) {
 						$('.rating_block').html(response.avg_event);
 					}
+
+					if(response.event_image !== undefined) {
+						$('.event-image img').attr('src', response.event_image);
+						$('.event-upload').remove();
+					}
+
+					if(response.close_modal !== undefined) {
+						$('.modal').removeClass('active');
+						$('.overlay').fadeOut(300);
+					}
+
 					form.find('button.no-disabled').prop('disabled', false);
 				},
 				error: function(e) {
@@ -268,7 +279,7 @@
 					}
 
 					if(e.status == 422) {
-						mainNotice('Заполните все необходимые поля!', 'fail');
+						mainNotice('Введите корректные данные!', 'fail');
 					} else if(e.status == 500) {
 						mainNotice('Ошибка 500! Разработчик - мудак :)', 'fail');
 					}
@@ -303,6 +314,11 @@
 		} else {
 			sendForm(form, true);
 		}
+	});
+
+	$(document).on('change', '.submit_upload', function() {
+		var form = $(this).closest('form.form');
+		sendForm(form, true);
 	});
 
 

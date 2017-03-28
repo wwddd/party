@@ -95,4 +95,20 @@ class MailController extends Controller
 			}
 		);
 	}
+
+	public function send_report($email, $event_id, $guilty_id, $text, $reason) {
+		Mail::send('templates.emails.send_report', array(
+				'email' => $email,
+				'user_id' => $user_id,
+				'guilty_id' => $guilty_id,
+				'text' => $text,
+				'reason' => $reason
+
+			), function($message) {
+		    	$message
+		    		->to('partyscopeinfo@gmail.com')
+		    		->subject('Пришла жалоба');
+			}
+		);
+	}
 }
