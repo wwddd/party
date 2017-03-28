@@ -265,9 +265,9 @@
 						$('.event-upload').remove();
 					}
 
-					if(response.report_modal !== undefined) {
-						$('#report-modal').removeClass('active');
-						$('#event-overlay').fadeOut(300);
+					if(response.close_modal !== undefined) {
+						$('.modal').removeClass('active');
+						$('.overlay').fadeOut(300);
 					}
 
 					form.find('button.no-disabled').prop('disabled', false);

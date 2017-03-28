@@ -165,8 +165,8 @@
 	</div>
 </div>
 
-<div id="event-overlay"></div>
-<div id="report-modal">
+<div id="event-overlay" class="overlay"></div>
+<div id="report-modal" class="modal">
 	<div class="report-content">
 		<div class="report-x"></div>
 		<form class="form" method="POST" action="/">
@@ -201,8 +201,8 @@
 		$('#event-overlay').fadeIn(300);
 	});
 	$('.report-x, #event-overlay').on('click', function() {
-		$('#report-modal').removeClass('active');
-		$('#event-overlay').fadeOut(300);
+		$('.modal').removeClass('active');
+		$('.overlay').fadeOut(300);
 	});
 </script>
 
