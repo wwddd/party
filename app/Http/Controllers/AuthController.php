@@ -7,9 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Input;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Mail;
 use App\User;
-use DB, Crypt;
+use DB, Crypt, Exception;
 
 use App\Http\Controllers\MailController;
 
@@ -40,6 +39,7 @@ class AuthController extends Controller
             'condition' => 'required'
         ]);
 
+
         $name = $request->input('name');
         $gender = $request->input('gender');
         $age = $request->input('age');
@@ -54,42 +54,69 @@ class AuthController extends Controller
         $type = 0;
         $ip = $request->ip();
 
-        $user = new User();
-        $user->name = $name;
-        $user->gender = $gender;
-        $user->age = $age;
-        $user->password = $password;
-        $user->country = $country;
-        $user->city = $city;
-        $user->contact = $contact;
-        $user->email = $email;
-        $user->password = $password;
-        $user->noticed = $noticed;
-        $user->verified = $verified;
-        $user->blocked = $blocked;
-        $user->type = $type;
-        $user->ip = $ip;
-        $user->save();
+        $check = DB::table('users')
+                            ->where('email', $email)
+                            ->get();
 
-        Auth::login($user);
+        if (count($check) == 1) {
+            $response = [];
+            $response['status'] = 'fail';
+            $response['message'] = 'Пользотватель с данным email уже существует! Выберите другой адрес электронной почты';
+            return json_encode($response);
+        } else {
+            $user = new User();
+            $user->name = $name;
+            $user->gender = $gender;
+            $user->age = $age;
+            $user->password = $password;
+            $user->country = $country;
+            $user->city = $city;
+            $user->contact = $contact;
+            $user->email = $email;
+            $user->password = $password;
+            $user->noticed = $noticed;
+            $user->verified = $verified;
+            $user->blocked = $blocked;
+            $user->type = $type;
+            $user->ip = $ip;
+            $user->save();
 
-        // Verification accaunt
-        $content = "для завершения регистрации на сайте 'party-scope.com', необходимо подтвердить свою учётную запись, перейдя по ссылке ниже.";
-        $string_compare = Crypt::encrypt($email);
-        $link = route('confirm_account', ['string_compare' => $string_compare]);
-        $template = 'verifi_account';
-        $mail->send($link, $email, $content, $template);
+            Auth::login($user);
 
-        $response = [];
-    	$response['status'] = 'success';
-        $response['message'] = 'Поздравляем ' . Auth::user()->name . '! Вы создали аккаунт! Для полноценного использования русурса необходимо перейти в почту и подтвердить аккаунт';
-        $response['redirect'] = route('account');
-        return json_encode($response);
+            try {
+                $mail->send_verify_account($email);
+            } catch (Exception $e) {
+                // dd($e->getMessage());
+                $response = [];
+                $response['status'] = 'success';
+                $response['message'] = 'Регистрация прошла успешно!';
+                $response['redirect'] = route('account');
+                return json_encode($response);
+            }
+
+            $response = [];
+            $response['status'] = 'success';
+            $response['message'] = 'Регистрация прошла успешно!';
+            $response['redirect'] = route('account');
+            return json_encode($response);
+        }
     }
 
+    public function again_verify_account(MailController $mail) {
+        try {
+            $mail->re_send_verify_account();
+        } catch (Exception $e) {
+            // dd($e->getMessage());
+            $response = [];
+            $response['status'] = 'success';
+            $response['message'] = 'Проверьте потчу';
+            $response['redirect'] = route('account');
+            return json_encode($response);
+        } 
+    }
 
-    public function confirm_account($string_compare) {
-        $decrypted = Crypt::decrypt($string_compare);
+    public function confirm_account($token) {
+        $decrypted = Crypt::decrypt($token);
         $result = DB::table('users')
                         ->where('email', $decrypted)
                         ->get();
@@ -100,8 +127,13 @@ class AuthController extends Controller
                         ->update(array(
                             'verified' => 1
                         ));
-            return redirect(route('account'))
-                                ->with('message', 'Подтверждение прошло успешно');
+            if (!Auth::check()) {
+                return redirect(route('login'))
+                                    ->with('message', 'Подтверждение прошло успешно');                
+            } else {
+                return redirect(route('account'))
+                                    ->with('message', 'Подтверждение прошло успешно');
+            }
         } else {        
             return redirect(route('account'))
                                 ->with('message', 'Что то пошло не так...Попробуйте ещё раз!');
@@ -113,18 +145,37 @@ class AuthController extends Controller
     }
 
     public function reset_password_init(Request $request, MailController $mail) {
+        $this->validate($request, [
+            'email' => 'required|email'
+        ]);
+
         $email = $request->input('email');
 
-        $content = "Для сброса пароля перейдите по ссылке ниже";
-        $string_compare = Crypt::encrypt($email);
-        $link = route('reset-password-confirm', ['string_compare' => $string_compare]);
-        $template = 'reset_password';
-        $mail->send($link, $email, $content, $template);
+        $check = DB::table('users')
+                            ->where('email', $email)
+                            ->get();
+
+        if (count($check) == 1) {
+            try {
+                $mail->send_new_password_confirm($email);
+            } catch (Exception $e) {
+                // dd($e->getMessage());
+                $response = [];
+                $response['status'] = 'success';
+                $response['message'] = 'Зайдите на вашу почту и подтвердите сброс пароля';
+                return json_encode($response);    
+            }
+        } else {
+            $response = [];
+            $response['status'] = 'fail';
+            $response['message'] = 'Пользователя с данным почтовым адресом не существует';
+            return json_encode($response);           
+        }
 
         $response = [];
         $response['status'] = 'success';
         $response['message'] = 'Зайдите на вашу почту и подтвердите сброс пароля';
-        return json_encode($response);
+        return json_encode($response); 
     }
 
     public function reset_password_confirm($string_compare) {
@@ -143,6 +194,7 @@ class AuthController extends Controller
 
     public function reset_password(Request $request, $user_id) {
         $password = bcrypt($request->input('password'));
+
         DB::table('users')
                     ->where('id', $user_id)
                     ->update(array(
@@ -157,7 +209,7 @@ class AuthController extends Controller
     }
 
     public function index_login() {
-    	return view('auth.login');
+        return view('auth.login');
     }
 
     public function login(Request $request) {

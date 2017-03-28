@@ -12,10 +12,10 @@
 			<div class="col-8">
 				<div class="container">
 					<div class="col-6 center-child">
-						<button>ВПИСАТЬСЯ</button>
+						<button><a href="{{ route('search') }}">ВПИСАТЬСЯ</a></button>
 					</div>
 					<div class="col-6 center-child">
-						<button>СОЗДАТЬ</button>
+						<button><a href="{{ route('account') }}">СОЗДАТЬ</a></button>
 					</div>
 				</div>
 			</div>
