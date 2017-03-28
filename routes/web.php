@@ -4,6 +4,10 @@ Route::get('/', function () {
 	return view('index');
 });
 
+Route::get('rules', function () {
+	return view('rules');
+});
+
 // Register
 Route::group(['prefix' => 'register'], function() {
 	Route::get('/', [
@@ -47,9 +51,16 @@ Route::get('logout', [
 ]);
 
 // Confirm account
-Route::get('confirm-account/{string_compare}', [
+Route::get('confirm-account/{token}', [
 	'as' => 'confirm_account',
 	'uses' => 'AuthController@confirm_account'
+]);
+
+// Send new confirm to email
+Route::post('again-verify-account', [
+	'middleware' => 'auth',
+	'as' => 'again_verify_account',
+	'uses' => 'AuthController@again_verify_account'
 ]);
 
 // Reset password
@@ -102,6 +113,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
 		'as' => 'event-store',
 		'uses' => 'EventController@store'
 	]);
+	Route::post('feedback', [
+		'as' => 'feedback',
+		'uses' => 'UserController@feedback'
+	]);
 	Route::put('user_update', [
 		'uses' => 'UserController@user_update',
 		'as' => 'user_update'
@@ -131,6 +146,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
 	Route::post('ajax-personal', [
 		'as' => 'ajax-personal',
 		'uses' => 'UserController@ajax_personal'
+	]);
+	Route::post('ajax-feedback', [
+		'as' => 'ajax-feedback',
+		'uses' => 'UserController@ajax_feedback'
 	]);
 });
 

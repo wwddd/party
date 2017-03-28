@@ -7,8 +7,10 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
-use DB;
+use DB, Crypt, Exception;
 use App\User;
+
+use App\Http\Controllers\MailController;
 
 class UserController extends Controller {
 	public function __construct() {
@@ -67,6 +69,29 @@ class UserController extends Controller {
 		return $query;
 	}
 
+	public function feedback(Request $request, MailController $mail) {
+		$this->validate($request, [
+			'text' => 'required'
+		]);
+
+        $user_email = Auth::user()->email;
+		$text = $request->input('text');
+
+		try {
+			$mail->send_feedback($user_email, $text);
+		} catch (Exception $e){
+            // dd($e->getMessage());
+            $response = [];
+            $response['status'] = 'success';
+            $response['message'] = 'Спасибо за ваш отзыв';
+            return json_encode($response);			
+		}
+		
+	    $response = [];
+        $response['status'] = 'success';
+        $response['message'] = 'Спасибо за ваш отзыв';
+        return json_encode($response);
+	}
 
 // AJAX
 	public function ajax_opened_events() {
@@ -100,6 +125,10 @@ class UserController extends Controller {
 	public function ajax_personal() {
 		$user = Auth::user();
 		return view('account/ajax/personal', ['user' => $user]);
+	}
+
+	public function ajax_feedback() {
+		return view('account.ajax.feedback');
 	}
 // /AJAX
 }

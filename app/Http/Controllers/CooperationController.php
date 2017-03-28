@@ -53,22 +53,6 @@ class CooperationController extends Controller
             })->save(base_path() . '/public/images/cooperation/' . $file_name, 100);
 
             $image_path = '/images/cooperation/' . $file_name;
-                $count = 0;
-                $img = Image::make($image);
-                $natural_width = $img->width();
-                $natural_height = $img->height();
-                $file_name = Auth::user()->id . '-' . 
-                             Auth::user()->name . '-' . 
-                             $count . '' . 
-                             time() . '.' .
-                             $image->getClientOriginalExtension();
-
-                $img->resize(220, 160, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                })->save(base_path() . '/public/images/cooperation/' . $file_name, 100);
-
-                $image_path = '/images/cooperation/' . $file_name;
         }
 
     	$title = $request->input('title');
