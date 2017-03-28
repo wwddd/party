@@ -265,6 +265,11 @@
 						$('.event-upload').remove();
 					}
 
+					if(response.report_modal !== undefined) {
+						$('#report-modal').removeClass('active');
+						$('#event-overlay').fadeOut(300);
+					}
+
 					form.find('button.no-disabled').prop('disabled', false);
 				},
 				error: function(e) {

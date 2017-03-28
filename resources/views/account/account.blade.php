@@ -14,7 +14,6 @@
 				<div class="col-2 tab dynamic" id="closed" data-url="{{ route('ajax-closed') }}">Завершенные</div>
 				<div class="col-2 tab dynamic" id="favourite" data-url="{{ route('ajax-favourite') }}">Избранное</div>
 				<div class="col-2 tab" id="achievements" data-url="{{ route('ajax-achievements') }}">Мои достижения</div>
-				<div class="col-2 tab" id="feedback" data-url="{{ route('ajax-feedback') }}">Обратная связь</div>
 				<div class="col-2 tab" id="personal" data-url="{{ route('ajax-personal') }}">Личные данные</div>
 			</div>
 			<div class="clear"></div>
@@ -27,7 +26,6 @@
 			<div class="afterload-tabs" data-id="favourite"></div>
 			<div class="afterload-tabs" data-id="achievements"></div>
 			<div class="afterload-tabs" data-id="personal"></div>
-			<div class="afterload-tabs" data-id="feedback"></div>
 		</div>
 	</div>
 </div>

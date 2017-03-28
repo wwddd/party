@@ -85,14 +85,7 @@ class AuthController extends Controller
 
             try {
                 $mail->send_verify_account($email);
-            } catch (Exception $e) {
-                // dd($e->getMessage());
-                $response = [];
-                $response['status'] = 'success';
-                $response['message'] = 'Регистрация прошла успешно!';
-                $response['redirect'] = route('account');
-                return json_encode($response);
-            }
+            } catch (Exception $e) {}
 
             $response = [];
             $response['status'] = 'success';
@@ -105,12 +98,17 @@ class AuthController extends Controller
     public function again_verify_account(MailController $mail) {
         try {
             $mail->re_send_verify_account();
+            $response = [];
+            $response['status'] = 'success';
+            $response['message'] = 'Проверьте почту';
+            // $response['redirect'] = route('account');
+            return json_encode($response);
         } catch (Exception $e) {
             // dd($e->getMessage());
             $response = [];
-            $response['status'] = 'success';
-            $response['message'] = 'Проверьте потчу';
-            $response['redirect'] = route('account');
+            $response['status'] = 'fail';
+            $response['message'] = 'Что-то пошло не так';
+            // $response['redirect'] = route('account');
             return json_encode($response);
         } 
     }
@@ -159,17 +157,16 @@ class AuthController extends Controller
             try {
                 $mail->send_new_password_confirm($email);
             } catch (Exception $e) {
-                // dd($e->getMessage());
                 $response = [];
-                $response['status'] = 'success';
-                $response['message'] = 'Зайдите на вашу почту и подтвердите сброс пароля';
-                return json_encode($response);    
+                $response['status'] = 'fail';
+                $response['message'] = 'Что-то пошло не так';
+                return json_encode($response);
             }
         } else {
             $response = [];
             $response['status'] = 'fail';
-            $response['message'] = 'Пользователя с данным почтовым адресом не существует';
-            return json_encode($response);           
+            $response['message'] = 'Пользователя с данной почтой не существует';
+            return json_encode($response);
         }
 
         $response = [];

@@ -7,7 +7,7 @@
 <div class="container events">
 	<div class="wrapper">
 		<div class="event no-pading">
-
+		<button id="init_event_report">Пожаловаться</button>
 			<div class=" event-title">{{ $event->title }}</div>
 
 			@if(Auth::user() && $event->user_id == Auth::user()->id && $event->image === NULL)
@@ -165,6 +165,45 @@
 	</div>
 </div>
 
+<div id="event-overlay"></div>
+<div id="report-modal">
+	<div class="report-content">
+		<div class="report-x"></div>
+		<form class="form" method="POST" action="/">
+			<div class="form-group required">
+				<input type="text" name="email" placeholder="Email">
+			</div>
+			<div class="form-group required">
+				<textarea name="message" placeholder="Сообщение"></textarea>
+			</div>
+			<div class="form-group required">
+				<select name="reason">
+					<option value="Спам">Рассылка спама</option>
+					<option value="Порнография">Порнография</option>
+					<option value="Оскорбления">Оскорбительное поведение</option>
+					<option value="Реклама">Рекламная страница, засоряющая поиск</option>
+				</select>
+			</div>
+			<input type="hidden" name="event_id" value="{{ $event->id }}">
+			<div class="form-group">
+				<button class="button create-button">Пожаловаться</button>
+			</div>
+		</form>
+	</div>
+</div>
+
 @include('layouts.footer')
 @include('layouts.scripts')
+
+<script type="text/javascript">
+	$('#init_event_report').on('click', function() {
+		$('#report-modal').addClass('active');
+		$('#event-overlay').fadeIn(300);
+	});
+	$('.report-x, #event-overlay').on('click', function() {
+		$('#report-modal').removeClass('active');
+		$('#event-overlay').fadeOut(300);
+	});
+</script>
+
 @include('layouts.foot')

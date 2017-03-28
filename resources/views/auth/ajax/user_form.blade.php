@@ -38,5 +38,12 @@
 				<button type="submit" class="button create-button">Зарегестрироваться</button>
 			</div>
 		</div>
+
+		{{-- <script type="text/javascript"> VK.init({apiId: 5947041}); </script>
+		<div id="vk_auth"></div>
+		<script type="text/javascript">
+			VK.Widgets.Auth("vk_auth", {authUrl: '/social/auth_vk'});
+		</script>
+ --}}
 	</div>
 </form>
