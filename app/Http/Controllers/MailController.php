@@ -72,10 +72,10 @@ class MailController extends Controller
 
 	public function send_new_password_confirm($email) {
         $token = Crypt::encrypt($email);
-        $link = route('reset-password-confirm', ['string_compare' => $token]);
+        // $link = route('reset-password-confirm', ['string_compare' => $token]);
 
         Mail::send("templates.emails.reset_password", array(
-        		'link' => $link
+        		'link' => $token
 	        ), function($message) use ($email) {
         		$message
         			->to($email)
@@ -85,15 +85,6 @@ class MailController extends Controller
 	}
 
 	public function send_feedback($user_email, $text) {
-     //    Mail::send("templates.emails.send_feedback", array(
-     //    		'text' => $text
-	    //     ), function($message) use ($email) {
-     //    		$message
-     //    			->to($email)
-     //    			->subject('You have a message from partyscope.com!');
-	    //     }
-	    // );
-
 		Mail::send('templates.emails.send_feedback', array(
 				'user_email' => $user_email,
 				'text' => $text

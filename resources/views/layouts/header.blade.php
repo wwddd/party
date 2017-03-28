@@ -10,6 +10,7 @@
 				<div id="menu">
 					<ul class="register">
 							<li><a href="{{ route('search') }}">Поиск</a></li>
+							<li><a href="{{ route('contact') }}">Контакты</a></li>
 						@if(Auth::user())
 							<li><a href="{{ route('account') }}">Кабинет</a></li>
 							<li><a href="{{ route('logout') }}">Выход</a></li>

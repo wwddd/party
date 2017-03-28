@@ -87,11 +87,6 @@ class AuthController extends Controller
                 $mail->send_verify_account($email);
             } catch (Exception $e) {
                 // dd($e->getMessage());
-                $response = [];
-                $response['status'] = 'success';
-                $response['message'] = 'Регистрация прошла успешно!';
-                $response['redirect'] = route('account');
-                return json_encode($response);
             }
 
             $response = [];
@@ -105,12 +100,15 @@ class AuthController extends Controller
     public function again_verify_account(MailController $mail) {
         try {
             $mail->re_send_verify_account();
-        } catch (Exception $e) {
-            // dd($e->getMessage());
             $response = [];
             $response['status'] = 'success';
             $response['message'] = 'Проверьте потчу';
-            $response['redirect'] = route('account');
+            return json_encode($response);
+        } catch (Exception $e) {
+            // dd($e->getMessage());
+            $response = [];
+            $response['status'] = 'fail';
+            $response['message'] = 'Что то пошло не так...';
             return json_encode($response);
         } 
     }
@@ -135,8 +133,8 @@ class AuthController extends Controller
                                     ->with('message', 'Подтверждение прошло успешно');
             }
         } else {        
-            return redirect(route('account'))
-                                ->with('message', 'Что то пошло не так...Попробуйте ещё раз!');
+            return redirect(route('index_register'))
+                                ->with('message', 'Зарегистрируйтесь!');
         }
     }
 
@@ -161,51 +159,74 @@ class AuthController extends Controller
             } catch (Exception $e) {
                 // dd($e->getMessage());
                 $response = [];
-                $response['status'] = 'success';
-                $response['message'] = 'Зайдите на вашу почту и подтвердите сброс пароля';
+                $response['status'] = 'fail';
+                $response['message'] = 'Что то пошло не так...';
                 return json_encode($response);    
             }
         } else {
             $response = [];
             $response['status'] = 'fail';
-            $response['message'] = 'Пользователя с данным почтовым адресом не существует';
+            $response['message'] = 'Пользователя с данной почтой не существует!';
             return json_encode($response);           
         }
 
         $response = [];
         $response['status'] = 'success';
-        $response['message'] = 'Зайдите на вашу почту и подтвердите сброс пароля';
+        $response['message'] = 'Зайдите на почту и подтвердите сброс!';
+        $response['redirect'] = route('reset-password-confirm');
         return json_encode($response); 
     }
 
-    public function reset_password_confirm($string_compare) {
-        $decrypted = Crypt::decrypt($string_compare);
+    // public function reset_password_confirm($token) {
+    //     $decrypted = Crypt::decrypt($token);
 
-        $result = DB::table('users')
+    //     $result = DB::table('users')
+    //                     ->where('email', $decrypted)
+    //                     ->get();
+
+    //     if (count($result) == 1) {
+    //         return view('auth.reset_password', ['user_id' => $result[0]->id]);
+    //     } else {
+    //         return view('templates.page_not_found');
+    //     }
+    // }
+
+    public function reset_password_confirm() {
+        return view('auth.reset_password');
+    }
+
+    public function reset_password(Request $request) {
+        $this->validate($request, [
+            'token' => 'required',
+            'password' => 'required'
+        ]);
+
+        $token = $request->input('token');
+        $decrypted = Crypt::decrypt($token);
+        $user = DB::table('users')
                         ->where('email', $decrypted)
                         ->get();
 
-        if (count($result) == 1) {
-            return view('auth.reset_password', ['user_id' => $result[0]->id]);
+        if (count($user) == 1) {
+            $password = bcrypt($request->input('password'));
+
+            DB::table('users')
+                        ->where('id', $user[0]->id)
+                        ->update(array(
+                            'password' => $password
+                        ));
+
+            $response = [];
+            $response['status'] = 'success';
+            $response['message'] = 'Пароль успешно изменён!';
+            $response['redirect'] = route('login');
+            return json_encode($response);
         } else {
-            return view('templates.page_not_found');
+            $response = [];
+            $response['status'] = 'fail';
+            $response['message'] = 'Что то пошло не так!';
+            return json_encode($response);
         }
-    }
-
-    public function reset_password(Request $request, $user_id) {
-        $password = bcrypt($request->input('password'));
-
-        DB::table('users')
-                    ->where('id', $user_id)
-                    ->update(array(
-                        'password' => $password
-                    ));
-
-        $response = [];
-        $response['status'] = 'success';
-        $response['message'] = 'Пароль успешно изменён!';
-        $response['redirect'] = route('login');
-        return json_encode($response);
     }
 
     public function index_login() {

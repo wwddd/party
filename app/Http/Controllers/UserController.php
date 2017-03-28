@@ -69,30 +69,6 @@ class UserController extends Controller {
 		return $query;
 	}
 
-	public function feedback(Request $request, MailController $mail) {
-		$this->validate($request, [
-			'text' => 'required'
-		]);
-
-        $user_email = Auth::user()->email;
-		$text = $request->input('text');
-
-		try {
-			$mail->send_feedback($user_email, $text);
-		} catch (Exception $e){
-            // dd($e->getMessage());
-            $response = [];
-            $response['status'] = 'success';
-            $response['message'] = 'Спасибо за ваш отзыв';
-            return json_encode($response);			
-		}
-		
-	    $response = [];
-        $response['status'] = 'success';
-        $response['message'] = 'Спасибо за ваш отзыв';
-        return json_encode($response);
-	}
-
 // AJAX
 	public function ajax_opened_events() {
 
@@ -125,10 +101,6 @@ class UserController extends Controller {
 	public function ajax_personal() {
 		$user = Auth::user();
 		return view('account/ajax/personal', ['user' => $user]);
-	}
-
-	public function ajax_feedback() {
-		return view('account.ajax.feedback');
 	}
 // /AJAX
 }
