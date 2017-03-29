@@ -95,7 +95,10 @@
 				},
 				success: function(data) {
 					setTimeout(function() {
-					selector.html(data);
+						selector.html(data);
+						if($(document).find('.notices-body .notice').length > 0) {
+							$('.notice-circle').addClass('active');
+						}
 					}, 300);
 				},
 				error: function() {
@@ -435,5 +438,39 @@
 		}
 	});
 // /FORMS
+
+// NOTICES
+	$('#notices i').on('click', function(e) {
+		if($(document).find('.notices-body .notice').length > 0) {
+			$('.notices-parent').toggle();
+			$('.notice-circle').removeClass('active');
+		}
+	});
+
+	$(document).on('click', '#notices .notice-head-x', function() {
+		var notice = $(this).closest('.notice');
+		var id = $(this).data('id');
+		var url = $(this).data('url');
+		$.ajax({
+			headers: {
+				'X-CSRF-TOKEN': _token
+			},
+			url: url,
+			data: {
+				id: id
+			},
+			type: 'POST',
+			success: function(data) {
+				notice.remove();
+				if($(document).find('.notices-body .notice').length == 0) {
+					$('.notices-parent').hide();
+					$('.notice-circle').removeClass('active');
+				}
+			}
+		});
+		
+	});
+// /NOTICES
+
 
 // google api key - AIzaSyBDXGYgmltbd4c0zuLi7DbEjeldxlTRlUg

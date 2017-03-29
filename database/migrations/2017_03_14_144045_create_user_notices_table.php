@@ -16,8 +16,9 @@ class CreateUserNoticesTable extends Migration
         Schema::create('user_notices', function(Blueprint $table){
             $table->increments('id');
             $table->smallInteger('user_id');
-            $table->smallInteger('event_id');
+            // $table->smallInteger('event_id');
             $table->string('title');
+            $table->string('link')->nullable();
         });
     }
 

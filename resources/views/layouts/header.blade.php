@@ -1,13 +1,14 @@
 <header class="full-wrapper main-background">
 	<div class="wrapper">
 		<div class="header">
-			<nav>
-				<div id="logo">
+			<nav class="container">
+				<div id="logo" class="col-3">
 					<a href="/">
 						<img src="{{ asset('/images/logo.png') }}">
 					</a>
 				</div>
-				<div id="menu">
+				<div class="col-2"></div>
+				<div id="menu" class="col-6">
 					<ul class="register">
 							<li><a href="{{ route('search') }}">Поиск</a></li>
 						@if(Auth::user())
@@ -23,6 +24,15 @@
 						<li><a href="#">FB</a></li>
 						<li><a href="#">DNO</a></li>
 					</ul>
+				</div>
+				<div id="notices" class="col-1">
+					<span class="notice-circle"></span>
+					@if(Auth::user())
+						<i class="fa fa-bell-o" aria-hidden="true"></i>
+						<div class="notices-parent">
+							<div class="afterload" data-url="{{ route('ajax_get_notices') }}"></div>
+						</div>
+					@endif
 				</div>
 			</nav>
 			<div class="clear"></div>

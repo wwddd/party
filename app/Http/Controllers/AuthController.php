@@ -26,7 +26,7 @@ class AuthController extends Controller
         return view('auth.ajax.company_form');
     }
 
-    public function user_store(Request $request, MailController $mail) {
+    public function user_store(Request $request, MailController $mail, NoticeController $notice) {
         $this->validate($request, [
             'name' => 'required|min:2',
             'gender' => 'required',
@@ -61,7 +61,7 @@ class AuthController extends Controller
         if (count($check) == 1) {
             $response = [];
             $response['status'] = 'fail';
-            $response['message'] = 'Пользотватель с данным email уже существует! Выберите другой адрес электронной почты';
+            $response['message'] = 'Пользотватель с данным email уже существует!';
             return json_encode($response);
         } else {
             $user = new User();
@@ -85,6 +85,10 @@ class AuthController extends Controller
 
             try {
                 $mail->send_verify_account($email);
+            } catch (Exception $e) {}
+
+            try {
+                $notice->store(Auth::user()->id, 'Подтвердите почту');
             } catch (Exception $e) {}
 
             $response = [];

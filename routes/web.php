@@ -163,11 +163,11 @@ Route::group(['prefix' => 'event'], function() {
 		'as' => 'event-store',
 		'uses' => 'EventController@store'
 	]);
-	Route::post('subscribe/{event_id}/{follower_id}', [
+	Route::post('subscribe/{event_id}/{follower_id}/{owner_id}', [
 		'as' => 'event_subscribe',
 		'uses' => 'EventController@subscribe'
 	]);
-	Route::post('unsubscribe/{event_id}/{follower_id}', [
+	Route::post('unsubscribe/{event_id}/{follower_id}/{owner_id}', [
 		'as' => 'event_un_subscribe',
 		'uses' => 'EventController@un_subscribe'
 	]);
@@ -223,5 +223,17 @@ Route::group(['prefix' => 'social'], function() {
 	Route::get('share_vk', [
 		'as' => 'share_vk',
 		'uses' => 'SocialController@share_vk'
+	]);
+});
+
+// Notices
+Route::group(['middleware' => 'auth', 'prefix' => 'notices'], function () {
+	Route::post('ajax_get_notices', [
+		'as' => 'ajax_get_notices',
+		'uses' => 'NoticeController@ajax_get_notices'
+	]);
+	Route::post('delete_notice', [
+		'as' => 'delete_notice',
+		'uses' => 'NoticeController@delete'
 	]);
 });

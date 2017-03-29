@@ -47,10 +47,10 @@ class EventController extends Controller {
 				}
 			} else {
 				if($follower_info && $follower_info->count()) {
-					$action1 = route('event_un_subscribe', ['event_id' => $event[0]->id, 'follower_id' => Auth::user()->id]);
+					$action1 = route('event_un_subscribe', ['event_id' => $event[0]->id, 'follower_id' => Auth::user()->id, 'owner_id' => $event[0]->user_id]);
 					$button1 = 'Отписаться';
 				} else {
-					$action1 = route('event_subscribe', ['event_id' => $event[0]->id, 'follower_id' => Auth::user()->id]);
+					$action1 = route('event_subscribe', ['event_id' => $event[0]->id, 'follower_id' => Auth::user()->id, 'owner_id' => $event[0]->user_id]);
 					$button1 = 'Вписаться';
 				}
 
@@ -163,28 +163,38 @@ class EventController extends Controller {
 		}
 	}
 
-	public function subscribe($event_id, $follower_id) {
+	public function subscribe($event_id, $follower_id, $owner_id) {
 		DB::table('event_followers')->insert(array(
 			'event_id' => $event_id,
 			'follower_id' => $follower_id
 		));
 
+		DB::table('user_followers')->insert(array(
+			'user_id' => $owner_id,
+			'follower_id' => $follower_id
+		));
+
 		$response['status'] = 'success';
 		$response['message'] = 'Поздравляем, вы успешно вписались!';
-		$response['event_action'] = route('event_un_subscribe', ['event_id' => $event_id, 'follower_id' => Auth::user()->id]);
+		$response['event_action'] = route('event_un_subscribe', ['event_id' => $event_id, 'follower_id' => Auth::user()->id, 'owner_id' => $owner_id]);
 		$response['event_button'] = 'Отписаться';
 		return json_encode($response);
 	}
 
-	public function un_subscribe($event_id, $follower_id) {
+	public function un_subscribe($event_id, $follower_id, $owner_id) {
 		DB::table('event_followers')
 			->where('event_id', $event_id)
 			->where('follower_id', $follower_id)
 			->delete();
 
+		DB::table('user_followers')
+			->where('user_id', $owner_id)
+			->where('follower_id', $follower_id)
+			->delete();
+
 		$response['status'] = 'success';
 		$response['message'] = 'Отписка оформлена!';
-		$response['event_action'] = route('event_subscribe', ['event_id' => $event_id, 'follower_id' => Auth::user()->id]);
+		$response['event_action'] = route('event_subscribe', ['event_id' => $event_id, 'follower_id' => Auth::user()->id, 'owner_id' => $owner_id]);
 		$response['event_button'] = 'Вписаться';
 		return json_encode($response);
 	}

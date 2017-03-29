@@ -602,7 +602,7 @@ header, header a {
 }
 
 #logo {
-	float: left;
+	/*float: left;*/
 	background: white;
 	border-radius: 50px 0px 15px 0px;
 	height: 60px;
@@ -618,7 +618,7 @@ header, header a {
 }
 
 #menu {
-	float: right;
+	/*float: right;*/
 }
 
 #menu ul {
@@ -989,4 +989,72 @@ form#properties select::-ms-expand {
 
 .repost-vk * {
 	box-sizing: content-box;
+}
+
+
+
+
+#notices {
+	text-align: right;
+	position: relative;
+}
+
+#notices i {
+	cursor: pointer;
+	font-size: 25px;
+}
+
+.notice-circle {
+	position: absolute;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	top: 0;
+	right: 0;
+}
+
+.notice-circle.active {
+	background-color: yellow;
+}
+
+#notices a, #notices .notices-body {
+	color: black;
+}
+
+.notices-parent {
+	display: none;
+}
+
+.notices-body {
+	position: absolute;
+	background: white;
+	text-align: left;
+	padding: 5px 10px;
+	border: 2px solid #efefef;
+	width: 350px;
+	height: auto;
+	top: 10px;
+	right: 4px;
+	z-index: 100;
+	border-radius: 5px;
+	box-shadow: 0 0 5px;
+}
+
+.notice {
+	border-bottom: 1px solid #efefef;
+	margin: 20px 0px;
+	font-size: 14px;
+	position: relative;
+}
+
+.notice-head-x {
+	background-image: url(../images/close.png);
+	background-size: 22px;
+	width: 22px;
+	height: 22px;
+	background-repeat: no-repeat;
+	cursor: pointer;
+	position: absolute;
+	right: 0px;
+	top: -5px;
 }
