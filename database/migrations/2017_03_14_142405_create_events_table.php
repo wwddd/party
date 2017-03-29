@@ -31,6 +31,7 @@ class CreateEventsTable extends Migration
             $table->smallInteger('status');
             $table->smallInteger('verify');
             $table->string('reason')->nullable();
+            $table->integer('posted_time');
         });
     }
 

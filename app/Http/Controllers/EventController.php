@@ -127,6 +127,7 @@ class EventController extends Controller {
 		$record['place'] = $request['address'];
 		$record['start'] = strtotime($request['time']);
 		$record['contact'] = $request['contact'];
+		$record['posted_time'] = time();
 
 		$record['status'] = 1;
 		$record['verify'] = 0;
@@ -225,17 +226,29 @@ class EventController extends Controller {
 		return json_encode($response);
 	}
 
-	public function complete($event_id) {
+	public function complete($event_id, NoticeController $notice) {
 		DB::table('events')->where('id', $event_id)->update(array(
 			'status' => '0'
 		));
+
+		$followers = DB::table('event_followers')
+						->select('follower_id')
+						->where('event_id', $event_id)
+						->get();
+
+		foreach ($followers as $key => $follower) {
+			try {
+				$notice->store($follower->follower_id, 'Событие #' . $event_id . ' завершено! Теперь вы можете оценить его!', '/event/' . $event_id);
+			} catch (Exception $e) {}
+		}
+
 
 		$response['status'] = 'success';
 		$response['message'] = 'Ваша вписка завершенна!';
 		return json_encode($response);
 	}
 
-	public function close(Request $request, $event_id) {
+	public function close(Request $request, $event_id, NoticeController $notice) {
 		$this->validate($request, [
 			'reason' => 'required'
 		]); 
@@ -246,6 +259,17 @@ class EventController extends Controller {
 			'status' => '2',
 			'reason' => $reason
 		));
+
+		$followers = DB::table('event_followers')
+						->select('follower_id')
+						->where('event_id', $event_id)
+						->get();
+
+		foreach ($followers as $key => $follower) {
+			try {
+				$notice->store($follower->follower_id, 'Событие #' . $event_id . ' отменено!', '/event/' . $event_id);
+			} catch (Exception $e) {}
+		}
 
 		$response['status'] = 'success';
 		$response['message'] = 'Ваша вписка закрыта!';

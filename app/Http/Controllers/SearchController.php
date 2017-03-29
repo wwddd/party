@@ -64,7 +64,7 @@ class SearchController extends Controller {
 		$query->limit($paginate_limit);
 		$query->offset(($current_page - 1) * $paginate_limit);
 		$events = $query->get();
-
+		// dd($events);
 		// dd($paginate);
 
 		return view('search/ajax/search', [
