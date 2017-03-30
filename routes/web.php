@@ -8,6 +8,18 @@ Route::get('rules', function () {
 	return view('rules');
 });
 
+// Contact
+Route::group(['prefix' => 'contact'], function() {
+	Route::get('/', [
+		'as' => 'contact',
+		'uses' => 'ContactController@index'
+	]);
+	Route::post('/', [
+		'as' => 'contact_store',
+		'uses' => 'ContactController@store'
+	]);
+});
+
 // Register
 Route::group(['prefix' => 'register'], function() {
 	Route::get('/', [
@@ -72,11 +84,11 @@ Route::post('reset-password-init', [
 	'as' => 'reset-password-init',
 	'uses' => 'AuthController@reset_password_init'
 ]);
-Route::get('reset-password-confirm/{string_compare}', [
+Route::get('reset-password-confirm', [
 	'as' => 'reset-password-confirm',
 	'uses' => 'AuthController@reset_password_confirm'
 ]);
-Route::post('reset-password/{user_id}', [
+Route::post('reset-password', [
 	'as' => 'reset-password',
 	'uses' => 'AuthController@reset_password'
 ]);
@@ -113,10 +125,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
 		'as' => 'event-store',
 		'uses' => 'EventController@store'
 	]);
-	Route::post('feedback', [
-		'as' => 'feedback',
-		'uses' => 'UserController@feedback'
-	]);
 	Route::put('user_update', [
 		'uses' => 'UserController@user_update',
 		'as' => 'user_update'
@@ -146,10 +154,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
 	Route::post('ajax-personal', [
 		'as' => 'ajax-personal',
 		'uses' => 'UserController@ajax_personal'
-	]);
-	Route::post('ajax-feedback', [
-		'as' => 'ajax-feedback',
-		'uses' => 'UserController@ajax_feedback'
 	]);
 });
 
@@ -194,6 +198,10 @@ Route::group(['prefix' => 'event'], function() {
 	Route::post('event_upload_image', [
 		'as' => 'event_upload_image',
 		'uses' => 'EventController@event_upload_image'
+	]);
+	Route::post('report', [
+		'as' => 'send_report',
+		'uses' => 'ReportController@send'
 	]);
 });
 

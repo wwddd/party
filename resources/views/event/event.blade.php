@@ -169,7 +169,7 @@
 <div id="report-modal" class="modal">
 	<div class="report-content">
 		<div class="report-x"></div>
-		<form class="form" method="POST" action="/">
+		<form class="form" method="POST" action="{{ route('send_report') }}">
 			<div class="form-group required">
 				<input type="text" name="email" placeholder="Email">
 			</div>
@@ -185,6 +185,7 @@
 				</select>
 			</div>
 			<input type="hidden" name="event_id" value="{{ $event->id }}">
+			<input type="hidden" name="guilty_id" value="{{ $event->user_id }}">
 			<div class="form-group">
 				<button class="button create-button">Пожаловаться</button>
 			</div>
