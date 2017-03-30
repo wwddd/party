@@ -11,7 +11,7 @@
 			<h1 class="title">Найди вписку своей мечты!</h1>
 			<div class="container">
 				<div class="col-3">
-					<div class="afterload" data-url="{{ route('ajax-ads') }}"></div>
+					<div class="afterload" data-url="{{ route('ajax_ads') }}"></div>
 				</div>
 				<div class="col-9">
 					<div class="container">
@@ -47,7 +47,7 @@
 							$dataParams .= 'data-' . $name . '=' . $value . ' ';
 						}
 					?>
-					<div id="search" class="afterload" {{ $dataParams }} data-url="{{ route('ajax-search') }}"></div>
+					<div id="search" class="afterload" {{ $dataParams }} data-url="{{ route('ajax_search') }}"></div>
 				</div>
 			</div>
 		</div>

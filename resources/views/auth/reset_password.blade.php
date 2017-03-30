@@ -13,14 +13,14 @@
 	<p>{{ Session::get('message') }}</p>
 @endif
 
-<form class="form" action="{{ route('reset-password') }}" method="POST">
+<form class="form" action="{{ route('reset_password') }}" method="POST">
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	<div class="container">
 		<div class="col-6">			
 			<div class="form-group required">
 				<input type="text" name="token" placeholder="Код из письма">
 			</div>
-			<a href="{{ route('forgot-password') }}">Не пришло письмо?</a>
+			<a href="{{ route('forgot_password') }}">Не пришло письмо?</a>
 			<div class="form-group required">
 				<input type="password" name="password" placeholder="Новый пароль">
 			</div>

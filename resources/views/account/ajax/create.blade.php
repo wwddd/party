@@ -1,6 +1,6 @@
 <div class="container">
 	<h1 class="title">Создай свою вечеринку!</h1>
-	<form class="form" action="{{ route('event-store') }}" method="POST">
+	<form class="form" action="{{ route('event_store') }}" method="POST">
 		<div class="container">
 			<div class="col-6">
 

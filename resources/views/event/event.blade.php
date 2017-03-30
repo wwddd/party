@@ -101,6 +101,9 @@
 						<div class="event-inline subscribe">
 							<form class="form confirm" action="{{ $actions_arr['action1'] }}" method="POST">
 								<button type="submit" class="button button-mid">{{ $actions_arr['button1'] }}</button>
+								<input type="hidden" name="event_id" value="{{ $event->id }}">
+								<input type="hidden" name="owner_id" value="{{ $event->user_id }}">
+								<input type="hidden" name="follower_id" value="{{ Auth::user()->id }}">
 							</form>
 						</div>
 					@endif
@@ -112,6 +115,9 @@
 								</div>
 							@endif
 							<button type="submit" class="button button-mid">{{ $actions_arr['button2'] }}</button>
+							<input type="hidden" name="event_id" value="{{ $event->id }}">
+							<input type="hidden" name="owner_id" value="{{ $event->user_id }}">
+							<input type="hidden" name="follower_id" value="{{ Auth::user()->id }}">
 						</form>
 					</div>
 				@endif

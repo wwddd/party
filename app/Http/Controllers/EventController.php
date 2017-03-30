@@ -39,26 +39,26 @@ class EventController extends Controller {
 
 		if(Auth::user()) {
 			if($event[0]->user_id == Auth::user()->id) {
-				$action2 = route('event_close', ['event_id' => $event[0]->id]);
+				$action2 = route('event_close');
 				$button2 = 'Отменить';
 				if($event[0]->start < time()) {
-					$action1 = route('event_complete', ['event_id' => $event[0]->id]);
+					$action1 = route('event_complete');
 					$button1 = 'Завершить';
 				}
 			} else {
 				if($follower_info && $follower_info->count()) {
-					$action1 = route('event_un_subscribe', ['event_id' => $event[0]->id, 'follower_id' => Auth::user()->id, 'owner_id' => $event[0]->user_id]);
+					$action1 = route('event_unsubscribe');
 					$button1 = 'Отписаться';
 				} else {
-					$action1 = route('event_subscribe', ['event_id' => $event[0]->id, 'follower_id' => Auth::user()->id, 'owner_id' => $event[0]->user_id]);
+					$action1 = route('event_subscribe');
 					$button1 = 'Вписаться';
 				}
 
 				if($in_favourites) {
-					$action2 = route('event_un_favorites', ['event_id' => $event[0]->id, 'user_id' => Auth::user()->id]);
+					$action2 = route('event_unfavorites');
 					$button2 = 'Убрать из закладок';
 				} else {
-					$action2 = route('event_to_favorites', ['event_id' => $event[0]->id, 'user_id' => Auth::user()->id]);
+					$action2 = route('event_to_favorites');
 					$button2 = 'В закладки';
 				}
 			}
@@ -164,7 +164,10 @@ class EventController extends Controller {
 		}
 	}
 
-	public function subscribe($event_id, $follower_id, $owner_id) {
+	public function subscribe(Request $request) {
+		$event_id = $request['event_id'];
+		$follower_id = $request['follower_id'];
+		$owner_id = $request['owner_id'];
 		DB::table('event_followers')->insert(array(
 			'event_id' => $event_id,
 			'follower_id' => $follower_id
@@ -177,12 +180,15 @@ class EventController extends Controller {
 
 		$response['status'] = 'success';
 		$response['message'] = 'Поздравляем, вы успешно вписались!';
-		$response['event_action'] = route('event_un_subscribe', ['event_id' => $event_id, 'follower_id' => Auth::user()->id, 'owner_id' => $owner_id]);
+		$response['event_action'] = route('event_unsubscribe');
 		$response['event_button'] = 'Отписаться';
 		return json_encode($response);
 	}
 
-	public function un_subscribe($event_id, $follower_id, $owner_id) {
+	public function unsubscribe(Request $request) {
+		$event_id = $request['event_id'];
+		$follower_id = $request['follower_id'];
+		$owner_id = $request['owner_id'];
 		DB::table('event_followers')
 			->where('event_id', $event_id)
 			->where('follower_id', $follower_id)
@@ -195,38 +201,45 @@ class EventController extends Controller {
 
 		$response['status'] = 'success';
 		$response['message'] = 'Отписка оформлена!';
-		$response['event_action'] = route('event_subscribe', ['event_id' => $event_id, 'follower_id' => Auth::user()->id, 'owner_id' => $owner_id]);
+		$response['event_action'] = route('event_subscribe');
 		$response['event_button'] = 'Вписаться';
 		return json_encode($response);
 	}
 
-	public function to_favorites($event_id, $user_id) {
+	public function to_favorites(Request $request) {
+		$event_id = $request['event_id'];
+		$follower_id = $request['follower_id'];
+		$owner_id = $request['owner_id'];
 		DB::table('favorites')->insert(array(
 			'event_id' => $event_id,
-			'user_id' => $user_id
+			'user_id' => $follower_id
 		));
 
 		$response['status'] = 'success';
 		$response['message'] = 'Добавлено!';
-		$response['event_action'] = route('event_un_favorites', ['event_id' => $event_id, 'user_id' => Auth::user()->id]);
+		$response['event_action'] = route('event_unfavorites');
 		$response['event_button'] = 'Убрать из закладок';
 		return json_encode($response);
 	}
 
-	public function un_favorites($event_id, $user_id) {
+	public function unfavorites(Request $request) {
+		$event_id = $request['event_id'];
+		$follower_id = $request['follower_id'];
+		$owner_id = $request['owner_id'];
 		DB::table('favorites')
 			->where('event_id', $event_id)
-			->where('user_id', $user_id)
+			->where('user_id', $follower_id)
 			->delete();
 
 		$response['status'] = 'success';
 		$response['message'] = 'Удалено!';
-		$response['event_action'] = route('event_to_favorites', ['event_id' => $user_id, 'user_id' => Auth::user()->id]);
+		$response['event_action'] = route('event_to_favorites');
 		$response['event_button'] = 'В закладки';
 		return json_encode($response);
 	}
 
-	public function complete($event_id, NoticeController $notice) {
+	public function complete(Request $request, NoticeController $notice) {
+		$event_id = $request['event_id'];
 		DB::table('events')->where('id', $event_id)->update(array(
 			'status' => '0'
 		));
@@ -254,12 +267,13 @@ class EventController extends Controller {
 		return json_encode($response);
 	}
 
-	public function close(Request $request, $event_id, NoticeController $notice) {
+	public function close(Request $request, NoticeController $notice) {
 		$this->validate($request, [
 			'reason' => 'required'
-		]); 
+		]);
 
-		$reason = $request->input('reason');
+		$event_id = $request['event_id'];
+		$reason = $request['reason'];
 
 		DB::table('events')->where('id', $event_id)->update(array(
 			'status' => '2',
@@ -284,7 +298,7 @@ class EventController extends Controller {
 		} catch (Exception $e) {}
 
 		$response['status'] = 'success';
-		$response['message'] = 'Ваша вписка закрыта!';
+		$response['message'] = 'Ваша вписка отменена!';
 		return json_encode($response);
 	}
 

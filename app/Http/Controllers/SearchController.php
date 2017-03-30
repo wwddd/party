@@ -75,7 +75,7 @@ class SearchController extends Controller {
 	}
 
 	public function ajax_ads(Request $request) {
-		$query = DB::table('ads');
+		$query = DB::table('ads')->where('end', '>', time());
 
 		$ads = $query->get();
 		return view('search/ajax/ads', ['ads' => $ads]);

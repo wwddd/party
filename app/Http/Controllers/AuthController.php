@@ -14,254 +14,254 @@ use App\Http\Controllers\MailController;
 
 class AuthController extends Controller
 {
-    public function index_register() {
-        return view('auth.register');
-    }
+	public function index_register() {
+		return view('auth.register');
+	}
 
-    public function ajax_user_form() {
-        return view('auth.ajax.user_form');
-    }
+	public function ajax_user_form() {
+		return view('auth.ajax.user_form');
+	}
 
-    public function ajax_company_form() {
-        return view('auth.ajax.company_form');
-    }
+	public function ajax_company_form() {
+		return view('auth.ajax.company_form');
+	}
 
-    public function user_store(Request $request, MailController $mail, NoticeController $notice) {
-        $this->validate($request, [
-            'name' => 'required|min:2',
-            'gender' => 'required',
-            'age' => 'required|integer',
-            'country' => 'required',
-            'city' => 'required',
-            'contact' => 'required',
-            'email' => 'required|email',
-            'password' => 'required',
-            'condition' => 'required'
-        ]);
+	public function user_store(Request $request, MailController $mail, NoticeController $notice) {
+		$this->validate($request, [
+			'name' => 'required|min:2',
+			'gender' => 'required',
+			'age' => 'required|integer',
+			'country' => 'required',
+			'city' => 'required',
+			'contact' => 'required',
+			'email' => 'required|email',
+			'password' => 'required',
+			'condition' => 'required'
+		]);
 
 
-        $name = $request->input('name');
-        $gender = $request->input('gender');
-        $age = $request->input('age');
-        $country = $request->input('country');
-        $city = $request->input('city');
-        $contact = $request->input('contact');
-        $email = $request->input('email');
-        $password = bcrypt($request->input('password'));
-        $noticed = 1;
-        $verified = 0;
-        $blocked = 0;
-        $type = 0;
-        $ip = $request->ip();
+		$name = $request->input('name');
+		$gender = $request->input('gender');
+		$age = $request->input('age');
+		$country = $request->input('country');
+		$city = $request->input('city');
+		$contact = $request->input('contact');
+		$email = $request->input('email');
+		$password = bcrypt($request->input('password'));
+		$noticed = 1;
+		$verified = 0;
+		$blocked = 0;
+		$type = 0;
+		$ip = $request->ip();
 
-        $check = DB::table('users')
-                            ->where('email', $email)
-                            ->get();
+		$check = DB::table('users')
+							->where('email', $email)
+							->get();
 
-        if (count($check) == 1) {
-            $response = [];
-            $response['status'] = 'fail';
-            $response['message'] = 'Пользотватель с данным email уже существует!';
-            return json_encode($response);
-        } else {
-            $user = new User();
-            $user->name = $name;
-            $user->gender = $gender;
-            $user->age = $age;
-            $user->password = $password;
-            $user->country = $country;
-            $user->city = $city;
-            $user->contact = $contact;
-            $user->email = $email;
-            $user->password = $password;
-            $user->noticed = $noticed;
-            $user->verified = $verified;
-            $user->blocked = $blocked;
-            $user->type = $type;
-            $user->ip = $ip;
-            $user->save();
+		if (count($check) == 1) {
+			$response = [];
+			$response['status'] = 'fail';
+			$response['message'] = 'Пользотватель с данным email уже существует!';
+			return json_encode($response);
+		} else {
+			$user = new User();
+			$user->name = $name;
+			$user->gender = $gender;
+			$user->age = $age;
+			$user->password = $password;
+			$user->country = $country;
+			$user->city = $city;
+			$user->contact = $contact;
+			$user->email = $email;
+			$user->password = $password;
+			$user->noticed = $noticed;
+			$user->verified = $verified;
+			$user->blocked = $blocked;
+			$user->type = $type;
+			$user->ip = $ip;
+			$user->save();
 
-            Auth::login($user);
+			Auth::login($user);
 
-            try {
-                $mail->send_verify_account($email);
+			try {
+				$mail->send_verify_account($email);
 
-            } catch (Exception $e) {
-                // dd($e->getMessage());
-            }
+			} catch (Exception $e) {
+				// dd($e->getMessage());
+			}
 
-            try {
-                $notice->store(['user_id' => Auth::user()->id, 'title' => 'Подтвердите почту']);
-            } catch (Exception $e) {}
+			try {
+				$notice->store(['user_id' => Auth::user()->id, 'title' => 'Подтвердите почту']);
+			} catch (Exception $e) {}
 
-            $response = [];
-            $response['status'] = 'success';
-            $response['message'] = 'Регистрация прошла успешно!';
-            $response['redirect'] = route('account');
-            return json_encode($response);
-        }
-    }
+			$response = [];
+			$response['status'] = 'success';
+			$response['message'] = 'Регистрация прошла успешно!';
+			$response['redirect'] = route('account');
+			return json_encode($response);
+		}
+	}
 
-    public function again_verify_account(MailController $mail) {
-        try {
-            $mail->re_send_verify_account();
-            $response = [];
-            $response['status'] = 'success';
-            $response['message'] = 'Проверьте потчу';
-            return json_encode($response);
-        } catch (Exception $e) {
-            // dd($e->getMessage());
-            $response = [];
-            $response['status'] = 'fail';
-            $response['message'] = 'Что то пошло не так...';
-            return json_encode($response);
-        }
-    }
+	public function again_verify_account(MailController $mail) {
+		try {
+			$mail->send_verify_account(Auth::user()->email);
+			$response = [];
+			$response['status'] = 'success';
+			$response['message'] = 'Проверьте потчу';
+			return json_encode($response);
+		} catch (Exception $e) {
+			$response = [];
+			$response['status'] = 'fail';
+			$response['message'] = 'Что то пошло не так...';
+			return json_encode($response);
+		}
+	}
 
-    public function confirm_account($token) {
-        $decrypted = Crypt::decrypt($token);
-        $result = DB::table('users')
-                        ->where('email', $decrypted)
-                        ->get();
+	public function confirm_account() {
+		$token = $request['token'];
+		$decrypted = Crypt::decrypt($token);
+		$result = DB::table('users')
+						->where('email', $decrypted)
+						->get();
 
-        if (count($result) == 1) {
-            DB::table('users')
-                        ->where('email', $decrypted)
-                        ->update(array(
-                            'verified' => 1
-                        ));
-            if (!Auth::check()) {
-                return redirect(route('login'))
-                                    ->with('message', 'Подтверждение прошло успешно');                
-            } else {
-                return redirect(route('account'))
-                                    ->with('message', 'Подтверждение прошло успешно');
-            }
-        } else {        
-            return redirect(route('index_register'))
-                                ->with('message', 'Зарегистрируйтесь!');
-        }
-    }
+		if (count($result) == 1) {
+			DB::table('users')
+						->where('email', $decrypted)
+						->update(array(
+							'verified' => 1
+						));
+			if (!Auth::check()) {
+				return redirect(route('login'))
+									->with('message', 'Подтверждение прошло успешно');                
+			} else {
+				return redirect(route('account'))
+									->with('message', 'Подтверждение прошло успешно');
+			}
+		} else {        
+			return redirect(route('index_register'))
+								->with('message', 'Зарегистрируйтесь!');
+		}
+	}
 
-    public function forgot_password() {
-        return view('auth.forgot_password');
-    }
+	public function forgot_password() {
+		return view('auth.forgot_password');
+	}
 
-    public function reset_password_init(Request $request, MailController $mail) {
-        $this->validate($request, [
-            'email' => 'required|email'
-        ]);
+	public function reset_password_init(Request $request, MailController $mail) {
+		$this->validate($request, [
+			'email' => 'required|email'
+		]);
 
-        $email = $request->input('email');
+		$email = $request->input('email');
 
-        $check = DB::table('users')
-                            ->where('email', $email)
-                            ->get();
+		$check = DB::table('users')
+							->where('email', $email)
+							->get();
 
-        if (count($check) == 1) {
-            try {
-                $mail->send_new_password_confirm($email);
-            } catch (Exception $e) {
-                $response = [];
-                $response['status'] = 'fail';
-                $response['message'] = 'Что то пошло не так...';
-                return json_encode($response);    
-            }
-        } else {
-            $response = [];
-            $response['status'] = 'fail';
-            $response['message'] = 'Пользователя с данной почтой не существует!';
-            return json_encode($response);           
-        }
+		if (count($check) == 1) {
+			try {
+				$mail->send_new_password_confirm($email);
+			} catch (Exception $e) {
+				$response = [];
+				$response['status'] = 'fail';
+				$response['message'] = 'Что то пошло не так...';
+				return json_encode($response);
+			}
+		} else {
+			$response = [];
+			$response['status'] = 'fail';
+			$response['message'] = 'Пользователя с данной почтой не существует!';
+			return json_encode($response);
+		}
 
-        $response = [];
-        $response['status'] = 'success';
-        $response['message'] = 'Зайдите на почту и подтвердите сброс!';
-        $response['redirect'] = route('reset-password-confirm');
-        return json_encode($response); 
-    }
+		$response = [];
+		$response['status'] = 'success';
+		$response['message'] = 'Зайдите на почту и подтвердите сброс!';
+		$response['redirect'] = route('reset_password_confirm');
+		return json_encode($response); 
+	}
 
-    // public function reset_password_confirm($token) {
-    //     $decrypted = Crypt::decrypt($token);
+	// public function reset_password_confirm($token) {
+	//     $decrypted = Crypt::decrypt($token);
 
-    //     $result = DB::table('users')
-    //                     ->where('email', $decrypted)
-    //                     ->get();
+	//     $result = DB::table('users')
+	//                     ->where('email', $decrypted)
+	//                     ->get();
 
-    //     if (count($result) == 1) {
-    //         return view('auth.reset_password', ['user_id' => $result[0]->id]);
-    //     } else {
-    //         return view('templates.page_not_found');
-    //     }
-    // }
+	//     if (count($result) == 1) {
+	//         return view('auth.reset_password', ['user_id' => $result[0]->id]);
+	//     } else {
+	//         return view('templates.page_not_found');
+	//     }
+	// }
 
-    public function reset_password_confirm() {
-        return view('auth.reset_password');
-    }
+	public function reset_password_confirm() {
+		return view('auth.reset_password');
+	}
 
-    public function reset_password(Request $request) {
-        $this->validate($request, [
-            'token' => 'required',
-            'password' => 'required'
-        ]);
+	public function reset_password(Request $request) {
+		$this->validate($request, [
+			'token' => 'required',
+			'password' => 'required'
+		]);
 
-        $token = $request->input('token');
-        $decrypted = Crypt::decrypt($token);
-        $user = DB::table('users')
-                        ->where('email', $decrypted)
-                        ->get();
+		$token = $request->input('token');
+		$decrypted = Crypt::decrypt($token);
+		$user = DB::table('users')
+						->where('email', $decrypted)
+						->get();
 
-        if (count($user) == 1) {
-            $password = bcrypt($request->input('password'));
+		if (count($user) == 1) {
+			$password = bcrypt($request->input('password'));
 
-            DB::table('users')
-                        ->where('id', $user[0]->id)
-                        ->update(array(
-                            'password' => $password
-                        ));
+			DB::table('users')
+						->where('id', $user[0]->id)
+						->update(array(
+							'password' => $password
+						));
 
-            $response = [];
-            $response['status'] = 'success';
-            $response['message'] = 'Пароль успешно изменён!';
-            $response['redirect'] = route('login');
-            return json_encode($response);
-        } else {
-            $response = [];
-            $response['status'] = 'fail';
-            $response['message'] = 'Что то пошло не так!';
-            return json_encode($response);
-        }
-    }
+			$response = [];
+			$response['status'] = 'success';
+			$response['message'] = 'Пароль успешно изменён!';
+			$response['redirect'] = route('login');
+			return json_encode($response);
+		} else {
+			$response = [];
+			$response['status'] = 'fail';
+			$response['message'] = 'Что то пошло не так!';
+			return json_encode($response);
+		}
+	}
 
-    public function index_login() {
-        return view('auth.login');
-    }
+	public function index_login() {
+		return view('auth.login');
+	}
 
-    public function login(Request $request) {
-        $this->validate($request, [
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
+	public function login(Request $request) {
+		$this->validate($request, [
+			'email' => 'required|email',
+			'password' => 'required'
+		]);
 
-        $email = $request->input('email');
-        $password = $request->input('password');
+		$email = $request->input('email');
+		$password = $request->input('password');
 
-        if (Auth::attempt(['email' => $email, 'password' => $password])) {
-            $response = [];
-            $response['status'] = 'success';
-            $response['message'] = 'Успешно';
-            $response['redirect'] = route('account');
-            return json_encode($response);
-        } else {
-            $response = [];
-            $response['status'] = 'fail';
-            $response['message'] = 'Неправильный email или пароль';
-            return json_encode($response);
-        }
-    }
+		if (Auth::attempt(['email' => $email, 'password' => $password])) {
+			$response = [];
+			$response['status'] = 'success';
+			$response['message'] = 'Успешно';
+			$response['redirect'] = route('account');
+			return json_encode($response);
+		} else {
+			$response = [];
+			$response['status'] = 'fail';
+			$response['message'] = 'Неправильный email или пароль';
+			return json_encode($response);
+		}
+	}
 
-    public function logout() {
-        Auth::logout();
-        return redirect(route('index_login'));
-    }
+	public function logout() {
+		Auth::logout();
+		return redirect(route('index_login'));
+	}
 }

@@ -26,15 +26,15 @@ Route::group(['prefix' => 'register'], function() {
 		'as' => 'index_register',
 		'uses' => 'AuthController@index_register'
 	]);
-	Route::post('user/form', [
+	Route::post('user_form', [
 		'as' => 'user_form',
 		'uses' => 'AuthController@ajax_user_form'
 	]);
-	Route::post('company/form', [
+	Route::post('company_form', [
 		'as' => 'company_form',
 		'uses' => 'AuthController@ajax_company_form'
 	]);
-	Route::post('user/store', [
+	Route::post('user_store', [
 		'as' => 'user_store',
 		'uses' => 'AuthController@user_store'
 	]);
@@ -63,33 +63,33 @@ Route::get('logout', [
 ]);
 
 // Confirm account
-Route::get('confirm-account/{token}', [
+Route::get('confirm_account', [
 	'as' => 'confirm_account',
 	'uses' => 'AuthController@confirm_account'
 ]);
 
 // Send new confirm to email
-Route::post('again-verify-account', [
+Route::post('again_verify_account', [ // TODO - change it for call at once from previous method
 	'middleware' => 'auth',
 	'as' => 'again_verify_account',
 	'uses' => 'AuthController@again_verify_account'
 ]);
 
 // Reset password
-Route::get('forgot-password', [
-	'as' => 'forgot-password',
+Route::get('forgot_password', [
+	'as' => 'forgot_password',
 	'uses' => 'AuthController@forgot_password'
 ]);
-Route::post('reset-password-init', [
-	'as' => 'reset-password-init',
+Route::post('reset_password_init', [
+	'as' => 'reset_password_init',
 	'uses' => 'AuthController@reset_password_init'
 ]);
-Route::get('reset-password-confirm', [
-	'as' => 'reset-password-confirm',
+Route::get('reset_password_confirm', [
+	'as' => 'reset_password_confirm',
 	'uses' => 'AuthController@reset_password_confirm'
 ]);
-Route::post('reset-password', [
-	'as' => 'reset-password',
+Route::post('reset_password', [
+	'as' => 'reset_password',
 	'uses' => 'AuthController@reset_password'
 ]);
 
@@ -109,7 +109,7 @@ Route::group(['prefix' => 'cooperation'], function() {
 		'as' => 'membership',
 		'uses' => 'CooperationController@ajax_membership'
 	]);
-	Route::post('ads/store', [
+	Route::post('ads_store', [
 		'as' => 'ads_store',
 		'uses' => 'CooperationController@ads_store'
 	]);
@@ -121,8 +121,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
 		'as' => 'account',
 		'uses' => 'UserController@index'
 	]);
-	Route::post('event-store', [
-		'as' => 'event-store',
+	Route::post('event_store', [
+		'as' => 'event_store',
 		'uses' => 'EventController@store'
 	]);
 	Route::put('user_update', [
@@ -131,28 +131,28 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
 	]);
 
 	// Ajax
-	Route::post('ajax-opened', [
-		'as' => 'ajax-opened',
+	Route::post('ajax_opened', [
+		'as' => 'ajax_opened',
 		'uses' => 'UserController@ajax_opened_events'
 	]);
-	Route::post('ajax-closed', [
-		'as' => 'ajax-closed',
+	Route::post('ajax_closed', [
+		'as' => 'ajax_closed',
 		'uses' => 'UserController@ajax_closed_events'
 	]);
-	Route::post('ajax-favourite', [
-		'as' => 'ajax-favourite',
+	Route::post('ajax_favourite', [
+		'as' => 'ajax_favourite',
 		'uses' => 'UserController@ajax_favourite_events'
 	]);
-	Route::post('ajax-create', [
-		'as' => 'ajax-create',
+	Route::post('ajax_create', [
+		'as' => 'ajax_create',
 		'uses' => 'UserController@ajax_create_event'
 	]);
-	Route::post('ajax-achievements', [
-		'as' => 'ajax-achievements',
+	Route::post('ajax_achievements', [
+		'as' => 'ajax_achievements',
 		'uses' => 'UserController@ajax_achievements'
 	]);
-	Route::post('ajax-personal', [
-		'as' => 'ajax-personal',
+	Route::post('ajax_personal', [
+		'as' => 'ajax_personal',
 		'uses' => 'UserController@ajax_personal'
 	]);
 });
@@ -163,31 +163,27 @@ Route::group(['prefix' => 'event'], function() {
 		'as' => 'index_event',
 		'uses' => 'EventController@index'
 	]);
-	Route::post('store', [
-		'as' => 'event-store',
-		'uses' => 'EventController@store'
-	]);
-	Route::post('subscribe/{event_id}/{follower_id}/{owner_id}', [
+	Route::post('subscribe', [
 		'as' => 'event_subscribe',
 		'uses' => 'EventController@subscribe'
 	]);
-	Route::post('unsubscribe/{event_id}/{follower_id}/{owner_id}', [
-		'as' => 'event_un_subscribe',
-		'uses' => 'EventController@un_subscribe'
+	Route::post('unsubscribe', [
+		'as' => 'event_unsubscribe',
+		'uses' => 'EventController@unsubscribe'
 	]);
-	Route::post('favorites/{event_id}/{user_id}', [
+	Route::post('favorites', [
 		'as' => 'event_to_favorites',
 		'uses' => 'EventController@to_favorites'
 	]);
-	Route::post('unfavorites/{event_id}/{user_id}', [
-		'as' => 'event_un_favorites',
-		'uses' => 'EventController@un_favorites'
+	Route::post('unfavorites', [
+		'as' => 'event_unfavorites',
+		'uses' => 'EventController@unfavorites'
 	]);
-	Route::post('complete/{event_id}', [
+	Route::post('complete', [
 		'as' => 'event_complete',
 		'uses' => 'EventController@complete'
 	]);
-	Route::post('close/{event_id}', [
+	Route::post('close', [
 		'as' => 'event_close',
 		'uses' => 'EventController@close'
 	]);
@@ -211,12 +207,12 @@ Route::group(['prefix' => 'search'], function() {
 		'as' => 'search',
 		'uses' => 'SearchController@index'
 	]);
-	Route::post('ajax-search', [
-		'as' => 'ajax-search',
+	Route::post('ajax_search', [
+		'as' => 'ajax_search',
 		'uses' => 'SearchController@ajax_search'
 	]);
-	Route::post('ajax-ads', [
-		'as' => 'ajax-ads',
+	Route::post('ajax_ads', [
+		'as' => 'ajax_ads',
 		'uses' => 'SearchController@ajax_ads'
 	]);
 });
