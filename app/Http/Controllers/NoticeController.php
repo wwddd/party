@@ -12,12 +12,8 @@ use DB;
 
 class NoticeController extends Controller {
 
-	public function store($user_id, $title, $link = null) {
-		DB::table('user_notices')->insert([
-											'user_id' => $user_id,
-											'title' => $title,
-											'link' => $link
-										]);
+	public function store($insert) {
+		DB::table('user_notices')->insert($insert);
 	}
 
 	public function delete(Request $request) {

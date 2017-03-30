@@ -88,7 +88,7 @@ class AuthController extends Controller
             } catch (Exception $e) {}
 
             try {
-                $notice->store(Auth::user()->id, 'Подтвердите почту');
+                $notice->store(['user_id' => Auth::user()->id, 'title' => 'Подтвердите почту']);
             } catch (Exception $e) {}
 
             $response = [];

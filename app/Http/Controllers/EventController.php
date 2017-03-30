@@ -236,11 +236,17 @@ class EventController extends Controller {
 						->where('event_id', $event_id)
 						->get();
 
+		$insert = [];
 		foreach ($followers as $key => $follower) {
-			try {
-				$notice->store($follower->follower_id, 'Событие #' . $event_id . ' завершено! Теперь вы можете оценить его!', '/event/' . $event_id);
-			} catch (Exception $e) {}
+			$insert[$key] = [
+					'user_id' => $follower->follower_id,
+					'title' => 'Событие #' . $event_id . ' завершено! Теперь вы можете оценить его!',
+					'link' => '/event/' . $event_id
+				];
 		}
+		try {
+			$notice->store($insert);
+		} catch (Exception $e) {}
 
 
 		$response['status'] = 'success';
@@ -265,11 +271,17 @@ class EventController extends Controller {
 						->where('event_id', $event_id)
 						->get();
 
+		$insert = [];
 		foreach ($followers as $key => $follower) {
-			try {
-				$notice->store($follower->follower_id, 'Событие #' . $event_id . ' отменено!', '/event/' . $event_id);
-			} catch (Exception $e) {}
+			$insert[$key] = [
+					'user_id' => $follower->follower_id,
+					'title' => 'Событие #' . $event_id . ' отменено!',
+					'link' => '/event/' . $event_id
+				];
 		}
+		try {
+			$notice->store($insert);
+		} catch (Exception $e) {}
 
 		$response['status'] = 'success';
 		$response['message'] = 'Ваша вписка закрыта!';
