@@ -117,7 +117,7 @@ class AuthController extends Controller
 		}
 	}
 
-	public function confirm_account() {
+	public function confirm_account(Request $request) {
 		$token = $request['token'];
 		$decrypted = Crypt::decrypt($token);
 		$result = DB::table('users')

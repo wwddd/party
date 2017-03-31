@@ -21,7 +21,7 @@
 						@endif
 					</ul>
 					<ul class="social">
-						<li><a href="https://oauth.vk.com/authorize?client_id=5926797&display=page&redirect_uri=http://127.0.0.1:8000/login/vk&scope=email&response_type=token&v=5.63&state=1">VK</a></li>
+						<li><a href="https://oauth.vk.com/authorize?client_id=5947041&display=page&redirect_uri=http://dev.party-scope.com/login&scope=email&response_type=token&v=5.63&state=1">VK</a></li>
 						<li><a href="#">FB</a></li>
 						<li><a href="#">DNO</a></li>
 					</ul>
