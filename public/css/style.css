@@ -688,6 +688,15 @@ footer {
 	display: inline-block;
 }
 
+.social-inline {
+	max-height: 23px;
+	overflow: hidden;
+}
+
+.social-inline>div {
+	vertical-align: top;
+}
+
 .event-nm, .event-nm i {
 	margin: 0 !important;
 }
@@ -1057,33 +1066,4 @@ form#properties select::-ms-expand {
 	position: absolute;
 	right: 0px;
 	top: -5px;
-}
-
-
-
-
-
-#vk_share_button {
-	display: inline-block;
-	padding: 1px 7px 5px 7px;
-	background: #6287ae;
-	border-radius: 3px;
-	cursor: pointer;
-}
-
-#vk_icon {
-	display: inline-block;
-	vertical-align: middle;
-	background-size: 19px 59px;
-	background-image: url(//vk.com/images/icons/like_widget.png);
-	height: 8px;
-	width: 14px;
-	margin: 4px 0 3px;
-}
-
-#vk_share_button a {
-	font-size: 13px;
-	font-weight: 400;
-	text-decoration: none;
-	color: white;
 }

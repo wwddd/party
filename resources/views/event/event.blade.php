@@ -2,6 +2,16 @@
 	{{ $event->title }}
 @stop
 
+@section('meta_social')
+	<meta property="og:url"           content="{{ Request::url() }}" />
+	<meta property="og:type"          content="website" />
+	<meta property="og:title"         content="{{ $event->title }}" />
+	<meta property="og:description"   content="Let's trip!" />
+	<meta property="og:image"         content="<?php $event->image !== NULL ? print $event->image : '' ?>" />
+	<meta property="og:image:width" content="400" />
+	<meta property="og:image:height" content="300" />
+@stop
+
 @include('layouts.head')
 @include('layouts.header')
 <div class="container events">
@@ -152,51 +162,50 @@
 			@endif
 
 			@if(Auth::user())
-				<div class="event-inline repost-vk">
-					<div id="vk_share_button">
-						<span id="vk_icon"></span>
+				<div class="event-inline social-inline">
+					<div class="repost-vk">
+						<script type="text/javascript" src="https://vk.com/js/api/share.js?94" charset="windows-1251"></script>
+						<a id="vk_share_button"></a>
+						<script type="text/javascript">
+							document.getElementById('vk_share_button').innerHTML = VK.Share.button({}, {
+								text: 'Поделиться',
+								type: 'round'
+							});
+						</script>
 					</div>
-					<script type="text/javascript">
-						var vkParams = {
-							url: '{{ Request::url() }}',
-							title: 'Party-scope.com',
-							noparse: true,
-							image: document.getElementById('event_image').src
-						};
-						var vkUrl = 'https://vk.com/share.php?';
-						for(var i in vkParams) {
-							vkUrl += i + '=' + vkParams[i] + '&';
-						}
-						vkUrl = vkUrl.slice(0, -1);
-
-						var vkText = document.createTextNode('Поделиться');
-						var link = document.createElement('a');
-						link.setAttribute('href', vkUrl);
-						link.appendChild(vkText);
-						document.getElementById('vk_share_button').appendChild(link);
-
-						link.onclick = function(e) {
-							e.preventDefault();
-							window.open(this.href, 'Поделиться', 'width=650,height=570,left=400,top=100');
-						};
-					</script>
-
-					{{-- 		<a href="https://vk.com/share.php?url=http://dev.party-scope.com/event/14&title=Party-scope.com&noparse=true&image=http://dev.party-scope.com/images/events/2-1490629105.jpg">Поделиться блять</a> --}}
-					{{-- <script type="text/javascript" src="https://vk.com/js/api/share.js?94" charset="windows-1251"></script>
-					<a id="vk_share_button2"></a>
-					<script type="text/javascript">
-						var current_url = '{{ Request::url() }}';
-						document.getElementById('vk_share_button2').innerHTML = VK.Share.button({
-							noparse: true,
-							url: '{{ Request::url() }}',
-							title: 'Party-scope.com - Тусанись бро!',
-							image: document.getElementById('event_image').src,
-							// url: encodeURI(current_url + '&title=Party-scope.com&noparse=true&image=' + document.getElementById('event_image').src),
-						}, {
-							text: 'Поделиться',
-							type: 'round'
-						});
-					</script> --}}
+					<div class="repost-ok">
+						<div id="ok_shareWidget"></div>
+						<script>
+						!function (d, id, did, st, title, description, image) {
+							var js = d.createElement("script");
+							js.src = "https://connect.ok.ru/connect.js";
+							js.onload = js.onreadystatechange = function () {
+								if (!this.readyState || this.readyState == "loaded" || this.readyState == "complete") {
+								if (!this.executed) {
+									this.executed = true;
+									setTimeout(function () {
+										OK.CONNECT.insertShareWidget(id,did,st, title, description, image);
+									}, 0);
+								}
+							}};
+							d.documentElement.appendChild(js);
+						}(document,"ok_shareWidget","http://dev.party-scope.com",'{"sz":20,"st":"oval","ck":2}',"","","");
+						</script>
+					</div>
+					<div class="repost-fb">
+						<div id="fb-root"></div>
+						<script>(function(d, s, id) {
+						var js, fjs = d.getElementsByTagName(s)[0];
+						if (d.getElementById(id)) return;
+						js = d.createElement(s); js.id = id;
+						js.src = "//connect.facebook.net/ru_RU/sdk.js#xfbml=1&version=v2.8";
+						fjs.parentNode.insertBefore(js, fjs);
+						}(document, 'script', 'facebook-jssdk'));</script>
+						<div class="fb-share-button" 
+							 data-href="{{ Request::url() }}" 
+							 data-layout="button_count">
+						</div>
+					</div>
 				</div>
 			@endif
 		</div>
