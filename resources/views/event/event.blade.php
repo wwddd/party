@@ -38,7 +38,7 @@
 						</form>
 					</div>
 				@endif
-				<img src="<?php $event->image !== NULL ? print $event->image : '' ?>">
+				<img id="event_image" src="<?php $event->image !== NULL ? print $event->image : '' ?>">
 			</div>
 
 			<?php if($event->tags != NULL) { ?>
@@ -153,18 +153,50 @@
 
 			@if(Auth::user())
 				<div class="event-inline repost-vk">
-					<script type="text/javascript" src="https://vk.com/js/api/share.js?94" charset="windows-1251"></script>
+					<div id="vk_share_button">
+						<span id="vk_icon"></span>
+					</div>
 					<script type="text/javascript">
-						document.write(VK.Share.button({
-							url: 'http://pre05.deviantart.net/bfd7/th/pre/f/2011/006/8/6/position_46_by_ivanpaduano-d36kjqa.jpg',
-							title: 'Заголовок страницы',
-							image: 'http://pre05.deviantart.net/bfd7/th/pre/f/2011/006/8/6/position_46_by_ivanpaduano-d36kjqa.jpg',
-							noparse: true
+						var vkParams = {
+							url: '{{ Request::url() }}',
+							title: 'Party-scope.com',
+							noparse: true,
+							image: document.getElementById('event_image').src
+						};
+						var vkUrl = 'https://vk.com/share.php?';
+						for(var i in vkParams) {
+							vkUrl += i + '=' + vkParams[i] + '&';
+						}
+						vkUrl = vkUrl.slice(0, -1);
+
+						var vkText = document.createTextNode('Поделиться');
+						var link = document.createElement('a');
+						link.setAttribute('href', vkUrl);
+						link.appendChild(vkText);
+						document.getElementById('vk_share_button').appendChild(link);
+
+						link.onclick = function(e) {
+							e.preventDefault();
+							window.open(this.href, 'Поделиться', 'width=650,height=570,left=400,top=100');
+						};
+					</script>
+
+					{{-- 		<a href="https://vk.com/share.php?url=http://dev.party-scope.com/event/14&title=Party-scope.com&noparse=true&image=http://dev.party-scope.com/images/events/2-1490629105.jpg">Поделиться блять</a> --}}
+					{{-- <script type="text/javascript" src="https://vk.com/js/api/share.js?94" charset="windows-1251"></script>
+					<a id="vk_share_button2"></a>
+					<script type="text/javascript">
+						var current_url = '{{ Request::url() }}';
+						document.getElementById('vk_share_button2').innerHTML = VK.Share.button({
+							noparse: true,
+							url: '{{ Request::url() }}',
+							title: 'Party-scope.com - Тусанись бро!',
+							image: document.getElementById('event_image').src,
+							// url: encodeURI(current_url + '&title=Party-scope.com&noparse=true&image=' + document.getElementById('event_image').src),
 						}, {
 							text: 'Поделиться',
 							type: 'round'
-						}));
-					</script>
+						});
+					</script> --}}
 				</div>
 			@endif
 		</div>
