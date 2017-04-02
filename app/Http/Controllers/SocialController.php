@@ -36,13 +36,20 @@ class SocialController extends Controller {
 	}
 
 	public function findOrCreateUser($user, $provider) {
-		$authUser = User::where('email', $user->email)->first();
+		// dd($user);
+		if($user->email !== null) {
+			$email = $user->email;
+		} else {
+			$email = $provider . '@' . $user->id;
+		}
+		$authUser = User::where('email', $email)->first();
+		// die();
 		if ($authUser) {
 			return $authUser;
 		}
 		return User::create([
 			'name'     => $user->name,
-			'email'    => $user->email,
+			'email'    => $email,
 			// 'provider' => $provider,
 			// 'provider_id' => $user->id
 		]);
