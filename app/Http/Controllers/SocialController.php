@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\User;
 // use Auth;
 use Socialite;
+use \SocialiteProviders\Manager\ServiceProvider;
 use Illuminate\Cookie\CookieJar;
 use Cookie;
 // use Illuminate\Support\Facades\Mail;
