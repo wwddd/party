@@ -1460,6 +1460,8 @@ return array(
     'JakubOnderka\\PhpConsoleColor\\ConsoleColor' => $vendorDir . '/jakub-onderka/php-console-color/src/JakubOnderka/PhpConsoleColor/ConsoleColor.php',
     'JakubOnderka\\PhpConsoleColor\\InvalidStyleException' => $vendorDir . '/jakub-onderka/php-console-color/src/JakubOnderka/PhpConsoleColor/InvalidStyleException.php',
     'JakubOnderka\\PhpConsoleHighlighter\\Highlighter' => $vendorDir . '/jakub-onderka/php-console-highlighter/src/JakubOnderka/PhpConsoleHighlighter/Highlighter.php',
+    'JhaoDa\\SocialiteProviders\\Odnoklassniki\\OdnoklassnikiExtendSocialite' => $vendorDir . '/jhaoda/socialite-odnoklassniki/src/OdnoklassnikiExtendSocialite.php',
+    'JhaoDa\\SocialiteProviders\\Odnoklassniki\\Provider' => $vendorDir . '/jhaoda/socialite-odnoklassniki/src/Provider.php',
     'Laravel\\Socialite\\AbstractUser' => $vendorDir . '/laravel/socialite/src/AbstractUser.php',
     'Laravel\\Socialite\\Contracts\\Factory' => $vendorDir . '/laravel/socialite/src/Contracts/Factory.php',
     'Laravel\\Socialite\\Contracts\\Provider' => $vendorDir . '/laravel/socialite/src/Contracts/Provider.php',

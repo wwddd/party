@@ -23,8 +23,8 @@
 					<ul class="social">
 						<li> <a href="{{ url('/auth/facebook') }}"><i class="fa fa-facebook"></i></a></li>
 						<li> <a href="{{ url('/auth/vkontakte') }}"><i class="fa fa-vk"></i></a></li>
-						{{-- <li> <a href="{{ url('/auth/twitter') }}"><i class="fa fa-twitter"></i></a></li> --}}
-						<li><a href="#">DNO</a></li>
+						<li> <a href="{{ url('/auth/twitter') }}"><i class="fa fa-twitter"></i></a></li>
+						<li> <a href="{{ url('/auth/odnoklassniki') }}"><i class="fa fa-odnoklassniki"></i></a></li>
 					</ul>
 				</div>
 				<div id="notices" class="col-1">

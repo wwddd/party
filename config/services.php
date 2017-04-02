@@ -41,6 +41,12 @@ return [
     //     'redirect'      => env('TWITTER_URL'),
     // ],
 
+    'twitter' => [
+        'client_id'     => env('TWITTER_ID'),
+        'client_secret' => env('TWITTER_SECRET'),
+        'redirect'      => env('TWITTER_URL'),
+    ],
+
     'facebook' => [
         'client_id'     => env('FACEBOOK_ID'),
         'client_secret' => env('FACEBOOK_SECRET'),
@@ -52,5 +58,12 @@ return [
         'client_secret' => env('VKONTAKTE_SECRET'),
         'redirect' => env('VKONTAKTE_URL'),
     ],
+
+    'odnoklassniki' => [
+        'client_id' => env('ODNOKLASSNIKI_ID'),
+        'client_secret' => env('ODNOKLASSNIKI_SECRET'),
+        'redirect' => env('ODNOKLASSNIKI_REDIRECT'),  
+    ],
+
 
 ];

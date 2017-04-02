@@ -697,6 +697,10 @@ footer {
 	vertical-align: top;
 }
 
+ul.social i {
+	font-size: 20px;
+}
+
 .event-nm, .event-nm i {
 	margin: 0 !important;
 }

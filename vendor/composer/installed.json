@@ -3947,5 +3947,44 @@
             }
         ],
         "description": "VKontakte OAuth2 Provider for Laravel Socialite"
+    },
+    {
+        "name": "jhaoda/socialite-odnoklassniki",
+        "version": "v3.0.0",
+        "version_normalized": "3.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/jhaoda/socialite-odnoklassniki.git",
+            "reference": "da87c66f859aa9f612ed3ed6595a77903c9f6987"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/jhaoda/socialite-odnoklassniki/zipball/da87c66f859aa9f612ed3ed6595a77903c9f6987",
+            "reference": "da87c66f859aa9f612ed3ed6595a77903c9f6987",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.6 || ^7.0",
+            "socialiteproviders/manager": "~3.0"
+        },
+        "time": "2017-01-26 19:00:44",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "JhaoDa\\SocialiteProviders\\Odnoklassniki\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "JhaoDa",
+                "email": "jhaoda@gmail.com"
+            }
+        ],
+        "description": "Odnoklassniki OAuth2 Provider for Laravel Socialite"
     }
 ]
