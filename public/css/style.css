@@ -1071,3 +1071,11 @@ form#properties select::-ms-expand {
 	right: 0px;
 	top: -5px;
 }
+
+.send_again {
+	background-color: transparent;
+	border: none;
+	color: blue;
+	text-decoration: underline;
+	cursor: pointer;
+}

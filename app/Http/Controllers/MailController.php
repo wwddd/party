@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
-use Crypt, Exception;
+use DB, Crypt, Exception;
 
 
 class MailController extends Controller
@@ -42,12 +42,10 @@ class MailController extends Controller
 	// 	);
 	// }
 
-	public function send_new_password_confirm($email) {
-		$token = Crypt::encrypt($email);
-		// $link = route('reset-password-confirm', ['string_compare' => $token]);
-
+	public function forgot_password($email, $token) {
 		Mail::send("templates.emails.reset_password", array(
-				'link' => $token
+				'token' => $token,
+				'email' => $email
 			), function($message) use ($email) {
 				$message
 					->to($email)
@@ -62,7 +60,7 @@ class MailController extends Controller
 				'text' => $text
 			), function($message) {
 				$message
-					->to('partyscopeinfo@gmail.com')
+					->to('reymoleg@gmail.com')
 					->subject('Пришёл отзыв');
 			}
 		);
@@ -71,14 +69,14 @@ class MailController extends Controller
 	public function send_report($email, $event_id, $guilty_id, $text, $reason) {
 		Mail::send('templates.emails.send_report', array(
 				'email' => $email,
-				'user_id' => $user_id,
+				'event_id' => $event_id,
 				'guilty_id' => $guilty_id,
 				'text' => $text,
 				'reason' => $reason
 
 			), function($message) {
 				$message
-					->to('partyscopeinfo@gmail.com')
+					->to('reymoleg@gmail.com')
 					->subject('Пришла жалоба');
 			}
 		);

@@ -132,12 +132,12 @@ class AuthController extends Controller
 						));
 			if (!Auth::check()) {
 				return redirect(route('login'))
-									->with('message', 'Подтверждение прошло успешно');                
+									->with('message', 'Подтверждение прошло успешно');
 			} else {
 				return redirect(route('account'))
 									->with('message', 'Подтверждение прошло успешно');
 			}
-		} else {        
+		} else {
 			return redirect(route('index_register'))
 								->with('message', 'Зарегистрируйтесь!');
 		}
@@ -153,14 +153,19 @@ class AuthController extends Controller
 		]);
 
 		$email = $request->input('email');
+		$token = md5(time() . $email);
+		$check = DB::table('users')->where('email', $email)->get();
 
-		$check = DB::table('users')
-							->where('email', $email)
-							->get();
+		$currentToken = DB::table('user_tokens')->where('user_email', $email)->get();
+		if(count($currentToken) == 1) {
+			DB::table('user_tokens')->where('user_email', $email)->update(['token' => $token]);
+		} else {
+			DB::table('user_tokens')->insert(['token' => $token, 'user_email' => $email]);
+		}
 
 		if (count($check) == 1) {
 			try {
-				$mail->send_new_password_confirm($email);
+				$mail->forgot_password($email, $token);
 			} catch (Exception $e) {
 				$response = [];
 				$response['status'] = 'fail';
@@ -176,50 +181,43 @@ class AuthController extends Controller
 
 		$response = [];
 		$response['status'] = 'success';
+		$response['send_again'] = true;
 		$response['message'] = 'Зайдите на почту и подтвердите сброс!';
-		$response['redirect'] = route('reset_password_confirm');
 		return json_encode($response); 
 	}
 
-	// public function reset_password_confirm($token) {
-	//     $decrypted = Crypt::decrypt($token);
-
-	//     $result = DB::table('users')
-	//                     ->where('email', $decrypted)
-	//                     ->get();
-
-	//     if (count($result) == 1) {
-	//         return view('auth.reset_password', ['user_id' => $result[0]->id]);
-	//     } else {
-	//         return view('templates.page_not_found');
-	//     }
+	// public function reset_password_confirm() {
+	// 	return view('auth.reset_password');
 	// }
 
-	public function reset_password_confirm() {
-		return view('auth.reset_password');
-	}
-
 	public function reset_password(Request $request) {
-		$this->validate($request, [
-			'token' => 'required',
-			'password' => 'required'
-		]);
-
 		$token = $request->input('token');
-		$decrypted = Crypt::decrypt($token);
-		$user = DB::table('users')
-						->where('email', $decrypted)
+		$email = $request->input('email');
+		// $decrypted = Crypt::decrypt($token);
+		$user_token = DB::table('user_tokens')
+						->where('token', $token)
 						->get();
 
-		if (count($user) == 1) {
-			$password = bcrypt($request->input('password'));
+		if (count($user_token) == 1) {
+			return view('auth.reset_password', ['email' => $email]);
+		} else {
+			return view('auth.forgot_password');
+		}
+	}
 
-			DB::table('users')
-						->where('id', $user[0]->id)
-						->update(array(
-							'password' => $password
-						));
+	public function reset_password_confirmed(Request $request) {
+		$this->validate($request, [
+			'password' => 'required'
+		]);
+		$password = bcrypt($request['password']);
+		$email = $request['email'];
+		$result = DB::table('users')
+					->where('email', $email)
+					->update(array(
+						'password' => $password
+					));
 
+		if (count($result) == 1) {
 			$response = [];
 			$response['status'] = 'success';
 			$response['message'] = 'Пароль успешно изменён!';

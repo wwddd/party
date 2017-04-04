@@ -8,6 +8,10 @@ Route::get('rules', function () {
 	return view('rules');
 });
 
+Route::get('noscript', function () {
+	return view('templates/noscript');
+});
+
 // Contact
 Route::group(['prefix' => 'contact'], function() {
 	Route::get('/', [
@@ -84,13 +88,13 @@ Route::post('reset_password_init', [
 	'as' => 'reset_password_init',
 	'uses' => 'AuthController@reset_password_init'
 ]);
-Route::get('reset_password_confirm', [
-	'as' => 'reset_password_confirm',
-	'uses' => 'AuthController@reset_password_confirm'
-]);
-Route::post('reset_password', [
+Route::get('reset_password', [
 	'as' => 'reset_password',
 	'uses' => 'AuthController@reset_password'
+]);
+Route::post('reset_password_confirmed', [
+	'as' => 'reset_password_confirmed',
+	'uses' => 'AuthController@reset_password_confirmed'
 ]);
 
 // Cooperation

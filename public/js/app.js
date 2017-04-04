@@ -242,37 +242,7 @@
 				},
 				success: function(data) {
 					var response = $.parseJSON(data);
-					if(response.status == 'success') {
-						mainNotice(response.message, 'success');
-					} else if(response.status == 'fail') {
-						mainNotice(response.message, 'fail');
-					}
-
-					if(response.redirect !== undefined) {
-						setTimeout(function() {
-							window.location.href = response.redirect;
-						}, 2000);
-					}
-
-					if(response.event_action !== undefined && response.event_button !== undefined) {
-						form.attr('action', response.event_action);
-						form.find('button[type="submit"]').text(response.event_button);
-					}
-
-					if(response.avg_event !== undefined) {
-						$('.rating_block').html(response.avg_event);
-					}
-
-					if(response.event_image !== undefined) {
-						$('.event-image img').attr('src', response.event_image);
-						$('.event-upload').remove();
-					}
-
-					if(response.close_modal !== undefined) {
-						$('.modal').removeClass('active');
-						$('.overlay').fadeOut(300);
-					}
-
+					callbackForm(form, response)
 					form.find('button.no-disabled').prop('disabled', false);
 				},
 				error: function(e) {
@@ -289,6 +259,43 @@
 					form.find('button[type="submit"]').prop('disabled', false);
 				}
 			});
+		}
+	}
+
+	function callbackForm(form, response) {
+		if(response.status == 'success') {
+			mainNotice(response.message, 'success');
+		} else if(response.status == 'fail') {
+			mainNotice(response.message, 'fail');
+		}
+
+		if(response.redirect !== undefined) {
+			setTimeout(function() {
+				window.location.href = response.redirect;
+			}, 2000);
+		}
+
+		if(response.event_action !== undefined && response.event_button !== undefined) {
+			form.attr('action', response.event_action);
+			form.find('button[type="submit"]').text(response.event_button);
+		}
+
+		if(response.avg_event !== undefined) {
+			$('.rating_block').html(response.avg_event);
+		}
+
+		if(response.event_image !== undefined) {
+			$('.event-image img').attr('src', response.event_image);
+			$('.event-upload').remove();
+		}
+
+		if(response.close_modal !== undefined) {
+			$('.modal').removeClass('active');
+			$('.overlay').fadeOut(300);
+		}
+
+		if(response.send_again !== undefined) {
+			$('#send_again').html('<button type="submit" class="send_again">Не пришло письмо?</button>');
 		}
 	}
 

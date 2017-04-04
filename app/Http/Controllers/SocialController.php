@@ -19,30 +19,23 @@ use Cookie;
 // use App\Http\Controllers\MailController;
 
 class SocialController extends Controller {
-	// public $vk_id = 5947041;
-	// public $vk_protect_key = 'V2ArLQW8XQIOGlzutUDV';
-	// public $vk_service_key = 'ff61b0b5ff61b0b5ffd3fc5121ff3b0e14fff61ff61b0b5a7b7555d105a7be78cdc5d48';
-
 	public function redirectToProvider($provider) {
 		return Socialite::driver($provider)->redirect();
 	}
 
-	public function handleProviderCallback($provider) {
+	public function handleProviderCallback($provider, Request $request) {
+		if(isset($request['error']) || isset($request['denied'])) {
+			return redirect(route('login'));
+		}
 		$user = Socialite::driver($provider)->user();
-
 		$authUser = $this->findOrCreateUser($user, $provider);
 		Auth::login($authUser, true);
-		return redirect(route('account'));
+		return redirect(route('account'))->with(['social_name' => $authUser->name]);
 	}
 
 	public function findOrCreateUser($user, $provider) {
-		// if($user->email !== null) {
-		// 	$email = $user->email;
-		// } else {
-			$email = $provider . '@' . $user->id;
-		// }
+		$email = $provider . '@' . $user->id;
 		$authUser = User::where('email', $email)->first();
-		// die();
 		if ($authUser) {
 			return $authUser;
 		}
@@ -50,8 +43,6 @@ class SocialController extends Controller {
 			'name'     => $user->name,
 			'email'    => $email,
 			'verifed'  => '1'
-			// 'provider' => $provider,
-			// 'provider_id' => $user->id
 		]);
 	}
 

@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html>
+<noscript>
+	<meta http-equiv="refresh" content="0; URL={{ url('/noscript') }}">
+</noscript>
 <head>
 	<title>@yield('title')</title>
 	@yield('meta_social')

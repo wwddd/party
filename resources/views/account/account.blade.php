@@ -34,4 +34,11 @@
 @include('layouts.scripts')
 <link rel="stylesheet" type="text/css" href="{{ asset('/css/jquery.datetimepicker.css') }}"/>
 <script src="{{ asset('/js/jquery.datetimepicker.full.min.js') }}"></script>
+
+@if(Session::has('social_name'))
+	<script type="text/javascript">
+		mainNotice("Добро пожаловать, {{ Session::get('social_name') }}!", 'success');
+	</script>
+@endif
+
 @include('layouts.foot')
